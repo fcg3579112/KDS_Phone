@@ -1,0 +1,33 @@
+PODS:
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.1.0)
+  - YT_SZYLevel2SDK (0.1.5)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
+
+DEPENDENCIES:
+  - Masonry (~> 1.1.0)
+  - MBProgressHUD (~> 1.1.0)
+  - YT_SZYLevel2SDK (from `git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git`, tag `1.0.4`)
+  - YYKit (~> 1.0.9)
+
+EXTERNAL SOURCES:
+  YT_SZYLevel2SDK:
+    :git: git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git
+    :tag: 1.0.4
+
+CHECKOUT OPTIONS:
+  YT_SZYLevel2SDK:
+    :git: git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git
+    :tag: 1.0.4
+
+SPEC CHECKSUMS:
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  YT_SZYLevel2SDK: ea9df35975235e9fa9f3ae8f3982da323f57a0c8
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+
+PODFILE CHECKSUM: 0a189618d1d21f14413cf039743a3489cefcd06b
+
+COCOAPODS: 1.4.0

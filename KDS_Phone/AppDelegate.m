@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-
+#import <MApi.h>
+#import <MBProgressHUD.h>
 @interface AppDelegate ()
 
 @end
@@ -17,9 +18,26 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    //注册上证 SDK
+    [self registLevel2SDK];
     return YES;
 }
-
+/** 注册 Mapi */
+- (void)registLevel2SDK {
+    
+    [MApi registerAPP:@"NWB1IHo9d6aaJk+cRgGrZmF93Y4LbSRhM8DUjN37lEw=" sourcePermissions:@{MApiMarketSH: @(MApiSourceLevel2),MApiMarketSZ: @(MApiSourceLevel2),MApiMarketHK: @(MApiSourceSHHK5|MApiSourceSZHK5|MApiSourceHKD1)} completionHandler:^(NSError *error) {
+        if (error) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                UIWindow *window = UIApplication.sharedApplication.keyWindow;
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.label.text = error.description;
+                [hud hideAnimated:YES afterDelay:2];
+            });
+            NSLog(@"❌❌❌❌ %@",error.description);
+        }
+    }];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

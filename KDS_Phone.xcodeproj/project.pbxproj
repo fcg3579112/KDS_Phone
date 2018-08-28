@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48D807B17EB589F164F783C4 /* libPods-KDS_PhoneUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDD3715529AC3ACB755ABEF /* libPods-KDS_PhoneUITests.a */; };
+		6642FF8F632CD8A7B4E1DA84 /* libPods-KDS_PhoneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
 		B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB910213384A200CA2EB6 /* Main.storyboard */; };
@@ -15,6 +17,15 @@
 		B2ACB91A213384A400CA2EB6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB919213384A400CA2EB6 /* main.m */; };
 		B2ACB924213384A400CA2EB6 /* KDS_PhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB923213384A400CA2EB6 /* KDS_PhoneTests.m */; };
 		B2ACB92F213384A400CA2EB6 /* KDS_PhoneUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB92E213384A400CA2EB6 /* KDS_PhoneUITests.m */; };
+		B2ACB93F213384E500CA2EB6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB93C213384E500CA2EB6 /* DetailViewController.m */; };
+		B2ACB940213384E500CA2EB6 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB93E213384E500CA2EB6 /* DetailViewController.xib */; };
+		B2ACB9442133873C00CA2EB6 /* json.html in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB9422133873C00CA2EB6 /* json.html */; };
+		B2ACB9452133873C00CA2EB6 /* json.js in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB9432133873C00CA2EB6 /* json.js */; };
+		B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */; };
+		B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */; };
+		B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */; };
+		B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */; };
+		FC211CBFDEC7482D80CB5A66 /* libPods-KDS_Phone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +46,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KDS_Phone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2ADB8B1A431EF43686D136FB /* Pods-KDS_PhoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		2DDD3715529AC3ACB755ABEF /* libPods-KDS_PhoneUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KDS_PhoneUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35D7924EAD7847713903E56E /* Pods-KDS_PhoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KDS_PhoneTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		925EB85AA1384D20216747A3 /* Pods-KDS_Phone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.release.xcconfig"; sourceTree = "<group>"; };
+		953A78C4E23AEDF95F40766E /* Pods-KDS_PhoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests.release.xcconfig"; sourceTree = "<group>"; };
+		95A6AEA560BAAEEABBADAF6F /* Pods-KDS_PhoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB90A213384A200CA2EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2ACB90B213384A200CA2EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +70,21 @@
 		B2ACB92A213384A400CA2EB6 /* KDS_PhoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KDS_PhoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB92E213384A400CA2EB6 /* KDS_PhoneUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KDS_PhoneUITests.m; sourceTree = "<group>"; };
 		B2ACB930213384A400CA2EB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B2ACB93C213384E500CA2EB6 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		B2ACB93D213384E500CA2EB6 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		B2ACB93E213384E500CA2EB6 /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
+		B2ACB9422133873C00CA2EB6 /* json.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = json.html; sourceTree = "<group>"; };
+		B2ACB9432133873C00CA2EB6 /* json.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = json.js; sourceTree = "<group>"; };
+		B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_TimelineAndKlineSegment.m; sourceTree = "<group>"; };
+		B2ACB94A21338AA400CA2EB6 /* JT_ColorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JT_ColorManager.h; sourceTree = "<group>"; };
+		B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JT_ColorManager.m; sourceTree = "<group>"; };
+		B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDS_UtilsMacro.h; sourceTree = "<group>"; };
+		B2ACB9522133C5F000CA2EB6 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
+		B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+KDS_FontHandle.m"; sourceTree = "<group>"; };
+		B2ACB9562133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+KDS_FontHandle.h"; sourceTree = "<group>"; };
+		B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JT_TimelineAndKlineSegment.h; sourceTree = "<group>"; };
+		BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC211CBFDEC7482D80CB5A66 /* libPods-KDS_Phone.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6642FF8F632CD8A7B4E1DA84 /* libPods-KDS_PhoneTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +108,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D807B17EB589F164F783C4 /* libPods-KDS_PhoneUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		037A22589337AB02B5B624F4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */,
+				925EB85AA1384D20216747A3 /* Pods-KDS_Phone.release.xcconfig */,
+				35D7924EAD7847713903E56E /* Pods-KDS_PhoneTests.debug.xcconfig */,
+				953A78C4E23AEDF95F40766E /* Pods-KDS_PhoneTests.release.xcconfig */,
+				2ADB8B1A431EF43686D136FB /* Pods-KDS_PhoneUITests.debug.xcconfig */,
+				95A6AEA560BAAEEABBADAF6F /* Pods-KDS_PhoneUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		09D4449215F6A83540E4A25C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */,
+				3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */,
+				2DDD3715529AC3ACB755ABEF /* libPods-KDS_PhoneUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B2ACB8FE213384A200CA2EB6 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +145,8 @@
 				B2ACB922213384A400CA2EB6 /* KDS_PhoneTests */,
 				B2ACB92D213384A400CA2EB6 /* KDS_PhoneUITests */,
 				B2ACB908213384A200CA2EB6 /* Products */,
+				037A22589337AB02B5B624F4 /* Pods */,
+				09D4449215F6A83540E4A25C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,10 +163,17 @@
 		B2ACB909213384A200CA2EB6 /* KDS_Phone */ = {
 			isa = PBXGroup;
 			children = (
+				B2ACB94621338A3B00CA2EB6 /* Views */,
+				B2ACB9412133873C00CA2EB6 /* HTML */,
 				B2ACB90A213384A200CA2EB6 /* AppDelegate.h */,
 				B2ACB90B213384A200CA2EB6 /* AppDelegate.m */,
+				B2ACB9522133C5F000CA2EB6 /* FirstViewController.h */,
+				B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */,
 				B2ACB90D213384A200CA2EB6 /* ViewController.h */,
 				B2ACB90E213384A200CA2EB6 /* ViewController.m */,
+				B2ACB93D213384E500CA2EB6 /* DetailViewController.h */,
+				B2ACB93C213384E500CA2EB6 /* DetailViewController.m */,
+				B2ACB93E213384E500CA2EB6 /* DetailViewController.xib */,
 				B2ACB910213384A200CA2EB6 /* Main.storyboard */,
 				B2ACB913213384A400CA2EB6 /* Assets.xcassets */,
 				B2ACB915213384A400CA2EB6 /* LaunchScreen.storyboard */,
@@ -132,6 +201,29 @@
 			path = KDS_PhoneUITests;
 			sourceTree = "<group>";
 		};
+		B2ACB9412133873C00CA2EB6 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				B2ACB9562133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.h */,
+				B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */,
+				B2ACB9422133873C00CA2EB6 /* json.html */,
+				B2ACB9432133873C00CA2EB6 /* json.js */,
+			);
+			path = HTML;
+			sourceTree = "<group>";
+		};
+		B2ACB94621338A3B00CA2EB6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2ACB94A21338AA400CA2EB6 /* JT_ColorManager.h */,
+				B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */,
+				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
+				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
+				B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,9 +231,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2ACB933213384A400CA2EB6 /* Build configuration list for PBXNativeTarget "KDS_Phone" */;
 			buildPhases = (
+				951D50187EE537C39C496D94 /* [CP] Check Pods Manifest.lock */,
 				B2ACB903213384A200CA2EB6 /* Sources */,
 				B2ACB904213384A200CA2EB6 /* Frameworks */,
 				B2ACB905213384A200CA2EB6 /* Resources */,
+				8CA2657BBC0858465699370E /* [CP] Embed Pods Frameworks */,
+				0DFD66762C2C1B94343F55D6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -156,9 +251,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2ACB936213384A400CA2EB6 /* Build configuration list for PBXNativeTarget "KDS_PhoneTests" */;
 			buildPhases = (
+				2A14231F2B151A985C42E353 /* [CP] Check Pods Manifest.lock */,
 				B2ACB91B213384A400CA2EB6 /* Sources */,
 				B2ACB91C213384A400CA2EB6 /* Frameworks */,
 				B2ACB91D213384A400CA2EB6 /* Resources */,
+				A8F5A7FB662C61D12532594A /* [CP] Embed Pods Frameworks */,
+				CA0A9378871940E318603760 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -174,9 +272,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2ACB939213384A400CA2EB6 /* Build configuration list for PBXNativeTarget "KDS_PhoneUITests" */;
 			buildPhases = (
+				F3DE0EB889315637FB25BC66 /* [CP] Check Pods Manifest.lock */,
 				B2ACB926213384A400CA2EB6 /* Sources */,
 				B2ACB927213384A400CA2EB6 /* Frameworks */,
 				B2ACB928213384A400CA2EB6 /* Resources */,
+				DC4733DFAEAE2F67ED450503 /* [CP] Embed Pods Frameworks */,
+				225D27981F908F96996ED4EC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -235,9 +336,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2ACB9452133873C00CA2EB6 /* json.js in Resources */,
+				B2ACB9442133873C00CA2EB6 /* json.html in Resources */,
 				B2ACB917213384A400CA2EB6 /* LaunchScreen.storyboard in Resources */,
 				B2ACB914213384A400CA2EB6 /* Assets.xcassets in Resources */,
 				B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */,
+				B2ACB940213384E500CA2EB6 /* DetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,14 +361,166 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0DFD66762C2C1B94343F55D6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		225D27981F908F96996ED4EC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2A14231F2B151A985C42E353 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KDS_PhoneTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CA2657BBC0858465699370E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		951D50187EE537C39C496D94 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KDS_Phone-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8F5A7FB662C61D12532594A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA0A9378871940E318603760 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DC4733DFAEAE2F67ED450503 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3DE0EB889315637FB25BC66 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KDS_PhoneUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B2ACB903213384A200CA2EB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
+				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
+				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
 				B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */,
 				B2ACB91A213384A400CA2EB6 /* main.m in Sources */,
 				B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */,
+				B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */,
+				B2ACB93F213384E500CA2EB6 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,40 +687,45 @@
 		};
 		B2ACB934213384A400CA2EB6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_Phone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-Phone";
+				PRODUCT_BUNDLE_IDENTIFIER = com.csc.zxjtzq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		B2ACB935213384A400CA2EB6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 925EB85AA1384D20216747A3 /* Pods-KDS_Phone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_Phone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-Phone";
+				PRODUCT_BUNDLE_IDENTIFIER = com.csc.zxjtzq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		B2ACB937213384A400CA2EB6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35D7924EAD7847713903E56E /* Pods-KDS_PhoneTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -484,6 +745,7 @@
 		};
 		B2ACB938213384A400CA2EB6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 953A78C4E23AEDF95F40766E /* Pods-KDS_PhoneTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -503,6 +765,7 @@
 		};
 		B2ACB93A213384A400CA2EB6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2ADB8B1A431EF43686D136FB /* Pods-KDS_PhoneUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
@@ -521,6 +784,7 @@
 		};
 		B2ACB93B213384A400CA2EB6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 95A6AEA560BAAEEABBADAF6F /* Pods-KDS_PhoneUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;

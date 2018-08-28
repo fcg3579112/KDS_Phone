@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  DetailViewController.h
 //  QuotationTest
 //
 //  Created by chuangao.feng on 2018/8/21.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
-
+@interface DetailViewController : UIViewController
+@property (nonatomic ,strong) NSString *content;
 @end
-
