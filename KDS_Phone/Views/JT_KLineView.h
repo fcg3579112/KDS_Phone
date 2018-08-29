@@ -38,6 +38,8 @@
 
 @property(nonatomic, copy) NSArray<MOHLCItem *> *kLineModels;
 
+@property (nonatomic, assign) CGFloat KlineChartTopMargin;
+
 - (void)drawChart;
 
 @end

@@ -30,7 +30,8 @@
     _kLineView = [JT_KLineView new];
     _kLineView.backgroundColor = [UIColor greenColor];
     _kLineView.averageLineHeight = 10;
-    _kLineView.rightSelecterWidth = 30;
+    _kLineView.rightSelecterWidth = 50;
+    _kLineView.KlineChartTopMargin = 10;
     
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -52,8 +53,8 @@
         MOHLCResponse *response = (MOHLCResponse *)resp;
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
-            _kLineView.kLineModels = items;
-            [_kLineView drawChart];
+            self.kLineView.kLineModels = items;
+            [self.kLineView drawChart];
         }
     }];
 }

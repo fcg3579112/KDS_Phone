@@ -42,9 +42,15 @@
     }
     return self;
 }
-#pragma mark 手势
 
-#pragma mark - event事件处理方法
+#pragma mark JT_KLineChartViewDelegate
+
+- (void)JT_KLineChartViewNeedDrawKLineModels:(NSArray *)needDrawKLineModels {
+    
+}
+
+
+#pragma mark 手势
 #pragma mark 缩放执行方法
 - (void)event_pichMethod:(UIPinchGestureRecognizer *)pinch {
 }
@@ -56,9 +62,7 @@
 #pragma mark 重绘
 - (void)drawChart
 {
-    [self klineChart];
-    [self klineMA];
-    [self klineVolume];
+    [self.klineChart drawView];
 }
 
 #pragma mark 私有方法
@@ -136,6 +140,8 @@
     if (!_klineChart) {
         _klineChart = [JT_KLineChartView new];
         _klineChart.delegate = self;
+        _klineChart.klineViewRatio = self.klineViewRatio;
+        _klineChart.topAndBottomMargin = self.KlineChartTopMargin;
         [self.scrollView addSubview:_klineChart];
         [_klineChart mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(self.scrollView);
