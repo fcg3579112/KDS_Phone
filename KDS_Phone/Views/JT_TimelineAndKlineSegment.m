@@ -25,7 +25,8 @@
 @property (nonatomic ,strong) NSMutableArray *itemButtons;
 @property (nonatomic ,weak) id <JT_KlineVerticalSegmentDelegate> delegate;
 + (instancetype)klineSegmentWithTitles:(NSArray *)array delegate:(id <JT_KlineVerticalSegmentDelegate>)delegate;
-- (void)updateButtonTitleColor;
+- (void)resetButtonTitleColor;
+- (void)updateSelectButtonTitleColor:(NSInteger)index;
 @end
 @implementation JT_KlineVerticalSegment
 + (instancetype)klineSegmentWithTitles:(NSArray *)array delegate:(id <JT_KlineVerticalSegmentDelegate>)delegate {
@@ -67,7 +68,11 @@
     self.layer.shadowOffset = CGSizeMake(0,2);
     
 }
-- (void)updateButtonTitleColor {
+
+/**
+ 重置所有按钮的颜色
+ */
+- (void)resetButtonTitleColor {
     [_itemButtons enumerateObjectsUsingBlock:^(UIButton * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         item.enabled = YES;
     }];
@@ -76,8 +81,10 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(JT_KlineVerticalSegmentItemClick:)]) {
         [self.delegate JT_KlineVerticalSegmentItemClick:sender.tag + itemButtonTagOffset];
     }
+}
+- (void)updateSelectButtonTitleColor:(NSInteger)index {
     [_itemButtons enumerateObjectsUsingBlock:^(UIButton * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (sender == item) {
+        if (item.tag == index) {
             item.enabled = NO;
         } else {
             item.enabled = YES;
@@ -107,6 +114,7 @@
 @property (nonatomic ,weak) id <JT_TimelineAndKlineSegmentDelegate> delegate;
 @property (nonatomic ,strong) JT_KlineVerticalSegment *verticalSegment;
 @property (nonatomic ,strong) UIView *coverView;//
+@property (nonatomic, strong) MASConstraint *sliderCentreXConstraint;
 @end
 @implementation JT_TimelineAndKlineSegment
 
@@ -132,7 +140,7 @@
     CGFloat rightMargin = 0;
     NSArray *titles;
     if (self.deviceOrientation == JT_DeviceOrientationVertical) {
-        titles = @[@"分时",@"5日",@"日K",@"周K",@"分钟",@"设置"];
+        titles = @[@"分时",@"5日",@"日K",@"周K",@"月K",@"分钟",@"设置"];
     } else {
         rightMargin = self.similarKlineWidth; //留出一部分用来放置相似 k 线按钮
         titles = @[@"分时",@"5日",@"日K",@"周K",@"月K",@"5分",@"15分",@"30分",@"60分",@"设置",];
@@ -168,10 +176,12 @@
             self.slider = [[UIView alloc] init];
             self.slider.backgroundColor = JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
             [self addSubview:self.slider];
+            @weakify(self)
             [self.slider mas_makeConstraints:^(MASConstraintMaker *make) {
+                @strongify(self)
                 make.bottom.mas_equalTo(0);
                 make.size.mas_equalTo(CGSizeMake(self.sliderWidth, self.sliderHeight));
-                make.centerX.equalTo(btn);
+                self.sliderCentreXConstraint = make.centerX.mas_equalTo(btn.mas_centerX);
             }];
         }
         //设置按钮左边的竖线
@@ -179,10 +189,10 @@
             UIView *verticalLine = [UIView new];
             verticalLine.backgroundColor = JT_ColorDayOrNight(@"FC6435", @"FE3D00");
             [self addSubview:verticalLine];
-//            verticalLine.frame = CGRectMake(btn.frame.origin.x, (self.segmentHeight - self.verticalLineHeight) / 2, 0.5, self.verticalLineHeight);
             [verticalLine mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.size.mas_equalTo(CGSizeMake(0.5, self.verticalLineHeight));
                 make.left.equalTo(btn);
+                make.centerY.equalTo(btn);
             }];
         }
         if ([title isEqualToString:@"分钟"]) {
@@ -195,48 +205,31 @@
             [self.timelineAndKlineButtons addObject:btn];
         }
     }];
-    
     //把滑动条放置在视图最上方
     [self bringSubviewToFront:self.slider];
     
 }
 #pragma mark JT_KlineVerticalSegmentDelegate
 - (void)JT_KlineVerticalSegmentItemClick:(JT_TimelineAndKlineItemType)itemType {
-    [self resetSeletedButtonTitleColor:self.minButon];
-    //选择红线 滑动到分钟按钮
-    [self slideToSeletedItem:self.minButon];
-    //设置选中 itemType
     [self setSeletedItemType:itemType];
-    
-    //重设 分钟 按钮的 title
-    
-    NSArray *titles = @[@"5分",@"15分",@"30分",@"60分",];
-    [self.minButon setTitle:titles[itemType - itemButtonTagOffset] forState:UIControlStateNormal];
-    
-    //隐藏 分钟 k 线 segment
     [self disMissKlineSegment];
-    self.minButon.enabled = YES;
-    [self.minButon setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateNormal];
 }
 #pragma mark ButtonClick
 
 - (void)similarKlineButtonClick:(UIButton *)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_TimelineAndKlineSegmentItemClick:)]) {
-        [self.delegate JT_TimelineAndKlineSegmentItemClick:JT_SegmentItemTypeSimilarKline];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_TimelineAndKlineSegmentSimilarKlineClick)]) {
+        [self.delegate JT_TimelineAndKlineSegmentSimilarKlineClick];
     }
 }
 - (void)itemButtonClick:(UIButton *)sender {
     if (sender == self.settingButon) {
-        [self setSeletedItemType:JT_SegmentItemTypeSetting];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(JT_TimelineAndKlineSegmentSettingClick)]) {
+            [self.delegate JT_TimelineAndKlineSegmentSettingClick];
+        }
     } else if (sender == self.minButon) { //展示竖屏分钟 k 线切换按钮
         [self showKlineVerticalSegmentBelowView:self.minButon];
     } else {
-        [self resetSeletedButtonTitleColor:sender];
-        [self.minButon setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
-        [self.minButon setTitle:@"分钟" forState:UIControlStateNormal];
-        if (_verticalSegment) {
-           [_verticalSegment updateButtonTitleColor];
-        }
+        [self setSeletedItemType:sender.tag];
     }
 }
 - (void)showKlineVerticalSegmentBelowView:(UIView *)view {
@@ -247,10 +240,7 @@
         [_coverView addGestureRecognizer:tap];
     }
     [UIApplication.sharedApplication.keyWindow addSubview:_coverView];
-    if (!_verticalSegment) {
-        _verticalSegment = [JT_KlineVerticalSegment klineSegmentWithTitles:@[@"5分",@"15分",@"30分",@"60分",] delegate:self];
-        [_coverView addSubview:_verticalSegment];
-    }
+    [self.coverView addSubview:self.verticalSegment];
     CGPoint origin = view.frame.origin;
     origin = [view convertPoint:origin toView:_coverView];
     _verticalSegment.frame = CGRectMake(view.frame.origin.x, origin.y + view.frame.size.height, _verticalSegment.segmentWidth, 0);
@@ -267,24 +257,24 @@
     [_timelineAndKlineButtons enumerateObjectsUsingBlock:^(UIButton  *_Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         if (item == sender) {
             item.enabled = NO;
-            [self slideToSeletedItem:item];
         } else {
             item.enabled = YES;
         }
     }];
-    if (sender != self.minButon) {
-        [self setSeletedItemType:sender.tag];
-    }
 }
 //滑动到选中的 item 下面
 - (void)slideToSeletedItem:(UIButton *)button{
+    
     [UIView animateWithDuration:0.15 animations:^{
-        CGFloat centerY = self.slider.center.y;
+        [self.sliderCentreXConstraint uninstall];
         CGFloat width = [button.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName : button.titleLabel.font}].width;
-        CGRect rect = self.slider.frame;
-        rect.size.width = width + 15;
-        self.slider.frame = rect;
-        self.slider.center = CGPointMake(button.center.x, centerY);
+        @weakify(self)
+        [self.slider mas_updateConstraints:^(MASConstraintMaker *make) {
+            @strongify(self)
+            make.width.mas_equalTo(width + 15);
+            self.sliderCentreXConstraint = make.centerX.equalTo(button);
+        }];
+        [self.slider layoutIfNeeded];
     }];
 }
 #pragma mark Setter
@@ -299,7 +289,38 @@
 - (void)setSeletedItemType:(JT_TimelineAndKlineItemType)seletedItemType {
     _seletedItemType = seletedItemType;
     if (self.delegate && [self.delegate respondsToSelector:@selector(JT_TimelineAndKlineSegmentItemClick:)]) {
-        [self.delegate JT_TimelineAndKlineSegmentItemClick:JT_SegmentItemTypeSetting];
+        [self.delegate JT_TimelineAndKlineSegmentItemClick:_seletedItemType];
+    }
+    // 横屏时分时及所有k线类型对应的item 在一个数组 _timelineAndKlineButtons 里，
+    // 而竖屏时只有 （分时、5日、日k、周k、月k）对应的 item 在 _timelineAndKlineButtons 里
+    if (self.deviceOrientation == JT_DeviceOrientationVertical) {
+        if (_seletedItemType == JT_SegmentItemTypeKline5Min
+            || _seletedItemType == JT_SegmentItemTypeKline15Min
+            || _seletedItemType == JT_SegmentItemTypeKline30Min
+            || _seletedItemType == JT_SegmentItemTypeKline60Min) {
+            
+            [self resetSeletedButtonTitleColor:self.minButon];
+            //滑动到分钟按钮
+            [self slideToSeletedItem:self.minButon];
+            //重新设置分钟按钮的标题
+            NSArray *titles = @[@"5分",@"15分",@"30分",@"60分",];
+            [self.minButon setTitle:titles[_seletedItemType - itemButtonTagOffset] forState:UIControlStateNormal];
+            [self.minButon setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateNormal];
+            //设置竖直 k 线 segment 选中按钮的颜色
+            [self.verticalSegment updateSelectButtonTitleColor:_seletedItemType - itemButtonTagOffset];
+        } else {
+            UIButton *btn = _timelineAndKlineButtons[seletedItemType];
+            [self resetSeletedButtonTitleColor:btn];
+            [self slideToSeletedItem:btn];
+            //设置分钟按钮的颜色为未选中的颜色
+            [self.minButon setTitle:@"分钟" forState:UIControlStateNormal];
+            [self.minButon setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
+            [self.verticalSegment resetButtonTitleColor];
+        }
+    } else {
+        UIButton *btn = _timelineAndKlineButtons[seletedItemType];
+        [self resetSeletedButtonTitleColor:btn];
+        [self slideToSeletedItem:btn];
     }
     [self setNeedsDisplay];
 }
@@ -313,6 +334,13 @@
     [self setNeedsDisplay];
 }
 #pragma mark Getter
+
+- (JT_KlineVerticalSegment *)verticalSegment{
+    if (!_verticalSegment) {
+        _verticalSegment = [JT_KlineVerticalSegment klineSegmentWithTitles:@[@"5分",@"15分",@"30分",@"60分",] delegate:self];
+    }
+    return _verticalSegment;
+}
 
 - (CGFloat)segmentWidth {
     if (self.deviceOrientation == JT_DeviceOrientationVertical) {

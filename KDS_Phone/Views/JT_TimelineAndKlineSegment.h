@@ -23,12 +23,13 @@ typedef NS_ENUM(NSInteger,JT_TimelineAndKlineItemType) {
     JT_SegmentItemTypeKline15Min,
     JT_SegmentItemTypeKline30Min,
     JT_SegmentItemTypeKline60Min,
-    JT_SegmentItemTypeSetting,
-    JT_SegmentItemTypeSimilarKline,
 };
 
 @protocol JT_TimelineAndKlineSegmentDelegate <NSObject>
+@optional
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType;
+- (void)JT_TimelineAndKlineSegmentSettingClick;
+- (void)JT_TimelineAndKlineSegmentSimilarKlineClick;
 @end
 
 @interface JT_TimelineAndKlineSegment : UIView

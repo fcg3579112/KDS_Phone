@@ -8,6 +8,7 @@
 
 #import "FirstViewController.h"
 #import "JT_TimelineAndKlineSegment.h"
+#import "KDS_UtilsMacro.h"
 @interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate>
 
 @end
@@ -18,12 +19,9 @@
     [super viewDidLoad];
 
     JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
-    CGRect frame = sg.frame;
-    frame.origin.x = 0;
-    frame.origin.y = 100;
-    frame.size.height = 50;
+    sg.frame = CGRectMake(0, kStatusBarHeight + kNavigationBarHeight, kScreen_Width, 33);
+    sg.seletedItemType = JT_SegmentItemTypeKline15Min;
     sg.supportedSimilarKline = YES;
-    sg.frame = frame;
     [self.view addSubview:sg];
 }
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType{
