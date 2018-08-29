@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		48D807B17EB589F164F783C4 /* libPods-KDS_PhoneUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDD3715529AC3ACB755ABEF /* libPods-KDS_PhoneUITests.a */; };
 		6642FF8F632CD8A7B4E1DA84 /* libPods-KDS_PhoneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */; };
+		B2676E0B213672B3002F47A0 /* JT_KLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E0A213672B3002F47A0 /* JT_KLineView.m */; };
+		B2676E0E2136797D002F47A0 /* JT_KLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */; };
+		B2676E1121367C8E002F47A0 /* JT_KLineMAView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E1021367C8E002F47A0 /* JT_KLineMAView.m */; };
+		B2676E14213680C0002F47A0 /* JT_KLineVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */; };
+		B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
 		B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB910213384A200CA2EB6 /* Main.storyboard */; };
@@ -54,6 +59,16 @@
 		925EB85AA1384D20216747A3 /* Pods-KDS_Phone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.release.xcconfig"; sourceTree = "<group>"; };
 		953A78C4E23AEDF95F40766E /* Pods-KDS_PhoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		95A6AEA560BAAEEABBADAF6F /* Pods-KDS_PhoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B2676E09213672B3002F47A0 /* JT_KLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineView.h; sourceTree = "<group>"; };
+		B2676E0A213672B3002F47A0 /* JT_KLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineView.m; sourceTree = "<group>"; };
+		B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineChartView.h; sourceTree = "<group>"; };
+		B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineChartView.m; sourceTree = "<group>"; };
+		B2676E0F21367C8E002F47A0 /* JT_KLineMAView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineMAView.h; sourceTree = "<group>"; };
+		B2676E1021367C8E002F47A0 /* JT_KLineMAView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineMAView.m; sourceTree = "<group>"; };
+		B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineVolumeView.h; sourceTree = "<group>"; };
+		B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineVolumeView.m; sourceTree = "<group>"; };
+		B2676E1521369CE9002F47A0 /* UIView+KDS_FrameHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+KDS_FrameHelper.h"; sourceTree = "<group>"; };
+		B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+KDS_FrameHelper.m"; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB90A213384A200CA2EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2ACB90B213384A200CA2EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -205,6 +220,8 @@
 			isa = PBXGroup;
 			children = (
 				B2ACB9562133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.h */,
+				B2676E1521369CE9002F47A0 /* UIView+KDS_FrameHelper.h */,
+				B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */,
 				B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */,
 				B2ACB9422133873C00CA2EB6 /* json.html */,
 				B2ACB9432133873C00CA2EB6 /* json.js */,
@@ -220,6 +237,14 @@
 				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
 				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
 				B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */,
+				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
+				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
+				B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */,
+				B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */,
+				B2676E0F21367C8E002F47A0 /* JT_KLineMAView.h */,
+				B2676E1021367C8E002F47A0 /* JT_KLineMAView.m */,
+				B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */,
+				B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -513,12 +538,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2676E0B213672B3002F47A0 /* JT_KLineView.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
 				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
 				B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */,
 				B2ACB91A213384A400CA2EB6 /* main.m in Sources */,
+				B2676E14213680C0002F47A0 /* JT_KLineVolumeView.m in Sources */,
+				B2676E1121367C8E002F47A0 /* JT_KLineMAView.m in Sources */,
 				B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */,
+				B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */,
+				B2676E0E2136797D002F47A0 /* JT_KLineChartView.m in Sources */,
 				B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */,
 				B2ACB93F213384E500CA2EB6 /* DetailViewController.m in Sources */,
 			);

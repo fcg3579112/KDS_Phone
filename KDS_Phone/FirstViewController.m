@@ -9,8 +9,11 @@
 #import "FirstViewController.h"
 #import "JT_TimelineAndKlineSegment.h"
 #import "KDS_UtilsMacro.h"
+#import "JT_KLineView.h"
+#import <Masonry.h>
+#import <MApi.h>
 @interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate>
-
+@property (nonatomic, strong)JT_KLineView *kLineView;
 @end
 
 @implementation FirstViewController
@@ -23,6 +26,36 @@
     sg.seletedItemType = JT_SegmentItemTypeKline15Min;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
+    
+    _kLineView = [JT_KLineView new];
+    _kLineView.backgroundColor = [UIColor greenColor];
+    _kLineView.averageLineHeight = 10;
+    _kLineView.rightSelecterWidth = 30;
+    
+    [self.view addSubview:_kLineView];
+    [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
+        make.height.mas_equalTo(kScreen_Width * 0.9);
+    }];
+    
+    [self requestKLineData];
+    
+}
+- (void)requestKLineData {
+    MOHLCRequest *r = [[MOHLCRequest alloc] init];
+    r.code = @"000001.sh";
+    r.period = MOHLCPeriodDay;
+    r.subtype = @"1400";
+    r.priceAdjustedMode = MOHLCPriceAdjustedModeForward;
+    [MApi sendRequest:r completionHandler:^(MResponse *resp) {
+        MOHLCResponse *response = (MOHLCResponse *)resp;
+        if (response.status == MResponseStatusSuccess) {
+            NSArray *items = response.OHLCItems;
+            _kLineView.kLineModels = items;
+            [_kLineView drawChart];
+        }
+    }];
 }
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType{
     
