@@ -28,10 +28,6 @@
 @property (nonatomic ,weak) id <JT_KLineChartViewDelegate> delegate;
 
 @property(nonatomic, copy) NSArray<MOHLCItem *> *kLineModels;
-//蜡烛线的宽度
-@property (nonatomic ,assign) CGFloat itemWidth;
-//蜡烛线的间隔
-@property (nonatomic ,assign) CGFloat itemGap;
 
 /**
  *  需要绘制Index开始值

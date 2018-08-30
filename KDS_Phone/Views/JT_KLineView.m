@@ -11,6 +11,7 @@
 #import "JT_KLineChartView.h"
 #import "JT_KLineMAView.h"
 #import "JT_KLineVolumeView.h"
+#import "JT_KLineConfig.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -83,7 +84,7 @@
     [self p_drawKLineView];
     
     //设置contentOffset
-    CGFloat kLineViewWidth = self.kLineModels.count * self.klineChart.itemWidth + (self.kLineModels.count + 1) * self.klineChart.itemGap + 10;
+    CGFloat kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count + 1) * ([JT_KLineConfig kLineGap]) + 10;
     CGFloat offset = kLineViewWidth - self.scrollView.frame.size.width;
     if (offset > 0)
     {
@@ -115,12 +116,11 @@
         
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.bottom.mas_equalTo(0);
-            make.top.mas_equalTo(self.averageLineHeight);
+            make.top.mas_equalTo(self.MALineHeight);
             make.right.mas_equalTo( - self.rightSelecterWidth);
         }];
         [self layoutIfNeeded];
     }
-    _scrollView.backgroundColor = [UIColor orangeColor];
     return _scrollView;
 }
 - (JT_KLineMAView *)klineMA {
@@ -130,10 +130,9 @@
         [_klineMA mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(@0);
             make.right.mas_equalTo(self.rightSelecterWidth);
-            make.height.mas_equalTo(self.averageLineHeight);
+            make.height.mas_equalTo(self.MALineHeight);
         }];
     }
-    _klineMA.backgroundColor = [UIColor redColor];
     return _klineMA;
 }
 - (JT_KLineChartView *)klineChart {
@@ -149,7 +148,6 @@
             make.width.equalTo(self.scrollView);
         }];
     }
-    _klineChart.backgroundColor = [UIColor yellowColor];
     return _klineChart;
 }
 - (JT_KLineVolumeView *)klineVolume {
@@ -163,14 +161,13 @@
             make.height.equalTo(self.scrollView).multipliedBy(1 - self.klineViewRatio).and.offset( - self.timeViewHeight - self.indicatorViewHeight);
         }];
     }
-    _klineVolume.backgroundColor = [UIColor grayColor];
     return _klineVolume;
 }
 - (CGFloat)klineViewRatio {
-    return _klineViewRatio ? _klineViewRatio : 0.7;
+    return _klineViewRatio ? _klineViewRatio : 0.6;
 }
-- (CGFloat)averageLineHeight {
-    return _averageLineHeight ? _averageLineHeight : 10;
+- (CGFloat)MALineHeight {
+    return _MALineHeight ? _MALineHeight : 10;
 }
 - (CGFloat)timeViewHeight {
     return _timeViewHeight ? _timeViewHeight : 10;

@@ -28,10 +28,9 @@
     [self.view addSubview:sg];
     
     _kLineView = [JT_KLineView new];
-    _kLineView.backgroundColor = [UIColor greenColor];
-    _kLineView.averageLineHeight = 10;
+    _kLineView.MALineHeight = 10;
     _kLineView.rightSelecterWidth = 50;
-    _kLineView.KlineChartTopMargin = 10;
+    _kLineView.KlineChartTopMargin = 5;
     
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {

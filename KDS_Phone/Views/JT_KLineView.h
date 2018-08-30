@@ -13,7 +13,7 @@
 /**
  顶部5日均线、10日均线显示区域的高度
  */
-@property (nonatomic ,assign ) CGFloat averageLineHeight;
+@property (nonatomic ,assign ) CGFloat MALineHeight;
 
 
 /**

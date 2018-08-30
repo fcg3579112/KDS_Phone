@@ -12,7 +12,7 @@
 @property (nonatomic ,assign) CGPoint openPoint;
 @property (nonatomic ,assign) CGPoint closePoint;
 @property (nonatomic ,assign) CGPoint lowPoint;
-@property (nonatomic ,assign) CGPoint heightPoint;
+@property (nonatomic ,assign) CGPoint highPoint;
 
 
 @property (nonatomic ,assign) CGPoint MA5Y;
