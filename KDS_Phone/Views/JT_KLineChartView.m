@@ -14,6 +14,22 @@
 #import "JT_KLine.h"
 #import "JT_KLineConfig.h"
 #define JT_ScrollViewContentOffset   @"contentOffset"
+
+
+/**
+ 存储最高点，最低点信息
+ */
+@interface JT_PriceMarkModel : NSObject
+@property (nonatomic ,strong) MOHLCItem *kLineModel;
+@property (nonatomic ,assign) CGPoint *points; //斜线上的2个点
+@property (nonatomic ,assign) CGPoint one;
+@property (nonatomic ,assign) CGPoint two;
+@property (nonatomic ,assign) CGRect priceRect;
+//在屏幕上的索引，用于判断该标识是遍左还偏右
+@property (nonatomic ,assign) NSInteger index;
+@end
+@implementation JT_PriceMarkModel
+@end
 @interface JT_KLineChartView ()
 @property (nonatomic, weak, readonly) UIScrollView *parentScrollView;
 /**
@@ -39,12 +55,12 @@
 /**
  最高价model
  */
-@property (nonatomic, strong) MOHLCItem *highestItem;
+@property (nonatomic, strong) JT_PriceMarkModel *highestItem;
 
 /**
  最低价model
  */
-@property (nonatomic, strong) MOHLCItem *lowestItem;
+@property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
 
 @end
 @implementation JT_KLineChartView
@@ -127,6 +143,8 @@
     if (!self.kLineModels.count) {
         return;
     }
+    
+    //画蜡烛线
     JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
     kLine.maxY = self.frame.size.height - self.topAndBottomMargin;
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -134,6 +152,20 @@
         kLine.kLineModel = self.needDrawKLineModels[idx];
         [kLine draw];
     }];
+    //画最高点及最低点
+//    CGPoint lowPoints[2];
+//    lowPoints
+    UIColor *markLineColor = JT_ColorDayOrNight(@"A1A1A1", @"878788");
+    CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
+    CGContextSetLineWidth(context, 1);
+    CGContextStrokeLineSegments(context, self.lowestItem.points, 2);
+    CGPoint highPoint[2];
+    highPoint[0] = self.highestItem.one;
+    highPoint[1] = self.highestItem.two;
+//    highPoint[0] = CGPointMake(100, 40);
+//    highPoint[1] = CGPointMake(130, 50);
+    CGContextStrokeLineSegments(context, highPoint, 2);
+//    CGContextStrokePath(context);
 
 //
 //    //设置显示日期的区域背景颜色
@@ -272,21 +304,22 @@
     //计算出5日均线、10日、均线等
     __block CGFloat minAssert = firstModel.lowPrice.floatValue;
     __block CGFloat maxAssert = firstModel.highPrice.floatValue;
-    
-    _lowestItem = firstModel;
-    _highestItem = firstModel;
+    __block JT_PriceMarkModel *highestMarkModel = [JT_PriceMarkModel new];
+    __block JT_PriceMarkModel *lowestMarkModel = [JT_PriceMarkModel new];
     
     [kLineModels enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         if(kLineModel.highPrice.floatValue > maxAssert)
         {
             maxAssert = kLineModel.highPrice.floatValue;
-            self.highestItem = kLineModel;
+            highestMarkModel.kLineModel = kLineModel;
+            highestMarkModel.index = idx;
         }
         if(kLineModel.lowPrice.floatValue < minAssert)
         {
             minAssert = kLineModel.lowPrice.floatValue;
-            self.lowestItem = kLineModel;
+            lowestMarkModel.kLineModel = kLineModel;
+            lowestMarkModel.index = idx;
         }
     }];
     
@@ -350,8 +383,36 @@
         positionModel.lowPoint = lowPoint;
         
         [self.needDrawKLinePositionModels addObject:positionModel];
-
+        
+        //计算最高点及最低点标识的坐标
+        NSInteger canShowItemCount = self.frame.size.width / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
+        if (lowestMarkModel.kLineModel == kLineModel) { //计算最低价标识的坐标
+            CGPoint points[2];
+            points[0] = lowPoint;
+            lowestMarkModel.one = lowPoint;
+            if (lowestMarkModel.index > canShowItemCount / 2) { //在屏幕的右边，所以标识需要放在左边
+                points[1] = CGPointMake(lowPoint.x - 30, lowPoint.y + 10);
+            } else { //在屏幕的左边，所以标识需要放在右边
+                points[1] = CGPointMake(lowPoint.x + 30, lowPoint.y + 10);
+            }
+            lowestMarkModel.points = points;
+        } else if (highestMarkModel.kLineModel == kLineModel) { //计算最高价标识的坐标
+            CGPoint points[2];
+            points[0] = highPoint;
+            highestMarkModel.one = highPoint;
+            if (highestMarkModel.index > canShowItemCount / 2) { //在屏幕的右边，所以标识需要放在左边
+                points[1] = CGPointMake(lowPoint.x - 30, lowPoint.y - 10);
+                highestMarkModel.two = CGPointMake(highPoint.x - 30, highPoint.y - 10);
+            } else { //在屏幕的左边，所以标识需要放在右边
+                points[1] = CGPointMake(highPoint.x + 30, highPoint.y - 10);
+                highestMarkModel.two = CGPointMake(highPoint.x + 30, highPoint.y - 10);
+            }
+            highestMarkModel.points = points;
+        }
     }];
+    
+    self.highestItem = highestMarkModel;
+    self.lowestItem = lowestMarkModel;
     
     //响应代理方法
     if(self.delegate)
