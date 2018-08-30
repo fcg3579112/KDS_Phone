@@ -275,8 +275,6 @@
 				B2ACB903213384A200CA2EB6 /* Sources */,
 				B2ACB904213384A200CA2EB6 /* Frameworks */,
 				B2ACB905213384A200CA2EB6 /* Resources */,
-				8CA2657BBC0858465699370E /* [CP] Embed Pods Frameworks */,
-				0DFD66762C2C1B94343F55D6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,8 +293,6 @@
 				B2ACB91B213384A400CA2EB6 /* Sources */,
 				B2ACB91C213384A400CA2EB6 /* Frameworks */,
 				B2ACB91D213384A400CA2EB6 /* Resources */,
-				A8F5A7FB662C61D12532594A /* [CP] Embed Pods Frameworks */,
-				CA0A9378871940E318603760 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -316,8 +312,6 @@
 				B2ACB926213384A400CA2EB6 /* Sources */,
 				B2ACB927213384A400CA2EB6 /* Frameworks */,
 				B2ACB928213384A400CA2EB6 /* Resources */,
-				DC4733DFAEAE2F67ED450503 /* [CP] Embed Pods Frameworks */,
-				225D27981F908F96996ED4EC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -402,36 +396,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0DFD66762C2C1B94343F55D6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		225D27981F908F96996ED4EC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2A14231F2B151A985C42E353 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -450,21 +414,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8CA2657BBC0858465699370E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		951D50187EE537C39C496D94 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -481,51 +430,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A8F5A7FB662C61D12532594A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CA0A9378871940E318603760 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneTests/Pods-KDS_PhoneTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DC4733DFAEAE2F67ED450503 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F3DE0EB889315637FB25BC66 /* [CP] Check Pods Manifest.lock */ = {
