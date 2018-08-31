@@ -121,16 +121,18 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
     if([keyPath isEqualToString:JT_ScrollViewContentOffset])
     {
-        CGFloat difValue = ABS(self.parentScrollView.contentOffset.x - self.oldContentOffsetX);
-        if(difValue >= ([JT_KLineConfig kLineGap]) + ([JT_KLineConfig kLineWidth]))
-        {
-            self.oldContentOffsetX = self.parentScrollView.contentOffset.x;
-            [self drawView];
-            [self mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
-            }];
-            [self layoutIfNeeded];
-        }
+//        CGFloat difValue = ABS(self.parentScrollView.contentOffset.x - self.oldContentOffsetX);
+//        if(difValue >= ([JT_KLineConfig kLineGap]) + ([JT_KLineConfig kLineWidth]))
+//        {
+//            self.oldContentOffsetX = self.parentScrollView.contentOffset.x;
+//
+//
+//        }
+        [self drawView];
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(self.parentScrollView);
+            make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
+        }];
     }
 }
 #pragma mark drawRect方法
@@ -248,8 +250,9 @@
     //数组个数
     CGFloat scrollViewWidth = self.parentScrollView.frame.size.width;
     
-    NSInteger needDrawKLineCount = (scrollViewWidth - [JT_KLineConfig kLineGap])/([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
-
+    //屏幕上可以绘制的蜡烛线个数为.
+    NSInteger needDrawKLineCount = floorf(scrollViewWidth / ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth])) + 1;
+    
 
     //起始位置
     NSInteger needDrawKLineStartIndex ;
@@ -418,15 +421,15 @@
  */
 - (void)updateKlineChartWidth{
     //根据stockModels的个数和间隔和K线的宽度计算出self的宽度，并设置contentsize
-    CGFloat kLineViewWidth = self.kLineModels.count * [JT_KLineConfig kLineWidth] + (self.kLineModels.count + 1) * [JT_KLineConfig kLineGap];
+    // 总宽度为 蜡烛线的个数 n  * 单个的宽度  + 中间 (n-1)个间隔 * 间隔的宽度
+    CGFloat kLineViewWidth = self.kLineModels.count * [JT_KLineConfig kLineWidth] + (self.kLineModels.count - 1) * [JT_KLineConfig kLineGap];
     
     if(kLineViewWidth < self.parentScrollView.bounds.size.width) {
         kLineViewWidth = self.parentScrollView.bounds.size.width;
     }
-    
     [self mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(self.parentScrollView);
         make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
+        make.width.equalTo(self.parentScrollView);
     }];
     
     [self layoutIfNeeded];
