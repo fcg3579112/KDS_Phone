@@ -14,14 +14,8 @@
 /**
  *  当前需要绘制的K线模型数组
  */
-- (void)JT_KLineChartViewNeedDrawKLineModels:(NSArray *)needDrawKLineModels;
+- (void)JT_KLineChartViewWithModels:(NSArray *)needDrawKLineModels positionModels:(NSArray *)needDrawKLinePositionModels;
 
-/**
- 需要绘制的k线坐标数组
-
- @param needDrawKLinePositionModels 坐标数组
- */
-- (void)JT_KLineChartViewNeedDrawKLinePositionModels:(NSArray *)needDrawKLinePositionModels;
 @end
 @class MOHLCItem;
 @interface JT_KLineChartView : UIView

@@ -10,6 +10,7 @@
 #import "JT_KLinePositionModel.h"
 #import <MApi.h>
 #import "JT_KLineConfig.h"
+#import "JT_ColorManager.h"
 @interface JT_KLine ()
 /**
  *  context
@@ -35,7 +36,7 @@
 }
 
 #pragma 绘制K线 - 单个
-- (UIColor *)draw
+- (UIColor *)drawCandleLine
 {
     //判断数据是否为空
     if(!self.kLineModel || !self.context || !self.kLinePositionModel)
@@ -61,5 +62,14 @@
     CGContextStrokeLineSegments(context, shadowPoints, 2);
     
     return strokeColor;
+}
+- (void)drawDateTime {
+    UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
+    CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.lowPoint.x + 10, 0);
+    if((CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > self.timeSize.width + 50) && (drawDatePoint.x + self.timeSize.width) < 300)
+    {
+        [self.timeString drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize],NSForegroundColorAttributeName : color}];
+        self.lastDrawDatePoint = drawDatePoint;
+    }
 }
 @end

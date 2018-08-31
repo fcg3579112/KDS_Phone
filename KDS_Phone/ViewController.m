@@ -96,7 +96,7 @@
     }
     MOHLCRequest *r = [[MOHLCRequest alloc] init];
     r.code = _codes.text;
-    r.period = MOHLCPeriodDay;
+    r.period = MOHLCPeriodMin5;
     r.subtype = @"1400";
     r.priceAdjustedMode = MOHLCPriceAdjustedModeForward;
     [MApi sendRequest:r completionHandler:^(MResponse *resp) {

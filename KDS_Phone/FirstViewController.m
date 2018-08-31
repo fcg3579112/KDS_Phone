@@ -45,7 +45,7 @@
 - (void)requestKLineData {
     MOHLCRequest *r = [[MOHLCRequest alloc] init];
     r.code = @"000001.sh";
-    r.period = MOHLCPeriodDay;
+    r.period = MOHLCPeriodMin15;
     r.subtype = @"1400";
     r.priceAdjustedMode = MOHLCPriceAdjustedModeForward;
     [MApi sendRequest:r completionHandler:^(MResponse *resp) {

@@ -11,6 +11,7 @@
 #import "JT_KLineChartView.h"
 #import "JT_KLineMAView.h"
 #import "JT_KLineVolumeView.h"
+#import "JT_KLineX_axisTimeView.h"
 #import "JT_KLineConfig.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
@@ -21,6 +22,9 @@
 @property (nonatomic, strong) JT_KLineMAView *klineMA;
 //成交量及各种指标视图
 @property (nonatomic, strong) JT_KLineVolumeView *klineVolume;
+// y 轴时间
+@property (nonatomic, strong) JT_KLineX_axisTimeView *klineTimeView;
+
 @property (nonatomic, strong) MASConstraint *kLineChartHeightConstraint;
 @property (nonatomic, strong) MASConstraint *kLineVolumeHeightConstraint;
 
@@ -46,10 +50,10 @@
 
 #pragma mark JT_KLineChartViewDelegate
 
-- (void)JT_KLineChartViewNeedDrawKLineModels:(NSArray *)needDrawKLineModels {
-    
+- (void)JT_KLineChartViewWithModels:(NSArray *)needDrawKLineModels positionModels:(NSArray *)needDrawKLinePositionModels {
+    self.klineTimeView.needDrawKLineModels = needDrawKLineModels;
+    self.klineTimeView.needDrawKLinePositionModels = needDrawKLinePositionModels;
 }
-
 
 #pragma mark 手势
 #pragma mark 缩放执行方法
@@ -64,6 +68,8 @@
 - (void)drawChart
 {
     [self.klineChart drawView];
+//    [self klineTimeView];
+//    [self klineVolume];
 }
 
 #pragma mark 私有方法
@@ -135,6 +141,19 @@
     }
     return _klineMA;
 }
+- (JT_KLineX_axisTimeView *)klineTimeView {
+    if (!_klineTimeView) {
+        _klineTimeView = [JT_KLineX_axisTimeView new];
+        [self.scrollView addSubview:_klineTimeView];
+        [_klineTimeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.klineChart);
+            make.top.equalTo(self.klineChart.mas_bottom);
+            make.height.mas_offset(self.timeViewHeight);
+            make.width.equalTo(self.klineChart);
+        }];
+    }
+    return _klineTimeView;
+}
 - (JT_KLineChartView *)klineChart {
     if (!_klineChart) {
         _klineChart = [JT_KLineChartView new];
@@ -156,8 +175,8 @@
         [self.scrollView addSubview:_klineVolume];
         [_klineVolume mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.klineChart);
-            make.top.equalTo(self.klineChart.mas_bottom).offset(self.timeViewHeight + self.indicatorViewHeight);
-            make.width.equalTo(self.klineChart.mas_width);
+            make.top.equalTo(self.klineTimeView.mas_bottom).offset(self.indicatorViewHeight);
+            make.width.equalTo(self.klineChart);
             make.height.equalTo(self.scrollView).multipliedBy(1 - self.klineViewRatio).and.offset( - self.timeViewHeight - self.indicatorViewHeight);
         }];
     }

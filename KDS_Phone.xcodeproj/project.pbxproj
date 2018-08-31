@@ -34,6 +34,7 @@
 		B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */; };
 		B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */; };
 		B2BEDF492138DF0500974491 /* JT_KLineX_axisTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BEDF482138DF0500974491 /* JT_KLineX_axisTimeView.m */; };
+		B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BEDF4A2139162700974491 /* NSDate+KDS_Manage.m */; };
 		FC211CBFDEC7482D80CB5A66 /* libPods-KDS_Phone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +112,8 @@
 		B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JT_TimelineAndKlineSegment.h; sourceTree = "<group>"; };
 		B2BEDF472138DF0500974491 /* JT_KLineX_axisTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineX_axisTimeView.h; sourceTree = "<group>"; };
 		B2BEDF482138DF0500974491 /* JT_KLineX_axisTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineX_axisTimeView.m; sourceTree = "<group>"; };
+		B2BEDF4A2139162700974491 /* NSDate+KDS_Manage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+KDS_Manage.m"; sourceTree = "<group>"; };
+		B2BEDF4B2139162700974491 /* NSDate+KDS_Manage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+KDS_Manage.h"; sourceTree = "<group>"; };
 		BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +234,8 @@
 		B2ACB9412133873C00CA2EB6 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				B2BEDF4B2139162700974491 /* NSDate+KDS_Manage.h */,
+				B2BEDF4A2139162700974491 /* NSDate+KDS_Manage.m */,
 				B2ACB9562133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.h */,
 				B2676E1521369CE9002F47A0 /* UIView+KDS_FrameHelper.h */,
 				B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */,
@@ -466,6 +471,7 @@
 				B23E683E2137C71D00E9EF3B /* JT_KLineConfig.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
+				B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */,
 				B2BEDF492138DF0500974491 /* JT_KLineX_axisTimeView.m in Sources */,
 				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
 				B20298B42136EB22000CE57B /* JT_KLinePositionModel.m in Sources */,

@@ -17,6 +17,8 @@ static CGFloat JT_KLineGap = 1;
 
 static CGFloat JT_KLineShadeLineWidth = 1;
 
+static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
+
 
 @implementation JT_KLineConfig
 /**
@@ -75,4 +77,11 @@ static CGFloat JT_KLineShadeLineWidth = 1;
     return JT_ColorDayOrNight(@"00A23B", @"489F49");
 }
 
++ (JT_TimelineAndKlineItemType)kLineType {
+    return JT_kLineType;
+}
+
++ (void)setkLineType:(JT_TimelineAndKlineItemType)type {
+    JT_kLineType = type;
+}
 @end

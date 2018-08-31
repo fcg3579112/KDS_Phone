@@ -18,12 +18,6 @@
 #define JT_kLineMarkLineWidth     23
 #define JT_KLineMarkLineHeight    6
 
-//最高价字体大小
-#define JT_KLineHighestPriceFontSize     12
-
-//Y轴价格字体
-#define JT_KLineY_AxisPriceFontSize      11
-
 /**
  存储最高点，最低点信息
  */
@@ -74,6 +68,12 @@
  */
 @property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
 
+@property (nonatomic ,strong) NSString *highPrice;
+
+@property (nonatomic ,strong) NSString *lowPrice;
+
+@property (nonatomic ,strong) NSString *middlePrice;
+
 @end
 @implementation JT_KLineChartView
 
@@ -100,6 +100,11 @@
     [self p_extractNeedDrawModels];
     //转换model为坐标model
     [self p_convertKLineModelsToPositionModels];
+    
+    //响应代理
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_KLineChartViewWithModels:positionModels:)]) {
+        [self.delegate JT_KLineChartViewWithModels:self.needDrawKLineModels.copy positionModels:self.needDrawKLinePositionModels.copy];
+    }
     //计算最高点最低点坐标
     [self p_calculateHighestPriceAndLowestPricePosition];
     
@@ -123,8 +128,8 @@
             [self drawView];
             [self mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
-                make.width.equalTo(self.parentScrollView);
             }];
+            [self layoutIfNeeded];
         }
     }
 }
@@ -164,7 +169,7 @@
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
         kLine.kLinePositionModel = kLinePositionModel;
         kLine.kLineModel = self.needDrawKLineModels[idx];
-        [kLine draw];
+        [kLine drawCandleLine];
     }];
     
     //画Y轴上对应的价格坐标
@@ -206,19 +211,34 @@
     NSString *highPrice = self.highestItem.kLineModel.highPrice;
     NSString *lowPrice = self.highestItem.kLineModel.lowPrice;
     NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(highPrice.floatValue + lowPrice.floatValue) / 2.f];
+    
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     UIFont *font = [UIFont systemFontOfSize:JT_KLineY_AxisPriceFontSize];
+    
     CGSize highPriceSize = [highPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
-    CGSize middlePriceSize = [middlePrice sizeWithAttributes:@{ NSFontAttributeName : font}];
-    CGSize lowPriceSize = [lowPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
-    
     CGRect highPriceRect = CGRectMake(rect.origin.x, rect.origin.y + 2, highPriceSize.width, highPriceSize.height);
-    CGRect middlePriceRect = CGRectMake(rect.origin.x, rect.size.height / 2.f - middlePriceSize.height / 2, middlePriceSize.width, middlePriceSize.height);
-    CGRect lowPriceRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - lowPriceSize.height - 2, lowPriceSize.width, lowPriceSize.height);
-    
     [highPrice drawInRect:highPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
-    [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    
+    CGSize lowPriceSize = [lowPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
+    CGRect lowPriceRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - lowPriceSize.height - 2, lowPriceSize.width, lowPriceSize.height);
     [lowPrice drawInRect:lowPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    
+    CGSize middlePriceSize = [middlePrice sizeWithAttributes:@{ NSFontAttributeName : font}];
+    CGRect middlePriceRect = CGRectMake(rect.origin.x, rect.size.height / 2.f - middlePriceSize.height / 2, middlePriceSize.width, middlePriceSize.height);
+    [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    
+//    //计算出的新的最高点与之前的最高点不一样，就开始画最高点
+//    if (![self.highPrice isEqualToString:highPrice]) {
+//        self.highPrice = highPrice;
+//
+//    }
+//    if (![self.lowPrice isEqualToString:lowPrice]) {
+//        self.lowPrice = lowPrice;
+//
+//    }
+//    if (![self.middlePrice isEqualToString:middlePrice]) {
+//
+//    }
 }
 
 #pragma mark 私有方法
@@ -251,11 +271,6 @@
         } else{
             [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.kLineModels.count - needDrawKLineStartIndex)]];
         }
-    }
-    //响应代理
-    if(self.delegate && [self.delegate respondsToSelector:@selector(JT_KLineChartViewNeedDrawKLineModels:)])
-    {
-        [self.delegate JT_KLineChartViewNeedDrawKLineModels:self.needDrawKLineModels];
     }
 }
 - (void)p_convertKLineModelsToPositionModels {
@@ -354,19 +369,8 @@
         positionModel.openPoint = openPoint;
         positionModel.highPoint = highPoint;
         positionModel.lowPoint = lowPoint;
-        
         [self.needDrawKLinePositionModels addObject:positionModel];
-        
     }];
-    
-    //响应代理方法
-    if(self.delegate)
-    {
-        if([self.delegate respondsToSelector:@selector(JT_KLineChartViewNeedDrawKLinePositionModels:)])
-        {
-            [self.delegate JT_KLineChartViewNeedDrawKLinePositionModels:self.needDrawKLinePositionModels];
-        }
-    }
 }
 
 /**
@@ -408,6 +412,32 @@
     }
     [self.lowestItem.points addObject:[NSValue valueWithCGPoint: lowPoint]];
     self.lowestItem.priceRect = lowPriceRect;
+}
+/**
+ *  更新K线视图的宽度
+ */
+- (void)updateKlineChartWidth{
+    //根据stockModels的个数和间隔和K线的宽度计算出self的宽度，并设置contentsize
+    CGFloat kLineViewWidth = self.kLineModels.count * [JT_KLineConfig kLineWidth] + (self.kLineModels.count + 1) * [JT_KLineConfig kLineGap];
+    
+    if(kLineViewWidth < self.parentScrollView.bounds.size.width) {
+        kLineViewWidth = self.parentScrollView.bounds.size.width;
+    }
+    
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self.parentScrollView);
+        make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
+    }];
+    
+    [self layoutIfNeeded];
+    
+    //更新scrollview的contentsize
+    self.parentScrollView.contentSize = CGSizeMake(kLineViewWidth, self.parentScrollView.contentSize.height);
+}
+#pragma mark Setter
+- (void)setKLineModels:(NSArray<MOHLCItem *> *)kLineModels {
+    _kLineModels = kLineModels;
+    [self updateKlineChartWidth];
 }
 #pragma mark Getter
 

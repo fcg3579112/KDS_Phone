@@ -25,13 +25,31 @@
  */
 @property (nonatomic, assign) CGFloat maxY;
 
+
+/**
+ 日期的 size
+ */
+@property (nonatomic, assign) CGSize  timeSize;
+
+@property (nonatomic ,assign) CGFloat timeViewMaxWidth;
+
+/**
+ 蜡烛线对应的时间
+ */
+@property (nonatomic, strong) NSString  *timeString;
+
 /**
  *  根据context初始化
  */
 - (instancetype)initWithContext:(CGContextRef)context;
 
 /**
- *  绘制K线
+ *  绘制K线蜡烛线
  */
-- (UIColor *)draw;
+- (UIColor *)drawCandleLine;
+
+/**
+ 画X轴时间
+ */
+- (void)drawDateTime;
 @end

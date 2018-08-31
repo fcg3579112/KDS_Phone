@@ -8,6 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+
+//时间轴字体大小
+#define JT_KLineX_AxisTimeFontSize           10
+
+//最高价字体大小
+#define JT_KLineHighestPriceFontSize     12
+
+//Y轴价格字体
+#define JT_KLineY_AxisPriceFontSize      11
+
+#import "JT_TimelineAndKlineSegment.h"
 @interface JT_KLineConfig : NSObject
 /**
  *  K线图的宽度，默认20
@@ -41,5 +53,14 @@
  跌的颜色
  */
 + (UIColor *)kLineDecreaseColor;
+
+
+/**
+ 设置 k 线的类型
+
+ */
++ (JT_TimelineAndKlineItemType)kLineType;
+
++ (void)setkLineType:(JT_TimelineAndKlineItemType)type;
 
 @end
