@@ -15,8 +15,14 @@
 #import "JT_KLineConfig.h"
 #define JT_ScrollViewContentOffset   @"contentOffset"
 
-#define JT_kLineMarkLineWidth     20
+#define JT_kLineMarkLineWidth     23
 #define JT_KLineMarkLineHeight    6
+
+//最高价字体大小
+#define JT_KLineHighestPriceFontSize     12
+
+//Y轴价格字体
+#define JT_KLineY_AxisPriceFontSize      11
 
 /**
  存储最高点，最低点信息
@@ -160,7 +166,19 @@
         kLine.kLineModel = self.needDrawKLineModels[idx];
         [kLine draw];
     }];
-    //画最高点及最低点斜线
+    
+    //画Y轴上对应的价格坐标
+    [self drawY_AxisPrice:rect context:context];
+    
+    //画最高点及最低点价格
+    [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
+
+}
+/**
+ 画最高点及最低点价格标示
+
+ */
+- (void)drawHigtestAndLowestPriceInRect:(CGRect)rect context:(CGContextRef)context {
     UIColor *markLineColor = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     CGContextSetStrokeColorWithColor(context, markLineColor.CGColor);
     CGContextSetLineWidth(context, 1);
@@ -170,112 +188,49 @@
     CGPoint hightPoints[2];
     hightPoints[0] = ((NSValue *)self.highestItem.points[0]).CGPointValue;
     hightPoints[1] = ((NSValue *)self.highestItem.points[1]).CGPointValue;
-    
     CGContextStrokeLineSegments(context, lowPoints, 2);
     CGContextStrokeLineSegments(context, hightPoints, 2);
     //画最高点价格
-    [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSForegroundColorAttributeName : [UIColor redColor]}];
+    [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
     //画最低点价格
-    [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSForegroundColorAttributeName : [UIColor redColor]}];
-    
-//    CGContextStrokePath(context);
-
-//
-//    //设置显示日期的区域背景颜色
-//    CGContextSetFillColorWithColor(context, [UIColor assistBackgroundColor].CGColor);
-//    CGContextFillRect(context, CGRectMake(0, Y_StockChartKLineMainViewMaxY, self.frame.size.width, self.frame.size.height - Y_StockChartKLineMainViewMaxY));
-//
-//    Y_MALine *MALine = [[Y_MALine alloc]initWithContext:context];
-//
-//    if(self.MainViewType == Y_StockChartcenterViewTypeKline)
-//    {
-//        Y_KLine *kLine = [[Y_KLine alloc]initWithContext:context];
-//        kLine.maxY = Y_StockChartKLineMainViewMaxY;
-//
-//        [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(Y_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
-//            kLine.kLinePositionModel = kLinePositionModel;
-//            kLine.kLineModel = self.needDrawKLineModels[idx];
-//            UIColor *kLineColor = [kLine draw];
-//            [kLineColors addObject:kLineColor];
-//        }];
-//
-//    } else {
-//        __block NSMutableArray *positions = @[].mutableCopy;
-//        [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(Y_KLinePositionModel * _Nonnull positionModel, NSUInteger idx, BOOL * _Nonnull stop) {
-//            UIColor *strokeColor = positionModel.OpenPoint.y < positionModel.ClosePoint.y ? [UIColor increaseColor] : [UIColor decreaseColor];
-//            [kLineColors addObject:strokeColor];
-//            [positions addObject:[NSValue valueWithCGPoint:positionModel.ClosePoint]];
-//        }];
-//        MALine.MAPositions = positions;
-//        MALine.MAType = -1;
-//        [MALine draw];
-//        //
-//        __block CGPoint lastDrawDatePoint = CGPointZero;//fix
-//        [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(Y_KLinePositionModel * _Nonnull positionModel, NSUInteger idx, BOOL * _Nonnull stop) {
-//
-//            CGPoint point = [positions[idx] CGPointValue];
-//
-//            //日期
-//
-//            NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.needDrawKLineModels[idx].Date.doubleValue];
-//            NSDateFormatter *formatter = [NSDateFormatter new];
-//            formatter.dateFormat = @"HH:mm";
-//            NSString *dateStr = [formatter stringFromDate:date];
-//
-//            CGPoint drawDatePoint = CGPointMake(point.x + 1, Y_StockChartKLineMainViewMaxY + 1.5);
-//            if(CGPointEqualToPoint(lastDrawDatePoint, CGPointZero) || point.x - lastDrawDatePoint.x > 60 )
-//            {
-//                [dateStr drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSForegroundColorAttributeName : [UIColor assistTextColor]}];
-//                lastDrawDatePoint = drawDatePoint;
-//            }
-//        }];
-//    }
-//
-//    if (self.targetLineStatus == Y_StockChartTargetLineStatusBOLL) {
-//        // 画BOLL MB线 标准线
-//        MALine.MAType = Y_BOLL_MB;
-//        MALine.BOLLPositions = self.BOLL_MBPositions;
-//        [MALine draw];
-//
-//        // 画BOLL UP 上浮线
-//        MALine.MAType = Y_BOLL_UP;
-//        MALine.BOLLPositions = self.BOLL_UPPositions;
-//        [MALine draw];
-//
-//        // 画BOLL DN下浮线
-//        MALine.MAType = Y_BOLL_DN;
-//        MALine.BOLLPositions = self.BOLL_DNPositions;
-//        [MALine draw];
-//
-//    } else if ( self.targetLineStatus != Y_StockChartTargetLineStatusCloseMA){
-//
-//        //画MA7线
-//        MALine.MAType = Y_MA7Type;
-//        MALine.MAPositions = self.MA7Positions;
-//        [MALine draw];
-//
-//        //画MA30线
-//        MALine.MAType = Y_MA30Type;
-//        MALine.MAPositions = self.MA30Positions;
-//        [MALine draw];
-//
-//    }
-//
-//    if(self.delegate && kLineColors.count > 0)
-//    {
-//        if([self.delegate respondsToSelector:@selector(kLineMainViewCurrentNeedDrawKLineColors:)])
-//        {
-//            [self.delegate kLineMainViewCurrentNeedDrawKLineColors:kLineColors];
-//        }
-//    }
+    [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
 }
-#pragma makr 私有方法
+
+/**
+ 画Y轴上的价格，三个价格，最高、最低、及中间价
+
+ @param rect kLineRect
+ @param context 上下文
+ */
+- (void)drawY_AxisPrice:(CGRect)rect context:(CGContextRef)context {
+    NSString *highPrice = self.highestItem.kLineModel.highPrice;
+    NSString *lowPrice = self.highestItem.kLineModel.lowPrice;
+    NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(highPrice.floatValue + lowPrice.floatValue) / 2.f];
+    UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
+    UIFont *font = [UIFont systemFontOfSize:JT_KLineY_AxisPriceFontSize];
+    CGSize highPriceSize = [highPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
+    CGSize middlePriceSize = [middlePrice sizeWithAttributes:@{ NSFontAttributeName : font}];
+    CGSize lowPriceSize = [lowPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
+    
+    CGRect highPriceRect = CGRectMake(rect.origin.x, rect.origin.y + 2, highPriceSize.width, highPriceSize.height);
+    CGRect middlePriceRect = CGRectMake(rect.origin.x, rect.size.height / 2.f - middlePriceSize.height / 2, middlePriceSize.width, middlePriceSize.height);
+    CGRect lowPriceRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - lowPriceSize.height - 2, lowPriceSize.width, lowPriceSize.height);
+    
+    [highPrice drawInRect:highPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    [lowPrice drawInRect:lowPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+}
+
+#pragma mark 私有方法
+
 - (void)p_extractNeedDrawModels {
     
     //数组个数
     CGFloat scrollViewWidth = self.parentScrollView.frame.size.width;
     
     NSInteger needDrawKLineCount = (scrollViewWidth - [JT_KLineConfig kLineGap])/([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
+
+
     //起始位置
     NSInteger needDrawKLineStartIndex ;
     if(self.pinchStartIndex > 0) {
@@ -402,7 +357,6 @@
         
         [self.needDrawKLinePositionModels addObject:positionModel];
         
-        //计算最高点及最低点标识的坐标,包括斜线与价格对应的坐标
     }];
     
     //响应代理方法
@@ -414,13 +368,19 @@
         }
     }
 }
+
+/**
+ 计算屏幕上最高点及最低对应的位置，包括2条斜线及2个文本的位置
+ */
 - (void)p_calculateHighestPriceAndLowestPricePosition {
+    [self layoutIfNeeded];
+    NSInteger canShowItemCount = self.frame.size.width / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
     JT_KLinePositionModel *highPositionModel = self.needDrawKLinePositionModels[self.highestItem.index];
     JT_KLinePositionModel *lowPositionModel = self.needDrawKLinePositionModels[self.lowestItem.index];
-    NSInteger canShowItemCount = self.frame.size.width / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
     
-    CGSize highPriceSize = [self.highestItem.kLineModel.highPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:11]}];
-    CGSize lowPriceSize = [self.lowestItem.kLineModel.lowPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:11]}];
+    
+    CGSize highPriceSize = [self.highestItem.kLineModel.highPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize]}];
+    CGSize lowPriceSize = [self.lowestItem.kLineModel.lowPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize]}];
     
     //添加第一个点
     [self.highestItem.points addObject:[NSValue valueWithCGPoint:highPositionModel.highPoint]];
@@ -439,7 +399,7 @@
     self.highestItem.priceRect = highPriceRect;
     CGPoint lowPoint = lowPositionModel.lowPoint;
     CGRect lowPriceRect;
-    if (self.highestItem.index > canShowItemCount / 2) { // 最低点在屏幕右边，所以斜线是朝向左边的
+    if (self.lowestItem.index > canShowItemCount / 2) { // 最低点在屏幕右边，所以斜线是朝向左边的
         lowPoint = CGPointMake(lowPoint.x - JT_kLineMarkLineWidth, lowPoint.y + JT_KLineMarkLineHeight);
         lowPriceRect = CGRectMake(lowPoint.x - lowPriceSize.width, lowPoint.y - lowPriceSize.height / 2.f, lowPriceSize.width, lowPriceSize.height);
     } else { // 最低点在屏幕左边，所以斜线是朝向右边的
