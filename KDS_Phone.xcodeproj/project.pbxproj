@@ -33,6 +33,7 @@
 		B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */; };
 		B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */; };
 		B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */; };
+		B2BEDF492138DF0500974491 /* JT_KLineX_axisTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BEDF482138DF0500974491 /* JT_KLineX_axisTimeView.m */; };
 		FC211CBFDEC7482D80CB5A66 /* libPods-KDS_Phone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,8 @@
 		B2ACB9552133CC5900CA2EB6 /* UIFont+KDS_FontHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+KDS_FontHandle.m"; sourceTree = "<group>"; };
 		B2ACB9562133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+KDS_FontHandle.h"; sourceTree = "<group>"; };
 		B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JT_TimelineAndKlineSegment.h; sourceTree = "<group>"; };
+		B2BEDF472138DF0500974491 /* JT_KLineX_axisTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineX_axisTimeView.h; sourceTree = "<group>"; };
+		B2BEDF482138DF0500974491 /* JT_KLineX_axisTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineX_axisTimeView.m; sourceTree = "<group>"; };
 		BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,6 +253,8 @@
 				B23E683D2137C71D00E9EF3B /* JT_KLineConfig.m */,
 				B23E68392137C25D00E9EF3B /* JT_KLine.h */,
 				B23E683A2137C25D00E9EF3B /* JT_KLine.m */,
+				B2BEDF472138DF0500974491 /* JT_KLineX_axisTimeView.h */,
+				B2BEDF482138DF0500974491 /* JT_KLineX_axisTimeView.m */,
 				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
 				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
 				B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */,
@@ -461,6 +466,7 @@
 				B23E683E2137C71D00E9EF3B /* JT_KLineConfig.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
+				B2BEDF492138DF0500974491 /* JT_KLineX_axisTimeView.m in Sources */,
 				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
 				B20298B42136EB22000CE57B /* JT_KLinePositionModel.m in Sources */,
 				B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */,
@@ -646,7 +652,10 @@
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_Phone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.csc.zxjtzq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -662,7 +671,10 @@
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_Phone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.csc.zxjtzq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -677,7 +689,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_PhoneTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-PhoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -693,7 +709,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_PhoneTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-PhoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -708,7 +728,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_PhoneUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-PhoneUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -723,7 +747,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L63N47SZPH;
 				INFOPLIST_FILE = KDS_PhoneUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fun.fangao.app.KDS-PhoneUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

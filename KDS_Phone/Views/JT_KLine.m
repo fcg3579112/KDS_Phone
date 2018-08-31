@@ -60,18 +60,6 @@
     //画线
     CGContextStrokeLineSegments(context, shadowPoints, 2);
     
-//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.kLineModel.Date.doubleValue/1000];
-//    NSDateFormatter *formatter = [NSDateFormatter new];
-//    formatter.dateFormat = @"HH:mm";
-//    NSString *dateStr = [formatter stringFromDate:date];
-//    NSString *dateStr = self.kLineModel.datetime;
-    
-//    CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.lowPoint.x + 1, self.maxY + 1.5);
-//    if(CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > 60 )
-//    {
-//        [dateStr drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSForegroundColorAttributeName : [UIColor assistTextColor]}];
-//        self.lastDrawDatePoint = drawDatePoint;
-//    }
     return strokeColor;
 }
 @end
