@@ -45,7 +45,7 @@
 /**
  *  Index开始X的值
  */
-@property (nonatomic, assign) NSInteger startXPosition;
+@property (nonatomic, assign) CGFloat startXPosition;
 
 /**
  *  需要绘制的model数组
@@ -255,25 +255,32 @@
     
 
     //起始位置
-    NSInteger needDrawKLineStartIndex ;
-    if(self.pinchStartIndex > 0) {
-        needDrawKLineStartIndex = self.pinchStartIndex;
-        _needDrawStartIndex = self.pinchStartIndex;
-        self.pinchStartIndex = -1;
+    NSInteger needDrawKLineStartIndex;
+    
+    //当 KLine 总的数量小于屏幕上可以画的数量时
+    if (self.kLineModels.count < needDrawKLineCount) {
+        needDrawKLineStartIndex = 0;
     } else {
         needDrawKLineStartIndex = self.needDrawStartIndex;
     }
-    NSLog(@"这是模型开始的index-----------%lu",needDrawKLineStartIndex);
+    
+    
+//    if(self.pinchStartIndex > 0) {
+//        needDrawKLineStartIndex = self.pinchStartIndex;
+//        _needDrawStartIndex = self.pinchStartIndex;
+//        self.pinchStartIndex = -1;
+//    } else {
+//        needDrawKLineStartIndex = self.needDrawStartIndex;
+//    }
+    
+    
     [self.needDrawKLineModels removeAllObjects];
     
-    if(needDrawKLineStartIndex < self.kLineModels.count)
+    if(needDrawKLineStartIndex + needDrawKLineCount < self.kLineModels.count)
     {
-        if(needDrawKLineStartIndex + needDrawKLineCount < self.kLineModels.count)
-        {
-            [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount)]];
-        } else{
-            [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.kLineModels.count - needDrawKLineStartIndex)]];
-        }
+        [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount)]];
+    } else{
+        [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.kLineModels.count - needDrawKLineStartIndex)]];
     }
 }
 - (void)p_convertKLineModelsToPositionModels {
@@ -432,8 +439,6 @@
         make.width.equalTo(self.parentScrollView);
     }];
     
-    [self layoutIfNeeded];
-    
     //更新scrollview的contentsize
     self.parentScrollView.contentSize = CGSizeMake(kLineViewWidth, self.parentScrollView.contentSize.height);
 }
@@ -443,10 +448,14 @@
     [self updateKlineChartWidth];
 }
 #pragma mark Getter
-
+- (CGFloat)startXPosition{
+    NSInteger leftArrCount = self.needDrawStartIndex;
+    CGFloat x = ([JT_KLineConfig kLineWidth] / 2.f) - (self.parentScrollView.contentOffset.x - leftArrCount * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]));
+    return x;
+}
 - (NSInteger)needDrawStartIndex{
     CGFloat scrollViewOffsetX = self.parentScrollView.contentOffset.x < 0 ? 0 : self.parentScrollView.contentOffset.x;
-    NSUInteger leftArrCount = ABS(scrollViewOffsetX - [JT_KLineConfig kLineGap]) / ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
+    NSInteger leftArrCount = floorf(scrollViewOffsetX / ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]));
     _needDrawStartIndex = leftArrCount;
     return _needDrawStartIndex;
 }

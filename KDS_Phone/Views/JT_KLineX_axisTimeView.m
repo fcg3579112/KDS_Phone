@@ -13,6 +13,7 @@
 #import "JT_ColorManager.h"
 #import <MApi.h>
 #import "NSDate+KDS_Manage.h"
+#import "MOHLCItem+addtion.h"
 @implementation JT_KLineX_axisTimeView
 
 /*
@@ -61,14 +62,17 @@
     }
     
     CGSize dateStringSize = [timeFormat sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize]}];
-    
     JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
+    kLine.timeViewWidth = self.frame.size.width;
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        kLine.kLinePositionModel = kLinePositionModel;
-        kLine.kLineModel = self.needDrawKLineModels[idx];
-        kLine.timeSize = dateStringSize;
-        kLine.timeString = [self formateDateFrom:kLine.kLineModel.datetime];
-        [kLine drawDateTime];
+        MOHLCItem *item  = self.needDrawKLineModels[idx];
+        if (item.needShowTime) {
+            kLine.kLinePositionModel = kLinePositionModel;
+            kLine.kLineModel = self.needDrawKLineModels[idx];
+            kLine.timeSize = dateStringSize;
+            kLine.timeString = [self formateDateFrom:kLine.kLineModel.datetime];
+            [kLine drawDateTime];
+        }
     }];
 }
 

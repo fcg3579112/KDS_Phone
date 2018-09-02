@@ -31,7 +31,8 @@
  */
 @property (nonatomic, assign) CGSize  timeSize;
 
-@property (nonatomic ,assign) CGFloat timeViewMaxWidth;
+
+@property (nonatomic ,assign) CGFloat timeViewWidth;
 
 /**
  蜡烛线对应的时间

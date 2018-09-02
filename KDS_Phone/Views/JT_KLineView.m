@@ -6,6 +6,7 @@
 //  Copyright © 2018年 com.csc. All rights reserved.
 //
 
+
 #import "JT_KLineView.h"
 #import <Masonry.h>
 #import "JT_KLineChartView.h"
@@ -13,6 +14,7 @@
 #import "JT_KLineVolumeView.h"
 #import "JT_KLineX_axisTimeView.h"
 #import "JT_KLineConfig.h"
+#import "MOHLCItem+addtion.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -86,11 +88,16 @@
     if (!kLineModels.count) {
         return;
     }
+    //每隔 50 个显示一下时间
+    [kLineModels enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx % 30 == 0) {
+            obj.needShowTime = YES;
+        }
+    }];
     _kLineModels = kLineModels;
-    [self p_drawKLineView];
     
     //设置contentOffset
-    CGFloat kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count + 1) * ([JT_KLineConfig kLineGap]) + 10;
+    CGFloat kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count - 1) * ([JT_KLineConfig kLineGap]);
     CGFloat offset = kLineViewWidth - self.scrollView.frame.size.width;
     if (offset > 0)
     {
@@ -98,6 +105,8 @@
     } else {
         self.scrollView.contentOffset = CGPointMake(0, 0);
     }
+    [self p_drawKLineView];
+    
 }
 #pragma mark Getter
 - (UIScrollView *)scrollView

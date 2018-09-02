@@ -17,10 +17,6 @@
  */
 @property (nonatomic, assign) CGContextRef context;
 
-/**
- *  最后一个绘制日期点
- */
-@property (nonatomic, assign) CGPoint lastDrawDatePoint;
 @end
 @implementation JT_KLine
 
@@ -30,7 +26,6 @@
     self = [super init];
     if (self) {
         _context = context;
-        _lastDrawDatePoint = CGPointZero;
     }
     return self;
 }
@@ -65,11 +60,9 @@
 }
 - (void)drawDateTime {
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
-    CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.lowPoint.x + 10, 0);
-    if((CGPointEqualToPoint(self.lastDrawDatePoint, CGPointZero) || drawDatePoint.x - self.lastDrawDatePoint.x > self.timeSize.width + 50) && (drawDatePoint.x + self.timeSize.width) < 300)
-    {
+    CGPoint drawDatePoint = CGPointMake(self.kLinePositionModel.lowPoint.x, 0);
+    if (drawDatePoint.x > 0 && drawDatePoint.x < (self.timeViewWidth - self.timeSize.width / 2.f)) {
         [self.timeString drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize],NSForegroundColorAttributeName : color}];
-        self.lastDrawDatePoint = drawDatePoint;
     }
 }
 @end
