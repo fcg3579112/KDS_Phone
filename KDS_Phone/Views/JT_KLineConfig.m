@@ -8,16 +8,30 @@
 
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
-static CGFloat JT_KLineWidth = 5;
-static CGFloat const JT_KLineMaxWidth = 20;
+static CGFloat const JT_KLineDefaultWidth = 6;
+static CGFloat JT_KLineWidth = JT_KLineDefaultWidth;
+static CGFloat const JT_KLineMaxWidth = 16;
 
-static CGFloat const JT_KLineMinWidth = 2;
+static CGFloat const JT_KLineMinWidth = 3;
 
 static CGFloat JT_KLineGap = 1;
 
 static CGFloat JT_KLineShadeLineWidth = 1;
 
 static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
+
+
+static NSUInteger JT_MA5 = 5;
+
+static NSUInteger JT_MA10 = 10;
+
+static NSUInteger JT_MA20 = 20;
+
+static NSUInteger JT_MA30 = 0;
+
+static NSUInteger JT_MA60 = 0;
+
+static BOOL JT_ShowHighAndLowPrice = YES;
 
 
 @implementation JT_KLineConfig
@@ -38,7 +52,9 @@ static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
         JT_KLineWidth = kLineWidth;
     }
 }
-
++(void)resetKlineWidth {
+    JT_KLineWidth = JT_KLineDefaultWidth;
+}
 
 /**
  *  K线图的间隔，默认1
@@ -84,5 +100,57 @@ static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
 
 + (void)setkLineType:(JT_TimelineAndKlineItemType)type {
     JT_kLineType = type;
+}
+
++ (NSUInteger)MA5{
+    return JT_MA5;
+}
+
++ (void)setMA5:(NSUInteger)ma {
+    JT_MA5 = ma;
+}
+
++ (NSUInteger)MA10 {
+    return JT_MA10;
+}
+
++ (void)setMA10:(NSUInteger)ma {
+    JT_MA10 = ma;
+}
+
++ (NSUInteger)MA20 {
+    return JT_MA20;
+}
+
++ (void)setMA20:(NSUInteger)ma {
+    JT_MA20 = ma;
+}
+
++ (NSUInteger)MA30 {
+    return JT_MA30;
+}
+
++ (void)setMA30:(NSUInteger)ma {
+    JT_MA30 = ma;
+}
+
++ (NSUInteger)MA60 {
+    return JT_MA60;
+}
+
++ (void)setMA60:(NSUInteger)ma {
+    JT_MA60 = ma;
+}
+
+/**
+ 是否显示最高点最低点
+ 
+ */
++ (BOOL)showHighAndLowPrice {
+    return JT_ShowHighAndLowPrice;
+}
+
++ (void)setShowHighAndLowPrice:(BOOL)show {
+    JT_ShowHighAndLowPrice = show;
 }
 @end

@@ -12,8 +12,10 @@
 #import "JT_KLineView.h"
 #import <Masonry.h>
 #import <MApi.h>
+#import "JT_KLineModel.h"
 @interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate>
 @property (nonatomic, strong)JT_KLineView *kLineView;
+@property (nonatomic ,strong) NSMutableArray <JT_KLineModel *>*allKLineModel;
 @end
 
 @implementation FirstViewController
@@ -42,6 +44,12 @@
     [self requestKLineData];
     
 }
+- (NSMutableArray *)allKLineModel {
+    if (!_allKLineModel) {
+        _allKLineModel = @[].mutableCopy;
+    }
+    return _allKLineModel;
+}
 - (void)requestKLineData {
     MOHLCRequest *r = [[MOHLCRequest alloc] init];
     r.code = @"000001.sh";
@@ -52,7 +60,13 @@
         MOHLCResponse *response = (MOHLCResponse *)resp;
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
-            self.kLineView.kLineModels = items;
+            // 模型转换
+            [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+                [self.allKLineModel addObject:model];
+                model.allKLineModel = self.allKLineModel;
+            }];
+            self.kLineView.kLineModels = self.allKLineModel;
             [self.kLineView drawChart];
         }
     }];
@@ -74,5 +88,8 @@
     // Pass the selected object to the new view controller.
 }
 */
-
+- (void)dealloc
+{
+    NSLog(@"dealloc 执行了");
+}
 @end

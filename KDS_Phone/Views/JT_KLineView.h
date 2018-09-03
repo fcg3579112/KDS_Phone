@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MOHLCItem;
+@class JT_KLineModel;
 @interface JT_KLineView : UIView
 
 /**
@@ -31,12 +31,13 @@
  */
 @property (nonatomic ,assign) CGFloat timeViewHeight;
 
+
 /**
  下部指标选择区高度
  */
 @property (nonatomic ,assign) CGFloat indicatorViewHeight;
 
-@property(nonatomic, copy) NSArray<MOHLCItem *> *kLineModels;
+@property(nonatomic, copy) NSArray<JT_KLineModel *> *kLineModels;
 
 @property (nonatomic, assign) CGFloat KlineChartTopMargin;
 

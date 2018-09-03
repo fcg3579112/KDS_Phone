@@ -14,7 +14,7 @@
 #import "JT_KLineVolumeView.h"
 #import "JT_KLineX_axisTimeView.h"
 #import "JT_KLineConfig.h"
-#import "MOHLCItem+addtion.h"
+#import "JT_KLineModel.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -112,12 +112,13 @@
     [self.klineChart drawView];
 }
 #pragma mark Setter
-- (void)setKLineModels:(NSArray<MOHLCItem *> *)kLineModels {
+
+- (void)setKLineModels:(NSArray<JT_KLineModel *> *)kLineModels {
     if (!kLineModels.count) {
         return;
     }
     //每隔 50 个显示一下时间
-    [kLineModels enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (idx % 30 == 0) {
             obj.needShowTime = YES;
         }
@@ -137,6 +138,7 @@
     
 }
 #pragma mark Getter
+
 - (UIScrollView *)scrollView
 {
     if(!_scrollView)

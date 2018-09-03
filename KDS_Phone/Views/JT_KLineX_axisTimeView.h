@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MOHLCItem,JT_KLinePositionModel;
+@class JT_KLineModel,JT_KLinePositionModel;
 @interface JT_KLineX_axisTimeView : UIView
 
 /**
  *  需要绘制的model数组
  */
-@property (nonatomic, strong) NSArray <MOHLCItem *> *needDrawKLineModels;
+@property (nonatomic, strong) NSArray <JT_KLineModel *> *needDrawKLineModels;
 
 /**
  *  需要绘制的model位置数组

@@ -17,11 +17,11 @@
 - (void)JT_KLineChartViewWithModels:(NSArray *)needDrawKLineModels positionModels:(NSArray *)needDrawKLinePositionModels;
 
 @end
-@class MOHLCItem;
+@class JT_KLineModel;
 @interface JT_KLineChartView : UIView
 @property (nonatomic ,weak) id <JT_KLineChartViewDelegate> delegate;
 
-@property(nonatomic, copy) NSArray<MOHLCItem *> *kLineModels;
+@property(nonatomic, copy) NSArray<JT_KLineModel *> *kLineModels;
 
 /**
  *  需要绘制Index开始值
@@ -40,6 +40,7 @@
 
 
 @property (nonatomic, assign) CGFloat topAndBottomMargin;
+
 
 - (void)drawView;
 

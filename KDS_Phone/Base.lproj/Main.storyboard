@@ -38,12 +38,47 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="wvY-Of-VLM" kind="relationship" relationship="rootViewController" id="sPU-Tl-dYn"/>
+                        <segue destination="bVS-XS-dSx" kind="relationship" relationship="rootViewController" id="YIm-9h-Uyl"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xXN-Oj-yJE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1562" y="-621"/>
+        </scene>
+        <!--Tab One View Controller-->
+        <scene sceneID="cmX-fr-rtU">
+            <objects>
+                <viewController id="bVS-XS-dSx" customClass="TabOneViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3UP-Za-6uV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fIK-0w-95s">
+                                <rect key="frame" x="78" y="231" width="219" height="135"/>
+                                <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="进入 K 线">
+                                    <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <segue destination="wvY-Of-VLM" kind="show" id="x9t-du-Pab"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fIK-0w-95s" firstAttribute="centerX" secondItem="3UP-Za-6uV" secondAttribute="centerX" id="WhE-4m-khX"/>
+                            <constraint firstItem="fIK-0w-95s" firstAttribute="top" secondItem="RRq-nr-Y9F" secondAttribute="top" constant="167" id="g6s-TH-zEe"/>
+                            <constraint firstItem="fIK-0w-95s" firstAttribute="leading" secondItem="RRq-nr-Y9F" secondAttribute="leading" constant="78" id="med-in-JQK"/>
+                            <constraint firstItem="RRq-nr-Y9F" firstAttribute="bottom" secondItem="fIK-0w-95s" secondAttribute="bottom" constant="252" id="x1c-xA-HPl"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RRq-nr-Y9F"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ydi-UW-sez"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9hT-QR-OFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-858.39999999999998" y="-621.13943028485767"/>
         </scene>
         <!--First View Controller-->
         <scene sceneID="0yR-3d-EUP">
@@ -59,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XW7-sr-0DT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-836" y="-621"/>
+            <point key="canvasLocation" x="-89" y="-621"/>
         </scene>
         <!--Item-->
         <scene sceneID="v2D-J5-Uud">

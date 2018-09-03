@@ -11,9 +11,8 @@
 #import "JT_KLine.h"
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
-#import <MApi.h>
+#import "JT_KLineModel.h"
 #import "NSDate+KDS_Manage.h"
-#import "MOHLCItem+addtion.h"
 @implementation JT_KLineX_axisTimeView
 
 /*
@@ -33,7 +32,7 @@
     return self;
 }
 
-- (void)setNeedDrawKLineModels:(NSArray<MOHLCItem *> *)needDrawKLineModels {
+- (void)setNeedDrawKLineModels:(NSArray<JT_KLineModel *> *)needDrawKLineModels {
     _needDrawKLineModels = needDrawKLineModels;
     [self setNeedsDisplay];
 }
@@ -65,7 +64,7 @@
     JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
     kLine.timeViewWidth = self.frame.size.width;
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        MOHLCItem *item  = self.needDrawKLineModels[idx];
+        JT_KLineModel *item  = self.needDrawKLineModels[idx];
         if (item.needShowTime) {
             kLine.kLinePositionModel = kLinePositionModel;
             kLine.kLineModel = self.needDrawKLineModels[idx];

@@ -35,6 +35,12 @@
 
 +(void)setkLineWith:(CGFloat)kLineWidth;
 
+
+/**
+ 重置 k 线宽度
+ */
++(void)resetKlineWidth;
+
 /**
  *  K线图的间隔，默认1
  */
@@ -68,6 +74,39 @@
  */
 + (JT_TimelineAndKlineItemType)kLineType;
 
+
 + (void)setkLineType:(JT_TimelineAndKlineItemType)type;
+
+
+/**
+ 是否显示最高点最低点
+
+ */
++ (BOOL)showHighAndLowPrice;
+
++ (void)setShowHighAndLowPrice:(BOOL)show;
+
+
+//设置均线，这个是全局的，当设置为0时，不需要显示对应均线，设置为大于 0 的数时需要计算
+
++ (NSUInteger)MA5;
+
++ (void)setMA5:(NSUInteger)ma;
+
++ (NSUInteger)MA10;
+
++ (void)setMA10:(NSUInteger)ma;
+
++ (NSUInteger)MA20;
+
++ (void)setMA20:(NSUInteger)ma;
+
++ (NSUInteger)MA30;
+
++ (void)setMA30:(NSUInteger)ma;
+
++ (NSUInteger)MA60;
+
++ (void)setMA60:(NSUInteger)ma;
 
 @end

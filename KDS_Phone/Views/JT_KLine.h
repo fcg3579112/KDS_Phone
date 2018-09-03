@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@class JT_KLinePositionModel,MOHLCItem;
+@class JT_KLinePositionModel,JT_KLineModel;
 @interface JT_KLine : NSObject
 /**
  *  K线的位置model
@@ -18,7 +18,7 @@
 /**
  *  k线的model
  */
-@property (nonatomic, strong) MOHLCItem *kLineModel;
+@property (nonatomic, strong) JT_KLineModel *kLineModel;
 
 /**
  *  最大的Y

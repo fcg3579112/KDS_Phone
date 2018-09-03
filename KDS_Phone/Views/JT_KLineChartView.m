@@ -7,7 +7,7 @@
 //
 
 #import "JT_KLineChartView.h"
-#import <MApi.h>
+#import "JT_KLineModel.h"
 #import <Masonry.h>
 #import "JT_KLinePositionModel.h"
 #import "JT_ColorManager.h"
@@ -22,7 +22,7 @@
  存储最高点，最低点信息
  */
 @interface JT_PriceMarkModel : NSObject
-@property (nonatomic ,strong) MOHLCItem *kLineModel;
+@property (nonatomic ,strong) JT_KLineModel *kLineModel;
 @property (nonatomic ,strong) NSMutableArray *points; //斜线上的2个点
 @property (nonatomic ,assign) CGRect priceRect;
 //在屏幕上的索引，用于判断该标识是遍左还偏右
@@ -50,7 +50,7 @@
 /**
  *  需要绘制的model数组
  */
-@property (nonatomic, strong) NSMutableArray <MOHLCItem *> *needDrawKLineModels;
+@property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 
 /**
  *  需要绘制的model位置数组
@@ -96,6 +96,9 @@
     return self;
 }
 - (void)drawView {
+    if (!self.kLineModels.count) {
+        return;
+    }
     //提取需要的kLineModel
     [self p_extractNeedDrawModels];
     //转换model为坐标model
@@ -106,8 +109,9 @@
         [self.delegate JT_KLineChartViewWithModels:self.needDrawKLineModels.copy positionModels:self.needDrawKLinePositionModels.copy];
     }
     //计算最高点最低点坐标
-    [self p_calculateHighestPriceAndLowestPricePosition];
-    
+    if ([JT_KLineConfig showHighAndLowPrice]) {
+        [self p_calculateHighestPriceAndLowestPricePosition];
+    }
     //间接调用drawRect方法
     [self setNeedsDisplay];
 }
@@ -175,8 +179,9 @@
     [self drawY_AxisPrice:rect context:context];
     
     //画最高点及最低点价格
-    [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
-
+    if ([JT_KLineConfig showHighAndLowPrice]) {
+        [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
+    }
 }
 /**
  画最高点及最低点价格标示
@@ -278,18 +283,16 @@
     NSArray *kLineModels = self.needDrawKLineModels;
     
     //计算最小单位
-    MOHLCItem *firstModel = kLineModels.firstObject;
+    JT_KLineModel *firstModel = kLineModels.firstObject;
     //找出屏幕上的最大值与最小值
     
     //计算出5日均线、10日、均线等
     __block CGFloat minAssert = firstModel.lowPrice.floatValue;
     __block CGFloat maxAssert = firstModel.highPrice.floatValue;
 
-    
     __block NSInteger minIndex = 0;
     __block NSInteger maxIndex = 0;
-    [kLineModels enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        
+    [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         if(kLineModel.highPrice.floatValue > maxAssert)
         {
             maxAssert = kLineModel.highPrice.floatValue;
@@ -300,6 +303,56 @@
             minAssert = kLineModel.lowPrice.floatValue;
             minIndex = idx;
         }
+        if (![JT_KLineConfig MA5]) {
+            if(kLineModel.MA5.floatValue > maxAssert)
+            {
+                maxAssert = kLineModel.MA5.floatValue;
+            }
+            if(kLineModel.MA5.floatValue < minAssert)
+            {
+                minAssert = kLineModel.MA5.floatValue;
+            }
+        }
+        if (![JT_KLineConfig MA10]) {
+            if(kLineModel.MA10.floatValue > maxAssert)
+            {
+                maxAssert = kLineModel.MA10.floatValue;
+            }
+            if(kLineModel.MA10.floatValue < minAssert)
+            {
+                minAssert = kLineModel.MA10.floatValue;
+            }
+        }
+        if (![JT_KLineConfig MA20]) {
+            if(kLineModel.MA20.floatValue > maxAssert)
+            {
+                maxAssert = kLineModel.MA20.floatValue;
+            }
+            if(kLineModel.MA20.floatValue < minAssert)
+            {
+                minAssert = kLineModel.MA20.floatValue;
+            }
+        }
+        if ([JT_KLineConfig MA30]) {
+            if(kLineModel.MA30.floatValue > maxAssert)
+            {
+                maxAssert = kLineModel.MA30.floatValue;
+            }
+            if(kLineModel.MA30.floatValue < minAssert)
+            {
+                minAssert = kLineModel.MA30.floatValue;
+            }
+        }
+        if ([JT_KLineConfig MA60]) {
+            if(kLineModel.MA60.floatValue > maxAssert)
+            {
+                maxAssert = kLineModel.MA60.floatValue;
+            }
+            if(kLineModel.MA60.floatValue < minAssert)
+            {
+                minAssert = kLineModel.MA60.floatValue;
+            }
+        }
     }];
     self.highestItem = [JT_PriceMarkModel new];
     self.lowestItem = [JT_PriceMarkModel new];
@@ -309,18 +362,18 @@
     self.lowestItem.index = minIndex;
     
     maxAssert *= 1.0001;
-    minAssert *= 0.9991;
+    minAssert *= 0.9997;
     
     CGFloat minY = self.topAndBottomMargin;
-    CGFloat maxY = self.parentScrollView.frame.size.height * self.klineViewRatio - self.topAndBottomMargin;
+    CGFloat maxY = self.frame.size.height - self.topAndBottomMargin;
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
     
     [self.needDrawKLinePositionModels removeAllObjects];
     
-    [kLineModels enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         //由于 k 线数据，很多时候没有昨收，所以当天的昨收取前一天的收盘价
         if (idx > 0) {
-            MOHLCItem *preItem = kLineModels[idx -1];
+            JT_KLineModel *preItem = kLineModels[idx -1];
             kLineModel.referencePrice = preItem.closePrice;
         }
         CGFloat xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
@@ -338,7 +391,7 @@
             } else {
                 if(idx > 0)
                 {
-                    MOHLCItem *preItem = kLineModels[idx-1];
+                    JT_KLineModel *preItem = kLineModels[idx-1];
                     if(kLineModel.openPrice.floatValue > preItem.closePrice.floatValue)
                     {
                         openPoint.y = closePointY + JT_KLineMinHeight;
@@ -347,7 +400,7 @@
                     }
                 } else {
                     //idx==0即第一个时
-                    MOHLCItem *subKLineModel = kLineModels[idx+1];
+                    JT_KLineModel *subKLineModel = kLineModels[idx+1];
                     if(kLineModel.closePrice.floatValue < subKLineModel.closePrice.floatValue)
                     {
                         openPoint.y = closePointY + JT_KLineMinHeight;
@@ -425,7 +478,7 @@
     self.parentScrollView.contentSize = CGSizeMake(kLineViewWidth, self.parentScrollView.contentSize.height);
 }
 #pragma mark Setter
-- (void)setKLineModels:(NSArray<MOHLCItem *> *)kLineModels {
+- (void)setKLineModels:(NSArray<JT_KLineModel *> *)kLineModels {
     _kLineModels = kLineModels;
     [self updateKlineChartWidth];
 }
