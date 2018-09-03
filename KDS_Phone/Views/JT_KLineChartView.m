@@ -121,14 +121,11 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
     if([keyPath isEqualToString:JT_ScrollViewContentOffset])
     {
-//        CGFloat difValue = ABS(self.parentScrollView.contentOffset.x - self.oldContentOffsetX);
-//        if(difValue >= ([JT_KLineConfig kLineGap]) + ([JT_KLineConfig kLineWidth]))
-//        {
-//            self.oldContentOffsetX = self.parentScrollView.contentOffset.x;
-//
-//
-//        }
-        [self drawView];
+        CGFloat difValue = ABS(self.parentScrollView.contentOffset.x - self.oldContentOffsetX);
+        if (difValue > [JT_KLineConfig kLineGap]) {
+            self.oldContentOffsetX = self.parentScrollView.contentOffset.x;
+            [self drawView];
+        }
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(self.parentScrollView);
             make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
@@ -263,16 +260,6 @@
     } else {
         needDrawKLineStartIndex = self.needDrawStartIndex;
     }
-    
-    
-//    if(self.pinchStartIndex > 0) {
-//        needDrawKLineStartIndex = self.pinchStartIndex;
-//        _needDrawStartIndex = self.pinchStartIndex;
-//        self.pinchStartIndex = -1;
-//    } else {
-//        needDrawKLineStartIndex = self.needDrawStartIndex;
-//    }
-    
     
     [self.needDrawKLineModels removeAllObjects];
     
@@ -434,11 +421,6 @@
     if(kLineViewWidth < self.parentScrollView.bounds.size.width) {
         kLineViewWidth = self.parentScrollView.bounds.size.width;
     }
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.parentScrollView).offset(self.parentScrollView.contentOffset.x);
-        make.width.equalTo(self.parentScrollView);
-    }];
-    
     //更新scrollview的contentsize
     self.parentScrollView.contentSize = CGSizeMake(kLineViewWidth, self.parentScrollView.contentSize.height);
 }

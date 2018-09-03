@@ -34,8 +34,9 @@ static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
         JT_KLineWidth = JT_KLineMaxWidth;
     }else if (kLineWidth < JT_KLineMinWidth){
         JT_KLineWidth = JT_KLineMinWidth;
+    } else {
+        JT_KLineWidth = kLineWidth;
     }
-    JT_KLineWidth = kLineWidth;
 }
 
 

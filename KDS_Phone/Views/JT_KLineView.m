@@ -57,12 +57,40 @@
     self.klineTimeView.needDrawKLinePositionModels = needDrawKLinePositionModels;
 }
 
-#pragma mark 手势
+#pragma mark UIScrollViewDelegaet
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    
+}
+
 #pragma mark 缩放执行方法
-- (void)event_pichMethod:(UIPinchGestureRecognizer *)pinch {
+- (void)pinchGestureEvent:(UIPinchGestureRecognizer *)pinch {
+    static CGFloat oldScale = 1.0f;
+    CGFloat difValue = pinch.scale - oldScale;
+    oldScale = pinch.scale;
+    if (ABS(difValue) > JT_KLineChartScaleBound) {
+        if( pinch.numberOfTouches == 2 ) {
+            CGPoint p1 = [pinch locationOfTouch:0 inView:self.scrollView];
+            CGPoint p2 = [pinch locationOfTouch:1 inView:self.scrollView];
+            CGPoint centerPoint = CGPointMake((p1.x+p2.x)/2, (p1.y+p2.y)/2);
+            NSInteger leftTotalCount = floorf(centerPoint.x / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]));
+            NSInteger leftCount = leftTotalCount - floorf((centerPoint.x - self.scrollView.contentOffset.x) / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]));
+            CGFloat newWidth = [JT_KLineConfig kLineWidth] * (difValue > 0 ? (1 + JT_KLineChartScaleFactor) : (1 - JT_KLineChartScaleFactor));
+            [JT_KLineConfig setkLineWith:newWidth];
+            CGFloat contentOffsetX = leftCount * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
+            contentOffsetX = contentOffsetX > 0 ? contentOffsetX : 0;
+            [self.klineChart updateKlineChartWidth];
+            [self.scrollView setContentOffset:CGPointMake(contentOffsetX, self.scrollView.contentOffset.y)];
+            
+            //当 self.scrollView contentOffset 变化时，会触发  self.klineChar 里面  KVO监听，监听里会调用 [self.klineChart drawView]，
+            // 当 self.scrollView.contentOffset.x == 0 时，不会触发 KVO监听 ，所以直接调用 [self.klineChart drawView];重新绘制
+            if (contentOffsetX == 0) {
+                [self.klineChart drawView];
+            }
+        }
+    }
 }
 #pragma mark 长按手势执行方法
-- (void)event_longPressMethod:(UILongPressGestureRecognizer *)longPress {
+- (void)longPressGestureEvent:(UILongPressGestureRecognizer *)longPress {
 
 }
 
@@ -120,15 +148,14 @@
         _scrollView.maximumZoomScale = 1.0f;
         _scrollView.delegate = self;
         _scrollView.bounces = NO;
+        [self addSubview:_scrollView];
         //缩放手势
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(event_pichMethod:)];
+        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGestureEvent:)];
         [_scrollView addGestureRecognizer:pinchGesture];
         
         //长按手势
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(event_longPressMethod:)];
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressGestureEvent:)];
         [_scrollView addGestureRecognizer:longPressGesture];
-        [self addSubview:_scrollView];
-        
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.bottom.mas_equalTo(0);
             make.top.mas_equalTo(self.MALineHeight);

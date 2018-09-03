@@ -42,4 +42,6 @@
 @property (nonatomic, assign) CGFloat topAndBottomMargin;
 
 - (void)drawView;
+
+- (void)updateKlineChartWidth;
 @end

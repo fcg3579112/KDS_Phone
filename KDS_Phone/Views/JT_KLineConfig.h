@@ -14,10 +14,17 @@
 #define JT_KLineX_AxisTimeFontSize           10
 
 //最高价字体大小
-#define JT_KLineHighestPriceFontSize     12
+#define JT_KLineHighestPriceFontSize         12
 
 //Y轴价格字体
-#define JT_KLineY_AxisPriceFontSize      11
+#define JT_KLineY_AxisPriceFontSize          11
+
+
+// k 线缩放手势最小边界
+#define JT_KLineChartScaleBound              0.03
+
+// 每次缩放的比例
+#define JT_KLineChartScaleFactor            0.03
 
 #import "JT_TimelineAndKlineSegment.h"
 @interface JT_KLineConfig : NSObject
