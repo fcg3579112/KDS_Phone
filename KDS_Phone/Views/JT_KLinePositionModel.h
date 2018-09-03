@@ -15,9 +15,10 @@
 @property (nonatomic ,assign) CGPoint highPoint;
 
 
-@property (nonatomic ,assign) CGPoint MA5Y;
-@property (nonatomic ,assign) CGPoint MA10Y;
-@property (nonatomic ,assign) CGPoint MA15Y;
-@property (nonatomic ,assign) CGPoint MA30Y;
+@property (nonatomic ,assign) CGPoint MA5;
+@property (nonatomic ,assign) CGPoint MA10;
+@property (nonatomic ,assign) CGPoint MA20;
+@property (nonatomic ,assign) CGPoint MA30;
+@property (nonatomic ,assign) CGPoint MA60;
 
 @end

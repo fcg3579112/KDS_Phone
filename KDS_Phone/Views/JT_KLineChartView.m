@@ -9,6 +9,7 @@
 #import "JT_KLineChartView.h"
 #import "JT_KLineModel.h"
 #import <Masonry.h>
+#import "KDS_UtilsMacro.h"
 #import "JT_KLinePositionModel.h"
 #import "JT_ColorManager.h"
 #import "JT_KLine.h"
@@ -53,6 +54,31 @@
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 
 /**
+ *  MA5位置数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA5Positions;
+
+/**
+ *  MA10位置数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA10Positions;
+
+/**
+ *  MA20位置数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA20Positions;
+
+/**
+ *  MA30位置数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA30Positions;
+
+/**
+ *  MA50位置数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA60Positions;
+
+/**
  *  需要绘制的model位置数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
@@ -68,11 +94,15 @@
  */
 @property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
 
-@property (nonatomic ,strong) NSString *highPrice;
+//y轴最高点，
+@property (nonatomic ,assign) CGFloat y_highestPrice;
+//y轴最高低点
+@property (nonatomic ,assign) CGFloat y_lowestPrice;
 
-@property (nonatomic ,strong) NSString *lowPrice;
-
-@property (nonatomic ,strong) NSString *middlePrice;
+//y轴最高点，
+@property (nonatomic ,strong) NSString *highestPrice;
+//y轴最高低点
+@property (nonatomic ,strong) NSString *lowestPrice;
 
 @end
 @implementation JT_KLineChartView
@@ -90,6 +120,11 @@
     if (self) {
         _needDrawKLineModels = @[].mutableCopy;
         _needDrawKLinePositionModels = @[].mutableCopy;
+        _MA5Positions = @[].mutableCopy;
+        _MA10Positions = @[].mutableCopy;
+        _MA20Positions = @[].mutableCopy;
+        _MA30Positions = @[].mutableCopy;
+        _MA60Positions = @[].mutableCopy;
         _needDrawStartIndex = 0;
         _oldContentOffsetX = 0;
     }
@@ -166,15 +201,60 @@
         return;
     }
     
+    
+    
     //画蜡烛线
     JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
     kLine.maxY = self.frame.size.height - self.topAndBottomMargin;
-    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+    CGPoint MA_5[[JT_KLineConfig MA5] ? self.needDrawKLinePositionModels.count : 0];
+    CGPoint MA_10[[JT_KLineConfig MA10] ? self.needDrawKLinePositionModels.count : 0];
+    CGPoint MA_20[[JT_KLineConfig MA20] ? self.needDrawKLinePositionModels.count : 0];
+    CGPoint MA_30[[JT_KLineConfig MA30] ? self.needDrawKLinePositionModels.count : 0];
+    CGPoint MA_60[[JT_KLineConfig MA60] ? self.needDrawKLinePositionModels.count : 0];
+    //绘制均线
+    
+    NSUInteger idx = 0;
+    NSUInteger lastItemIndex = self.needDrawKLinePositionModels.count - 1;
+    for (JT_KLinePositionModel *kLinePositionModel in self.needDrawKLinePositionModels) {
+        
+        //画蜡烛线
         kLine.kLinePositionModel = kLinePositionModel;
         kLine.kLineModel = self.needDrawKLineModels[idx];
         [kLine drawCandleLine];
-    }];
-    
+        //画均线
+        if ([JT_KLineConfig MA5]) {
+            MA_5[idx] = kLinePositionModel.MA5;
+            if (idx == lastItemIndex) {
+               [self drawMAWith:MA_5 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor orangeColor]];
+            }
+        }
+        if ([JT_KLineConfig MA10]) {
+            MA_10[idx] = kLinePositionModel.MA10;
+            if (idx == lastItemIndex) {
+                [self drawMAWith:MA_10 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor greenColor]];
+            }
+        }
+        if ([JT_KLineConfig MA20]) {
+            MA_20[idx] = kLinePositionModel.MA20;
+            if (idx == lastItemIndex) {
+                [self drawMAWith:MA_20 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor yellowColor]];
+            }
+        }
+        if ([JT_KLineConfig MA30]) {
+            MA_30[idx] = kLinePositionModel.MA30;
+            if (idx == lastItemIndex) {
+                [self drawMAWith:MA_30 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor blueColor]];
+            }
+        }
+        if ([JT_KLineConfig MA60]) {
+            MA_60[idx] = kLinePositionModel.MA60;
+            if (idx == lastItemIndex) {
+                [self drawMAWith:MA_60 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor blueColor]];
+            }
+        }
+        idx ++;
+    }
     //画Y轴上对应的价格坐标
     [self drawY_AxisPrice:rect context:context];
     
@@ -183,6 +263,15 @@
         [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
     }
 }
+
+- (void)drawMAWith:(CGPoint *)points context:(CGContextRef)context count:(NSUInteger)count lineColor:(UIColor *)color{
+    CGContextSetStrokeColorWithColor(context, color.CGColor);
+    //画中间较宽的开收盘线段-实体线
+    CGContextSetLineWidth(context, 1);
+    //画线
+    CGContextStrokeLineSegments(context, points, count);
+}
+
 /**
  画最高点及最低点价格标示
 
@@ -212,10 +301,9 @@
  @param context 上下文
  */
 - (void)drawY_AxisPrice:(CGRect)rect context:(CGContextRef)context {
-    NSString *highPrice = self.highestItem.kLineModel.highPrice;
-    NSString *lowPrice = self.highestItem.kLineModel.lowPrice;
-    NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(highPrice.floatValue + lowPrice.floatValue) / 2.f];
-    
+    NSString *highPrice = [NSString stringWithFormat:@"%.2f",self.y_highestPrice];
+    NSString *lowPrice = [NSString stringWithFormat:@"%.2f",self.y_lowestPrice];
+    NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(self.y_highestPrice + self.y_lowestPrice) / 2.f];
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     UIFont *font = [UIFont systemFontOfSize:JT_KLineY_AxisPriceFontSize];
     
@@ -230,19 +318,6 @@
     CGSize middlePriceSize = [middlePrice sizeWithAttributes:@{ NSFontAttributeName : font}];
     CGRect middlePriceRect = CGRectMake(rect.origin.x, rect.size.height / 2.f - middlePriceSize.height / 2, middlePriceSize.width, middlePriceSize.height);
     [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
-    
-//    //计算出的新的最高点与之前的最高点不一样，就开始画最高点
-//    if (![self.highPrice isEqualToString:highPrice]) {
-//        self.highPrice = highPrice;
-//
-//    }
-//    if (![self.lowPrice isEqualToString:lowPrice]) {
-//        self.lowPrice = lowPrice;
-//
-//    }
-//    if (![self.middlePrice isEqualToString:middlePrice]) {
-//
-//    }
 }
 
 #pragma mark 私有方法
@@ -303,7 +378,8 @@
             minAssert = kLineModel.lowPrice.floatValue;
             minIndex = idx;
         }
-        if (![JT_KLineConfig MA5]) {
+        
+        if ([JT_KLineConfig MA5]) {
             if(kLineModel.MA5.floatValue > maxAssert)
             {
                 maxAssert = kLineModel.MA5.floatValue;
@@ -313,7 +389,7 @@
                 minAssert = kLineModel.MA5.floatValue;
             }
         }
-        if (![JT_KLineConfig MA10]) {
+        if ([JT_KLineConfig MA10]) {
             if(kLineModel.MA10.floatValue > maxAssert)
             {
                 maxAssert = kLineModel.MA10.floatValue;
@@ -323,7 +399,7 @@
                 minAssert = kLineModel.MA10.floatValue;
             }
         }
-        if (![JT_KLineConfig MA20]) {
+        if ([JT_KLineConfig MA20]) {
             if(kLineModel.MA20.floatValue > maxAssert)
             {
                 maxAssert = kLineModel.MA20.floatValue;
@@ -361,21 +437,29 @@
     self.lowestItem.kLineModel = kLineModels[minIndex];
     self.lowestItem.index = minIndex;
     
-    maxAssert *= 1.0001;
-    minAssert *= 0.9997;
+    self.y_highestPrice = maxAssert;
+    self.y_lowestPrice = minAssert;
+    
+//    maxAssert *= 1.0001;
+//    minAssert *= 0.9991;
+    
+    self.y_highestPrice = maxAssert;
+    
+    self.y_lowestPrice = minAssert;
     
     CGFloat minY = self.topAndBottomMargin;
     CGFloat maxY = self.frame.size.height - self.topAndBottomMargin;
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
     
     [self.needDrawKLinePositionModels removeAllObjects];
+    [self.MA5Positions removeAllObjects];
+    [self.MA10Positions removeAllObjects];
+    [self.MA20Positions removeAllObjects];
+    [self.MA30Positions removeAllObjects];
+    [self.MA60Positions removeAllObjects];
     
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        //由于 k 线数据，很多时候没有昨收，所以当天的昨收取前一天的收盘价
-        if (idx > 0) {
-            JT_KLineModel *preItem = kLineModels[idx -1];
-            kLineModel.referencePrice = preItem.closePrice;
-        }
+    
         CGFloat xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
         CGPoint openPoint = CGPointMake(xPosition, ABS(maxY - (kLineModel.openPrice.floatValue - minAssert)/unitValue));
         CGFloat closePointY = ABS(maxY - (kLineModel.closePrice.floatValue - minAssert)/unitValue);
@@ -419,6 +503,21 @@
         positionModel.openPoint = openPoint;
         positionModel.highPoint = highPoint;
         positionModel.lowPoint = lowPoint;
+        if ([JT_KLineConfig MA5]) {
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA5.floatValue - minAssert)/unitValue));
+        }
+        if ([JT_KLineConfig MA10]) {
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
+        }
+        if ([JT_KLineConfig MA20]) {
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
+        }
+        if ([JT_KLineConfig MA30]) {
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
+        }
+        if ([JT_KLineConfig MA60]) {
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
+        }
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
 }
