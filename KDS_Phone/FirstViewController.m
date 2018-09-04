@@ -30,9 +30,8 @@
     [self.view addSubview:sg];
     
     _kLineView = [JT_KLineView new];
-    _kLineView.MALineHeight = 10;
-    _kLineView.rightSelecterWidth = 50;
-    _kLineView.KlineChartTopMargin = 12;
+    _kLineView.rightSelecterWidth = 70;
+//    _kLineView.KlineChartTopMargin = 12;
     
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {

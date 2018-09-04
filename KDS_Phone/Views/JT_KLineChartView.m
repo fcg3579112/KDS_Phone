@@ -121,11 +121,6 @@
     if (self) {
         _needDrawKLineModels = @[].mutableCopy;
         _needDrawKLinePositionModels = @[].mutableCopy;
-        _MA5Positions = @[].mutableCopy;
-        _MA10Positions = @[].mutableCopy;
-        _MA20Positions = @[].mutableCopy;
-        _MA30Positions = @[].mutableCopy;
-        _MA60Positions = @[].mutableCopy;
         _needDrawStartIndex = 0;
         _oldContentOffsetX = 0;
     }
@@ -162,7 +157,7 @@
     if([keyPath isEqualToString:JT_ScrollViewContentOffset])
     {
         CGFloat difValue = ABS(self.parentScrollView.contentOffset.x - self.oldContentOffsetX);
-        if (difValue > [JT_KLineConfig kLineGap]) {
+        if (difValue > [JT_KLineConfig kLineShadeLineWidth]) {
             self.oldContentOffsetX = self.parentScrollView.contentOffset.x;
             [self drawView];
         }
@@ -237,18 +232,18 @@
     UIColor *markLineColor = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     CGContextSetStrokeColorWithColor(context, markLineColor.CGColor);
     CGContextSetLineWidth(context, 1);
-    CGPoint lowPoints[2];
-    lowPoints[0] = ((NSValue *)self.lowestItem.points[0]).CGPointValue;
-    lowPoints[1] = ((NSValue *)self.lowestItem.points[1]).CGPointValue;
-    CGPoint hightPoints[2];
-    hightPoints[0] = ((NSValue *)self.highestItem.points[0]).CGPointValue;
-    hightPoints[1] = ((NSValue *)self.highestItem.points[1]).CGPointValue;
-    CGContextStrokeLineSegments(context, lowPoints, 2);
-    CGContextStrokeLineSegments(context, hightPoints, 2);
-    //画最高点价格
-    [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
-    //画最低点价格
-    [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
+    if (self.lowestItem.index > 0 && self.lowestItem.index < self.needDrawKLineModels.count - 1) {
+        CGPoint lowPoints[2] = {((NSValue *)self.lowestItem.points[0]).CGPointValue , ((NSValue *)self.lowestItem.points[1]).CGPointValue};
+        CGContextStrokeLineSegments(context, lowPoints, 2);
+        //画最低点价格
+        [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
+    }
+    if (self.highestItem.index > 0 && self.highestItem.index < self.needDrawKLineModels.count - 1) {
+        CGPoint hightPoints[2] = {((NSValue *)self.highestItem.points[0]).CGPointValue, ((NSValue *)self.highestItem.points[1]).CGPointValue};
+        CGContextStrokeLineSegments(context, hightPoints, 2);
+        //画最高点价格
+        [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
+    }
 }
 
 /**
@@ -409,11 +404,6 @@
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
     
     [self.needDrawKLinePositionModels removeAllObjects];
-    [self.MA5Positions removeAllObjects];
-    [self.MA10Positions removeAllObjects];
-    [self.MA20Positions removeAllObjects];
-    [self.MA30Positions removeAllObjects];
-    [self.MA60Positions removeAllObjects];
     
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
     

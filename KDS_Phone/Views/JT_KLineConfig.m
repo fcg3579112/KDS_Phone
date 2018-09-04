@@ -20,6 +20,7 @@ static CGFloat JT_KLineShadeLineWidth = 1;
 
 static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
 
+static NSUInteger JT_KlineFQType = 0;
 
 static NSUInteger JT_MA5 = 5;
 
@@ -30,6 +31,8 @@ static NSUInteger JT_MA20 = 20;
 static NSUInteger JT_MA30 = 0;
 
 static NSUInteger JT_MA60 = 0;
+
+
 
 static BOOL JT_ShowHighAndLowPrice = YES;
 
@@ -76,6 +79,13 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 }
 + (void)setkLineShadeLineWidth:(CGFloat)width{
     JT_KLineShadeLineWidth = width;
+}
+
++ (NSUInteger)kLineFQType {
+    return JT_KlineFQType;
+}
++ (void)setkLineFQType:(NSUInteger)type {
+    JT_KlineFQType = type;
 }
 
 /**

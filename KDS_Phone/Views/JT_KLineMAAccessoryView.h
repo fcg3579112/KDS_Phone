@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class JT_KLineModel;
 @interface JT_KLineMAAccessoryView : UIView
+
+- (void)updateMAWith:(JT_KLineModel *)model;
 
 @end

@@ -15,6 +15,8 @@
 #import "JT_KLineTimeView.h"
 #import "JT_KLineConfig.h"
 #import "JT_KLineModel.h"
+#import "JT_KLineFQSegment.h"
+#import "JT_KLineIndicatorSegment.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -26,6 +28,10 @@
 @property (nonatomic, strong) JT_KLineVolumeView *klineVolume;
 // y 轴时间
 @property (nonatomic, strong) JT_KLineTimeView *klineTimeView;
+//复权 sgment
+@property (nonatomic ,strong) JT_KLineFQSegment *FQSegment;
+//成交量指标切换 segment
+@property (nonatomic ,strong) JT_KLineIndicatorSegment *volumeSegment;
 
 @property (nonatomic, strong) MASConstraint *kLineChartHeightConstraint;
 @property (nonatomic, strong) MASConstraint *kLineVolumeHeightConstraint;
@@ -55,6 +61,7 @@
 - (void)JT_KLineChartViewWithModels:(NSArray *)needDrawKLineModels positionModels:(NSArray *)needDrawKLinePositionModels {
     self.klineTimeView.needDrawKLineModels = needDrawKLineModels;
     self.klineTimeView.needDrawKLinePositionModels = needDrawKLinePositionModels;
+    [self.klineMA updateMAWith:needDrawKLineModels.lastObject];
 }
 
 #pragma mark UIScrollViewDelegaet
@@ -100,6 +107,8 @@
     [self.klineChart drawView];
 //    [self klineTimeView];
 //    [self klineVolume];
+    [self FQSegment];
+    [self volumeSegment];
 }
 
 #pragma mark 私有方法
@@ -173,7 +182,7 @@
         [self addSubview:_klineMA];
         [_klineMA mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(@0);
-            make.right.mas_equalTo(self.rightSelecterWidth);
+            make.right.mas_equalTo(- self.rightSelecterWidth);
             make.height.mas_equalTo(self.MALineHeight);
         }];
     }
@@ -220,16 +229,48 @@
     }
     return _klineVolume;
 }
+
+- (JT_KLineFQSegment *)FQSegment {
+    if (!_FQSegment) {
+        _FQSegment = [JT_KLineFQSegment new];
+        [self addSubview:_FQSegment];
+        [_FQSegment mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.equalTo(@(0));
+            make.width.equalTo(@(self.rightSelecterWidth));
+            make.height.equalTo(@(90));
+        }];
+    }
+    _FQSegment.backgroundColor = [UIColor orangeColor];
+    return _FQSegment;
+}
+
+- (JT_KLineIndicatorSegment *)volumeSegment {
+    if (!_volumeSegment) {
+        _volumeSegment = [JT_KLineIndicatorSegment new];
+        [self addSubview:_volumeSegment];
+        [_volumeSegment mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.right.equalTo(@(0));
+            make.width.equalTo(self.FQSegment);
+            make.top.equalTo(self.FQSegment.mas_bottom);
+        }];
+    }
+    _volumeSegment.backgroundColor = [UIColor greenColor];
+    return _volumeSegment;
+}
+
 - (CGFloat)klineViewRatio {
     return _klineViewRatio ? _klineViewRatio : 0.6;
 }
 - (CGFloat)MALineHeight {
-    return _MALineHeight ? _MALineHeight : 10;
+    return _MALineHeight ? _MALineHeight : 15;
 }
 - (CGFloat)timeViewHeight {
     return _timeViewHeight ? _timeViewHeight : 10;
 }
 - (CGFloat)indicatorViewHeight {
-    return _indicatorViewHeight ? _indicatorViewHeight : 10;
+    return _indicatorViewHeight ? _indicatorViewHeight : 15;
+}
+- (CGFloat)KlineChartTopMargin {
+    return _KlineChartTopMargin ? _KlineChartTopMargin : 12;
 }
 @end

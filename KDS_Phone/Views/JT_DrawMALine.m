@@ -24,9 +24,8 @@
 }
 - (void)drawMA5 {
     if ([JT_KLineConfig MA5]) {
-        UIColor *color = [UIColor orangeColor];
         CGContextSetLineWidth(_context, 1);
-        CGContextSetStrokeColorWithColor(_context, color.CGColor);
+        CGContextSetStrokeColorWithColor(_context, JT_KLineMA5Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @strongify(self)
@@ -41,9 +40,8 @@
 }
 - (void)drawMA10 {
     if ([JT_KLineConfig MA10]) {
-        UIColor *color = [UIColor orangeColor];
         CGContextSetLineWidth(_context, 1);
-        CGContextSetStrokeColorWithColor(_context, color.CGColor);
+        CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @strongify(self)
@@ -58,9 +56,8 @@
 }
 - (void)drawMA20 {
     if ([JT_KLineConfig MA20]) {
-        UIColor *color = [UIColor orangeColor];
         CGContextSetLineWidth(_context, 1);
-        CGContextSetStrokeColorWithColor(_context, color.CGColor);
+        CGContextSetStrokeColorWithColor(_context, JT_KLineMA20Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @strongify(self)
@@ -75,9 +72,8 @@
 }
 - (void)drawMA30 {
     if ([JT_KLineConfig MA30]) {
-        UIColor *color = [UIColor orangeColor];
         CGContextSetLineWidth(_context, 1);
-        CGContextSetStrokeColorWithColor(_context, color.CGColor);
+        CGContextSetStrokeColorWithColor(_context, JT_KLineMA30Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @strongify(self)
@@ -92,9 +88,8 @@
 }
 - (void)drawMA60 {
     if ([JT_KLineConfig MA60]) {
-        UIColor *color = [UIColor orangeColor];
         CGContextSetLineWidth(_context, 1);
-        CGContextSetStrokeColorWithColor(_context, color.CGColor);
+        CGContextSetStrokeColorWithColor(_context, JT_KLineMA60Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @strongify(self)

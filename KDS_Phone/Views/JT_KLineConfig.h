@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "JT_ColorManager.h"
 
 
 //时间轴字体大小
@@ -20,11 +21,37 @@
 #define JT_KLineY_AxisPriceFontSize          11
 
 
+// MA 字体大小
+#define JT_KLineMAFontSize                   11
+
+
+
 // k 线缩放手势最小边界
 #define JT_KLineChartScaleBound              0.03
 
 // 每次缩放的比例
-#define JT_KLineChartScaleFactor            0.03
+#define JT_KLineChartScaleFactor             0.03
+
+
+
+/**
+ 均线的颜色
+
+ @param @"" 白模的色值
+ @param @"" 夜模色值
+ @return UIColor
+ */
+
+#define JT_KLineMATitleColor                  JT_ColorDayOrNight(@"5E6678",@"858C9E")
+#define JT_KLineMA5Color                      JT_ColorDayOrNight(@"FF8000",@"FF8000")
+#define JT_KLineMA10Color                     JT_ColorDayOrNight(@"00A7F8",@"00A7F8")
+#define JT_KLineMA20Color                     JT_ColorDayOrNight(@"FF58FE",@"FF58FE")
+#define JT_KLineMA30Color                     JT_ColorDayOrNight(@"2577FF",@"2577FF")
+#define JT_KLineMA60Color                     JT_ColorDayOrNight(@"00C5B1",@"00C5B1")
+#define JT_KLineMABackgroundColor             JT_ColorDayOrNight(@"FFF7F3",@"32221C")
+
+
+
 
 #import "JT_TimelineAndKlineSegment.h"
 @interface JT_KLineConfig : NSObject
@@ -53,6 +80,15 @@
  */
 + (CGFloat)kLineShadeLineWidth;
 + (void)setkLineShadeLineWidth:(CGFloat)width;
+
+
+/**
+ 获取系统复权类型
+
+ @return 返回复权类型 0 不复权，1前复权，2后复权
+ */
++ (NSUInteger)kLineFQType;
++ (void)setkLineFQType:(NSUInteger)type;
 
 
 /**

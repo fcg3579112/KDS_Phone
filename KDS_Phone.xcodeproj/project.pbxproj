@@ -11,6 +11,8 @@
 		6642FF8F632CD8A7B4E1DA84 /* libPods-KDS_PhoneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */; };
 		B20298B42136EB22000CE57B /* JT_KLinePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B20298B32136EB22000CE57B /* JT_KLinePositionModel.m */; };
 		B220F976213E138D00DC40DA /* JT_DrawMALine.m in Sources */ = {isa = PBXBuildFile; fileRef = B220F975213E138D00DC40DA /* JT_DrawMALine.m */; };
+		B220F979213E5FF700DC40DA /* JT_KLineFQSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */; };
+		B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */; };
 		B23E683B2137C25D00E9EF3B /* JT_DrawCandleLine.m in Sources */ = {isa = PBXBuildFile; fileRef = B23E683A2137C25D00E9EF3B /* JT_DrawCandleLine.m */; };
 		B23E683E2137C71D00E9EF3B /* JT_KLineConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = B23E683D2137C71D00E9EF3B /* JT_KLineConfig.m */; };
 		B2676E0B213672B3002F47A0 /* JT_KLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E0A213672B3002F47A0 /* JT_KLineView.m */; };
@@ -72,6 +74,10 @@
 		B20298B32136EB22000CE57B /* JT_KLinePositionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLinePositionModel.m; sourceTree = "<group>"; };
 		B220F974213E138D00DC40DA /* JT_DrawMALine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_DrawMALine.h; sourceTree = "<group>"; };
 		B220F975213E138D00DC40DA /* JT_DrawMALine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_DrawMALine.m; sourceTree = "<group>"; };
+		B220F977213E5FF700DC40DA /* JT_KLineFQSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineFQSegment.h; sourceTree = "<group>"; };
+		B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineFQSegment.m; sourceTree = "<group>"; };
+		B220F97A213E603400DC40DA /* JT_KLineIndicatorSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineIndicatorSegment.h; sourceTree = "<group>"; };
+		B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineIndicatorSegment.m; sourceTree = "<group>"; };
 		B23E68392137C25D00E9EF3B /* JT_DrawCandleLine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_DrawCandleLine.h; sourceTree = "<group>"; };
 		B23E683A2137C25D00E9EF3B /* JT_DrawCandleLine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_DrawCandleLine.m; sourceTree = "<group>"; };
 		B23E683C2137C71D00E9EF3B /* JT_KLineConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineConfig.h; sourceTree = "<group>"; };
@@ -278,6 +284,10 @@
 				B220F975213E138D00DC40DA /* JT_DrawMALine.m */,
 				B2BEDF472138DF0500974491 /* JT_KLineTimeView.h */,
 				B2BEDF482138DF0500974491 /* JT_KLineTimeView.m */,
+				B220F977213E5FF700DC40DA /* JT_KLineFQSegment.h */,
+				B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */,
+				B220F97A213E603400DC40DA /* JT_KLineIndicatorSegment.h */,
+				B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */,
 				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
 				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
 				B293712A213D096800DE6974 /* JT_KLineModel.h */,
@@ -487,10 +497,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B220F979213E5FF700DC40DA /* JT_KLineFQSegment.m in Sources */,
 				B2676E0B213672B3002F47A0 /* JT_KLineView.m in Sources */,
 				B23E683E2137C71D00E9EF3B /* JT_KLineConfig.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
+				B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */,
 				B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */,
 				B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */,
 				B2BEDF492138DF0500974491 /* JT_KLineTimeView.m in Sources */,
