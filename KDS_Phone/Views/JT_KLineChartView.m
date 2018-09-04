@@ -12,8 +12,9 @@
 #import "KDS_UtilsMacro.h"
 #import "JT_KLinePositionModel.h"
 #import "JT_ColorManager.h"
-#import "JT_KLine.h"
+#import "JT_DrawCandleLine.h"
 #import "JT_KLineConfig.h"
+#import "JT_DrawMALine.h"
 #define JT_ScrollViewContentOffset   @"contentOffset"
 
 #define JT_kLineMarkLineWidth     23
@@ -201,60 +202,24 @@
         return;
     }
     
-    
-    
     //画蜡烛线
-    JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
+    JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
     kLine.maxY = self.frame.size.height - self.topAndBottomMargin;
-    
-    CGPoint MA_5[[JT_KLineConfig MA5] ? self.needDrawKLinePositionModels.count : 0];
-    CGPoint MA_10[[JT_KLineConfig MA10] ? self.needDrawKLinePositionModels.count : 0];
-    CGPoint MA_20[[JT_KLineConfig MA20] ? self.needDrawKLinePositionModels.count : 0];
-    CGPoint MA_30[[JT_KLineConfig MA30] ? self.needDrawKLinePositionModels.count : 0];
-    CGPoint MA_60[[JT_KLineConfig MA60] ? self.needDrawKLinePositionModels.count : 0];
-    //绘制均线
-    
-    NSUInteger idx = 0;
-    NSUInteger lastItemIndex = self.needDrawKLinePositionModels.count - 1;
-    for (JT_KLinePositionModel *kLinePositionModel in self.needDrawKLinePositionModels) {
-        
-        //画蜡烛线
-        kLine.kLinePositionModel = kLinePositionModel;
+    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        kLine.kLinePositionModel = obj;
         kLine.kLineModel = self.needDrawKLineModels[idx];
         [kLine drawCandleLine];
-        //画均线
-        if ([JT_KLineConfig MA5]) {
-            MA_5[idx] = kLinePositionModel.MA5;
-            if (idx == lastItemIndex) {
-               [self drawMAWith:MA_5 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor orangeColor]];
-            }
-        }
-        if ([JT_KLineConfig MA10]) {
-            MA_10[idx] = kLinePositionModel.MA10;
-            if (idx == lastItemIndex) {
-                [self drawMAWith:MA_10 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor greenColor]];
-            }
-        }
-        if ([JT_KLineConfig MA20]) {
-            MA_20[idx] = kLinePositionModel.MA20;
-            if (idx == lastItemIndex) {
-                [self drawMAWith:MA_20 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor yellowColor]];
-            }
-        }
-        if ([JT_KLineConfig MA30]) {
-            MA_30[idx] = kLinePositionModel.MA30;
-            if (idx == lastItemIndex) {
-                [self drawMAWith:MA_30 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor blueColor]];
-            }
-        }
-        if ([JT_KLineConfig MA60]) {
-            MA_60[idx] = kLinePositionModel.MA60;
-            if (idx == lastItemIndex) {
-                [self drawMAWith:MA_60 context:context count:self.needDrawKLinePositionModels.count lineColor:[UIColor blueColor]];
-            }
-        }
-        idx ++;
-    }
+    }];
+    
+    //画均线 5日、10日等
+    JT_DrawMALine *drawMALineUtil = [[JT_DrawMALine alloc] initWithContext:context];
+    drawMALineUtil.kLinePositionModels = self.needDrawKLinePositionModels;
+    [drawMALineUtil drawMA5];
+    [drawMALineUtil drawMA10];
+    [drawMALineUtil drawMA20];
+    [drawMALineUtil drawMA30];
+    [drawMALineUtil drawMA60];
+    
     //画Y轴上对应的价格坐标
     [self drawY_AxisPrice:rect context:context];
     
@@ -262,14 +227,6 @@
     if ([JT_KLineConfig showHighAndLowPrice]) {
         [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
     }
-}
-
-- (void)drawMAWith:(CGPoint *)points context:(CGContextRef)context count:(NSUInteger)count lineColor:(UIColor *)color{
-    CGContextSetStrokeColorWithColor(context, color.CGColor);
-    //画中间较宽的开收盘线段-实体线
-    CGContextSetLineWidth(context, 1);
-    //画线
-    CGContextStrokeLineSegments(context, points, count);
 }
 
 /**
@@ -507,16 +464,16 @@
             positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA5.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA10]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
+            positionModel.MA10 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA20]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
+            positionModel.MA20 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA30]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
+            positionModel.MA30 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA60]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
+            positionModel.MA60 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
         }
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];

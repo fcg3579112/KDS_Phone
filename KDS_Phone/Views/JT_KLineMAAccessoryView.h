@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JT_KLineMAView : UIView
+@interface JT_KLineMAAccessoryView : UIView
 
 @end

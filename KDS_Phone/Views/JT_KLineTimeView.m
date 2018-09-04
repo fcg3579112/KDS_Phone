@@ -6,14 +6,13 @@
 //  Copyright © 2018年 com.csc. All rights reserved.
 //
 
-#import "JT_KLineX_axisTimeView.h"
+#import "JT_KLineTimeView.h"
 #import "JT_KLinePositionModel.h"
-#import "JT_KLine.h"
+#import "JT_DrawCandleLine.h"
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
 #import "JT_KLineModel.h"
-#import "NSDate+KDS_Manage.h"
-@implementation JT_KLineX_axisTimeView
+@implementation JT_KLineTimeView
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -61,7 +60,7 @@
     }
     
     CGSize dateStringSize = [timeFormat sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize]}];
-    JT_KLine *kLine = [[JT_KLine alloc]initWithContext:context];
+    JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
     kLine.timeViewWidth = self.frame.size.width;
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
         JT_KLineModel *item  = self.needDrawKLineModels[idx];
@@ -79,11 +78,13 @@
 /**
  把时间 ‘’ 转成 ‘yyyy-MM-dd HH:mm’ 或 ‘yyyy-MM-dd ’
 
- @param dateString 需要格式的日期，只能是 ‘20180831131523’ 格式
+ @param dateString 需要格式的日期，只能是 ‘2018 0831 1315 23’ 格式
  @return 格式后的日期
  */
 - (NSString *)formateDateFrom:(NSString *)dateString {
-    
+    if (dateString.length < 12) {
+        return @"";
+    }
     JT_TimelineAndKlineItemType kLineType = [JT_KLineConfig kLineType];
     NSString *resultString = [NSString stringWithFormat:@"%@-%@-%@",[dateString substringWithRange:NSMakeRange(0, 4)],[dateString substringWithRange:NSMakeRange(4, 2)],[dateString substringWithRange:NSMakeRange(6, 2)]];
     

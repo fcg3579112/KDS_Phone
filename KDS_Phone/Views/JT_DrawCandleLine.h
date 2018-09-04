@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 @class JT_KLinePositionModel,JT_KLineModel;
-@interface JT_KLine : NSObject
+@interface JT_DrawCandleLine : NSObject
 /**
  *  K线的位置model
  */

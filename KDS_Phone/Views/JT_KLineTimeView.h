@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class JT_KLineModel,JT_KLinePositionModel;
-@interface JT_KLineX_axisTimeView : UIView
+@interface JT_KLineTimeView : UIView
 
 /**
  *  需要绘制的model数组

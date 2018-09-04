@@ -10,9 +10,9 @@
 #import "JT_KLineView.h"
 #import <Masonry.h>
 #import "JT_KLineChartView.h"
-#import "JT_KLineMAView.h"
+#import "JT_KLineMAAccessoryView.h"
 #import "JT_KLineVolumeView.h"
-#import "JT_KLineX_axisTimeView.h"
+#import "JT_KLineTimeView.h"
 #import "JT_KLineConfig.h"
 #import "JT_KLineModel.h"
 #import <MApi.h>
@@ -21,11 +21,11 @@
 //主视图，用于绘制蜡烛线及均线
 @property (nonatomic, strong) JT_KLineChartView *klineChart;
 //顶部显示 MA 均线
-@property (nonatomic, strong) JT_KLineMAView *klineMA;
+@property (nonatomic, strong) JT_KLineMAAccessoryView *klineMA;
 //成交量及各种指标视图
 @property (nonatomic, strong) JT_KLineVolumeView *klineVolume;
 // y 轴时间
-@property (nonatomic, strong) JT_KLineX_axisTimeView *klineTimeView;
+@property (nonatomic, strong) JT_KLineTimeView *klineTimeView;
 
 @property (nonatomic, strong) MASConstraint *kLineChartHeightConstraint;
 @property (nonatomic, strong) MASConstraint *kLineVolumeHeightConstraint;
@@ -167,9 +167,9 @@
     }
     return _scrollView;
 }
-- (JT_KLineMAView *)klineMA {
+- (JT_KLineMAAccessoryView *)klineMA {
     if (!_klineMA) {
-        _klineMA = [JT_KLineMAView new];
+        _klineMA = [JT_KLineMAAccessoryView new];
         [self addSubview:_klineMA];
         [_klineMA mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(@0);
@@ -179,9 +179,9 @@
     }
     return _klineMA;
 }
-- (JT_KLineX_axisTimeView *)klineTimeView {
+- (JT_KLineTimeView *)klineTimeView {
     if (!_klineTimeView) {
-        _klineTimeView = [JT_KLineX_axisTimeView new];
+        _klineTimeView = [JT_KLineTimeView new];
         [self.scrollView addSubview:_klineTimeView];
         [_klineTimeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.klineChart);

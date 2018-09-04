@@ -6,19 +6,19 @@
 //  Copyright © 2018年 com.csc. All rights reserved.
 //
 
-#import "JT_KLine.h"
+#import "JT_DrawCandleLine.h"
 #import "JT_KLinePositionModel.h"
 #import <MApi.h>
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
-@interface JT_KLine ()
+@interface JT_DrawCandleLine ()
 /**
  *  context
  */
 @property (nonatomic, assign) CGContextRef context;
 
 @end
-@implementation JT_KLine
+@implementation JT_DrawCandleLine
 
 #pragma mark 根据context初始化
 - (instancetype)initWithContext:(CGContextRef)context

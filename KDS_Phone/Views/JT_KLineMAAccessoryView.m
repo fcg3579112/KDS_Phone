@@ -6,9 +6,9 @@
 //  Copyright © 2018年 com.csc. All rights reserved.
 //
 
-#import "JT_KLineMAView.h"
+#import "JT_KLineMAAccessoryView.h"
 
-@implementation JT_KLineMAView
+@implementation JT_KLineMAAccessoryView
 
 /*
 // Only override drawRect: if you perform custom drawing.
