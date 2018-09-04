@@ -40,9 +40,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     //设置View的背景颜色
     
-    UIColor *backgroundColor = JT_ColorDayOrNight(@"FFFFFF", @"1B1C20");
     CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+    CGContextSetFillColorWithColor(context, JT_KLineViewBackgroundColor.CGColor);
     CGContextFillRect(context, rect);
     if (!self.needDrawKLineModels.count) {
         return;

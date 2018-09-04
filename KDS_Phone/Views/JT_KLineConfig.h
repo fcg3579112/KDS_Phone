@@ -11,6 +11,7 @@
 #import "JT_ColorManager.h"
 #import "JT_KLineEnum.h"
 
+#pragma mark 字体大小
 //时间轴字体大小
 #define JT_KLineX_AxisTimeFontSize           10
 
@@ -24,17 +25,29 @@
 // MA 字体大小
 #define JT_KLineMAFontSize                   11
 
+// 复权、指标切换 segment 字体大小
+#define JT_KLineSegmentFontSize              13
 
-
+#pragma mark k 线缩放
 // k 线缩放手势最小边界
 #define JT_KLineChartScaleBound              0.03
 
 // 每次缩放的比例
 #define JT_KLineChartScaleFactor             0.03
 
+#pragma mark 坐标、线宽、高、宽
 
 #define JT_KLineFQSegmentItemHight           40
 
+#define JT_KLineViewGridLineWidth            1.0
+
+
+#pragma mark 颜色相关
+
+//k 线视图背景颜色
+#define JT_KLineViewBackgroundColor          JT_ColorDayOrNight(@"FFFFFF", @"1B1C20")
+//k 线视图方格线颜色
+#define JT_KLineViewGridLineColor            JT_ColorDayOrNight(@"F5F7F9", @"14171C")
 
 
 /**
@@ -62,6 +75,10 @@
 
 
 #import "JT_KLineEnum.h"
+
+//成交量最大值
+extern NSUInteger JT_KLineHighestVolume;
+
 @interface JT_KLineConfig : NSObject
 /**
  *  K线图的宽度，默认20

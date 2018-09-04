@@ -17,6 +17,7 @@
 #import "JT_KLineModel.h"
 #import "JT_KLineFQSegment.h"
 #import "JT_KLineIndicatorSegment.h"
+#import "JT_KLineIndicatorAccessoryView.h"
 #import <MApi.h>
 @interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate,JT_KLineFQSegmentDelegate,JT_KLineIndicatorSegmentDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -32,6 +33,9 @@
 @property (nonatomic ,strong) JT_KLineFQSegment *FQSegment;
 //成交量指标切换 segment
 @property (nonatomic ,strong) JT_KLineIndicatorSegment *volumeSegment;
+
+//指标上方显示对应指标信息视图
+@property (nonatomic ,strong) JT_KLineIndicatorAccessoryView *indicatorAccessory;
 
 @property (nonatomic, strong) MASConstraint *kLineChartHeightConstraint;
 @property (nonatomic, strong) MASConstraint *kLineVolumeHeightConstraint;
@@ -123,6 +127,8 @@
     
     [self FQSegment];
     [self volumeSegment];
+    [self indicatorAccessory];
+    [self klineVolume];
 }
 
 #pragma mark 私有方法
@@ -224,16 +230,28 @@
     if (!_klineChart) {
         _klineChart = [JT_KLineChartView new];
         _klineChart.delegate = self;
-        _klineChart.klineViewRatio = self.klineViewRatio;
         _klineChart.topAndBottomMargin = self.KlineChartTopMargin;
         [self.scrollView addSubview:_klineChart];
         [_klineChart mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(self.scrollView);
-            make.height.equalTo(self.scrollView).multipliedBy(self.klineViewRatio);
+            make.height.equalTo(@(self.klineChartViewHeight));
             make.width.equalTo(self.scrollView);
         }];
     }
     return _klineChart;
+}
+- (JT_KLineIndicatorAccessoryView *)indicatorAccessory {
+    if (!_indicatorAccessory) {
+        _indicatorAccessory = [JT_KLineIndicatorAccessoryView new];
+        [self addSubview:_indicatorAccessory];
+        [_indicatorAccessory mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@0);
+            make.right.mas_equalTo(- self.rightSelecterWidth);
+            make.height.mas_equalTo(self.indicatorViewHeight);
+            make.top.equalTo(@(self.timeViewHeight + self.MALineHeight + self.klineChart.frame.size.height));
+        }];
+    }
+    return _indicatorAccessory;
 }
 - (JT_KLineVolumeView *)klineVolume {
     if (!_klineVolume) {
@@ -243,7 +261,7 @@
             make.left.equalTo(self.klineChart);
             make.top.equalTo(self.klineTimeView.mas_bottom).offset(self.indicatorViewHeight);
             make.width.equalTo(self.klineChart);
-            make.height.equalTo(self.scrollView).multipliedBy(1 - self.klineViewRatio).and.offset( - self.timeViewHeight - self.indicatorViewHeight);
+            make.height.equalTo(@(self.frame.size.height - self.MALineHeight - self.klineChartViewHeight - self.timeViewHeight -  self.indicatorViewHeight - self.bottomMargin));
         }];
     }
     return _klineVolume;
@@ -277,9 +295,10 @@
     return _volumeSegment;
 }
 
-- (CGFloat)klineViewRatio {
-    return _klineViewRatio ? _klineViewRatio : 0.6;
+- (CGFloat)klineChartViewHeight {
+    return _klineChartViewHeight ? _klineChartViewHeight : 200;
 }
+
 - (CGFloat)MALineHeight {
     return _MALineHeight ? _MALineHeight : 15;
 }

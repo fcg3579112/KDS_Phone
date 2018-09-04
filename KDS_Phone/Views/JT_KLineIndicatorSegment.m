@@ -73,10 +73,10 @@
     [self.items enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (idx == type) {
             obj.enabled = NO;
-            obj.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+            obj.titleLabel.font = [UIFont boldSystemFontOfSize:JT_KLineSegmentFontSize];
         } else {
             obj.enabled = YES;
-            obj.titleLabel.font = [UIFont systemFontOfSize:14];
+            obj.titleLabel.font = [UIFont systemFontOfSize:JT_KLineSegmentFontSize];
         }
     }];
 }

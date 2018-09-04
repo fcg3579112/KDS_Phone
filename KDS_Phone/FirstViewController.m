@@ -33,6 +33,7 @@
     _kLineView.rightSelecterWidth = 55;
     _kLineView.needZoomAndScroll = YES;
     _kLineView.delegate = self;
+    _kLineView.bottomMargin = 10;
     
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {

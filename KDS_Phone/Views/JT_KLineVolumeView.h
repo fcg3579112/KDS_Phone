@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JT_KLineEnum.h"
 @interface JT_KLineVolumeView : UIView
 
 @end

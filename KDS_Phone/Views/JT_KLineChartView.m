@@ -55,31 +55,6 @@
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 
 /**
- *  MA5位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA5Positions;
-
-/**
- *  MA10位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA10Positions;
-
-/**
- *  MA20位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA20Positions;
-
-/**
- *  MA30位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA30Positions;
-
-/**
- *  MA50位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*MA60Positions;
-
-/**
  *  需要绘制的model位置数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
@@ -95,15 +70,10 @@
  */
 @property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
 
-//y轴最高点，
-@property (nonatomic ,assign) CGFloat y_highestPrice;
-//y轴最高低点
-@property (nonatomic ,assign) CGFloat y_lowestPrice;
-
-//y轴最高点，
-@property (nonatomic ,strong) NSString *highestPrice;
-//y轴最高低点
-@property (nonatomic ,strong) NSString *lowestPrice;
+//y轴最高点坐标，
+@property (nonatomic ,assign) CGFloat highestPriceY;
+//y轴最高低点坐标
+@property (nonatomic ,assign) CGFloat lowestPriceY;
 
 @end
 @implementation JT_KLineChartView
@@ -173,21 +143,19 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     //设置View的背景颜色
-    UIColor *backgroundColor = JT_ColorDayOrNight(@"FFFFFF", @"1B1C20");
+    
     CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+    CGContextSetFillColorWithColor(context, JT_KLineViewBackgroundColor.CGColor);
     CGContextFillRect(context, rect);
     //画背景方格线
-    CGFloat lineWidth = 1.0;
-    UIColor *gridLineColor = JT_ColorDayOrNight(@"F5F7F9", @"14171C");
-    CGContextSetStrokeColorWithColor(context, gridLineColor.CGColor);
-    CGContextSetLineWidth(context, lineWidth * 2);
+    CGContextSetStrokeColorWithColor(context, JT_KLineViewGridLineColor.CGColor);
+    CGContextSetLineWidth(context, JT_KLineViewGridLineWidth * 2);
     // 画边框
     CGContextAddRect(context, rect);
     CGContextStrokePath(context);
     //画中间的3条横线
     CGFloat gap = rect.size.height / 4.f;
-    CGContextSetLineWidth(context, lineWidth);
+    CGContextSetLineWidth(context, JT_KLineViewGridLineWidth);
     for (int i = 1; i < 4; i ++) {
         CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + i * gap);
         CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + i * gap);
@@ -253,9 +221,9 @@
  @param context 上下文
  */
 - (void)drawY_AxisPrice:(CGRect)rect context:(CGContextRef)context {
-    NSString *highPrice = [NSString stringWithFormat:@"%.2f",self.y_highestPrice];
-    NSString *lowPrice = [NSString stringWithFormat:@"%.2f",self.y_lowestPrice];
-    NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(self.y_highestPrice + self.y_lowestPrice) / 2.f];
+    NSString *highPrice = [NSString stringWithFormat:@"%.2f",self.highestPriceY];
+    NSString *lowPrice = [NSString stringWithFormat:@"%.2f",self.lowestPriceY];
+    NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(self.highestPriceY + self.lowestPriceY) / 2.f];
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     UIFont *font = [UIFont systemFontOfSize:JT_KLineY_AxisPriceFontSize];
     
@@ -311,24 +279,50 @@
     
     //计算最小单位
     JT_KLineModel *firstModel = kLineModels.firstObject;
-    //找出屏幕上的最大值与最小值
     
-    //计算出5日均线、10日、均线等
+    //屏幕上Y轴的最大价格最小价格，包括 5、10 日均线等的价格
     __block CGFloat minAssert = firstModel.lowPrice.floatValue;
     __block CGFloat maxAssert = firstModel.highPrice.floatValue;
+    
+    //屏幕上最高点最低点价格,不包含 5、10 日均线的价格
+    __block CGFloat maxPrice = minAssert;
+    __block CGFloat minPrice = maxAssert;
 
+    //最高点最低点价格对应的索引
     __block NSInteger minIndex = 0;
     __block NSInteger maxIndex = 0;
+    
+    //屏幕上最大的成交量
+    
+    __block NSUInteger maxVolume = 0;
+    
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        // 计算屏幕上成交量的最大值
+        if (kLineModel.tradeVolume.integerValue > maxVolume) {
+            maxVolume = kLineModel.tradeVolume.integerValue;
+        }
+        
+        // 计算屏幕上最高点最低点价格,不包含 5、10 日均线的价格
+        if (kLineModel.highPrice.floatValue > maxPrice) {
+            maxPrice = kLineModel.highPrice.floatValue;
+            maxIndex = idx;
+        }
+        if (kLineModel.lowPrice.floatValue < minPrice) {
+            minPrice  = kLineModel.lowPrice.floatValue;
+            minIndex = idx;
+        }
+        
+        //计算屏幕上Y轴的最大价格最小价格，包括 5、10 日均线的价格
+        
         if(kLineModel.highPrice.floatValue > maxAssert)
         {
             maxAssert = kLineModel.highPrice.floatValue;
-            maxIndex = idx;
+            
         }
         if(kLineModel.lowPrice.floatValue < minAssert)
         {
             minAssert = kLineModel.lowPrice.floatValue;
-            minIndex = idx;
         }
         
         if ([JT_KLineConfig MA5]) {
@@ -389,15 +383,13 @@
     self.lowestItem.kLineModel = kLineModels[minIndex];
     self.lowestItem.index = minIndex;
     
-    self.y_highestPrice = maxAssert;
-    self.y_lowestPrice = minAssert;
+    JT_KLineHighestVolume = maxVolume;
     
 //    maxAssert *= 1.0001;
 //    minAssert *= 0.9991;
     
-    self.y_highestPrice = maxAssert;
-    
-    self.y_lowestPrice = minAssert;
+    self.highestPriceY = maxAssert;
+    self.lowestPriceY = minAssert;
     
     CGFloat minY = self.topAndBottomMargin;
     CGFloat maxY = self.frame.size.height - self.topAndBottomMargin;
@@ -465,6 +457,13 @@
         if ([JT_KLineConfig MA60]) {
             positionModel.MA60 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
         }
+        
+        //如果选中的是成交量
+        if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
+//            positionModel.volume  = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/
+//            positionModel.volume = CGPointMake(xPosition, ABS());
+        }
+        
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
 }

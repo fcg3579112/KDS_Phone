@@ -43,14 +43,22 @@
 @property (nonatomic ,assign ) CGFloat rightSelecterWidth;
 
 /**
- k 线视图所占的比率
+ k 线蜡烛线视图高度
  */
-@property (nonatomic ,assign) CGFloat klineViewRatio;
+@property (nonatomic ,assign) CGFloat klineChartViewHeight;
 
 /**
  中间时间区域的高度
  */
 @property (nonatomic ,assign) CGFloat timeViewHeight;
+
+
+/**
+ 成交量底部的Margin
+ */
+@property (nonatomic ,assign) CGFloat bottomMargin;
+
+
 
 
 /**

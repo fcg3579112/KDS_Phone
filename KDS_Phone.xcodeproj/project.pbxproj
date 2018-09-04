@@ -20,6 +20,7 @@
 		B2676E1121367C8E002F47A0 /* JT_KLineMAAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E1021367C8E002F47A0 /* JT_KLineMAAccessoryView.m */; };
 		B2676E14213680C0002F47A0 /* JT_KLineVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */; };
 		B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */; };
+		B27F7DC3213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */; };
 		B293712C213D096800DE6974 /* JT_KLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712B213D096800DE6974 /* JT_KLineModel.m */; };
 		B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */; };
 		B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2937131213D1F3400DE6974 /* TabOneViewController.m */; };
@@ -93,6 +94,8 @@
 		B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineVolumeView.m; sourceTree = "<group>"; };
 		B2676E1521369CE9002F47A0 /* UIView+KDS_FrameHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+KDS_FrameHelper.h"; sourceTree = "<group>"; };
 		B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+KDS_FrameHelper.m"; sourceTree = "<group>"; };
+		B27F7DC1213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineIndicatorAccessoryView.h; sourceTree = "<group>"; };
+		B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineIndicatorAccessoryView.m; sourceTree = "<group>"; };
 		B293712A213D096800DE6974 /* JT_KLineModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineModel.h; sourceTree = "<group>"; };
 		B293712B213D096800DE6974 /* JT_KLineModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineModel.m; sourceTree = "<group>"; };
 		B293712D213D0C7C00DE6974 /* JT_KLineGlobalVar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineGlobalVar.h; sourceTree = "<group>"; };
@@ -300,6 +303,8 @@
 				B2676E1021367C8E002F47A0 /* JT_KLineMAAccessoryView.m */,
 				B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */,
 				B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */,
+				B27F7DC1213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.h */,
+				B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */,
 				B20298B22136EB22000CE57B /* JT_KLinePositionModel.h */,
 				B20298B32136EB22000CE57B /* JT_KLinePositionModel.m */,
 			);
@@ -516,6 +521,7 @@
 				B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */,
 				B2676E1121367C8E002F47A0 /* JT_KLineMAAccessoryView.m in Sources */,
 				B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */,
+				B27F7DC3213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m in Sources */,
 				B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */,
 				B2676E0E2136797D002F47A0 /* JT_KLineChartView.m in Sources */,
 				B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */,
