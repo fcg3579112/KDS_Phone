@@ -13,7 +13,7 @@
 #import <Masonry.h>
 #import <MApi.h>
 #import "JT_KLineModel.h"
-@interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate>
+@interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate,JT_KLineViewDelegate>
 @property (nonatomic, strong)JT_KLineView *kLineView;
 @property (nonatomic ,strong) NSMutableArray <JT_KLineModel *>*allKLineModel;
 @end
@@ -30,8 +30,9 @@
     [self.view addSubview:sg];
     
     _kLineView = [JT_KLineView new];
-    _kLineView.rightSelecterWidth = 70;
-//    _kLineView.KlineChartTopMargin = 12;
+    _kLineView.rightSelecterWidth = 55;
+    _kLineView.needZoomAndScroll = YES;
+    _kLineView.delegate = self;
     
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -39,9 +40,7 @@
         make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
         make.height.mas_equalTo(kScreen_Width * 0.9);
     }];
-    
     [self requestKLineData];
-    
 }
 - (NSMutableArray *)allKLineModel {
     if (!_allKLineModel) {
@@ -72,6 +71,12 @@
 }
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType{
     
+}
+- (void)JT_KLineFQSegmentClick:(JT_KLineFQType)type {
+    NSLog(@"复权点击了");
+}
+- (void)JT_KLineIndicatorSegmentClick:(JT_KLineIndicatorType)type {
+    NSLog(@"指标点击了");
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

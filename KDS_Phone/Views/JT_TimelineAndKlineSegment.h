@@ -7,24 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef NS_ENUM(NSInteger,JT_DeviceOrientation) {
-    JT_DeviceOrientationVertical,
-    JT_DeviceOrientationHorizontal,
-};
-
-typedef NS_ENUM(NSInteger,JT_TimelineAndKlineItemType) {
-    JT_SegmentItemTypeTimeline = 0,
-    JT_SegmentItemTypeTimeline5Day,
-    JT_SegmentItemTypeKlineDay,
-    JT_SegmentItemTypeKlineWeek,
-    JT_SegmentItemTypeKlineMonth,
-    JT_SegmentItemTypeKline5Min,
-    JT_SegmentItemTypeKline15Min,
-    JT_SegmentItemTypeKline30Min,
-    JT_SegmentItemTypeKline60Min,
-};
-
+#import "JT_KLineEnum.h"
 @protocol JT_TimelineAndKlineSegmentDelegate <NSObject>
 @optional
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType;

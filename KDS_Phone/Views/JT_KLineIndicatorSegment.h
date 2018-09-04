@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JT_KLineEnum.h"
+@protocol JT_KLineIndicatorSegmentDelegate <NSObject>
+- (void)JT_KLineIndicatorSegmentSelectedType:(JT_KLineIndicatorType)type;
+@end
 @interface JT_KLineIndicatorSegment : UIView
 
+@property (nonatomic ,weak) id <JT_KLineIndicatorSegmentDelegate> delegate;
 @end

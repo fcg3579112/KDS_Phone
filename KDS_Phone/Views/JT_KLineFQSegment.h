@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface JT_KLineFQSegment : UIView
-
+#import "JT_KLineEnum.h"
+@protocol JT_KLineFQSegmentDelegate <NSObject>
+- (void)JT_KLineFQSegmentSelectedType:(JT_KLineFQType)type;
 @end
+@interface JT_KLineFQSegment : UIView
+- (void)update;
+@property (nonatomic ,weak) id <JT_KLineFQSegmentDelegate> delegate;
+@end
+

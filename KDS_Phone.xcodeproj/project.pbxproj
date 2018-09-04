@@ -78,6 +78,7 @@
 		B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineFQSegment.m; sourceTree = "<group>"; };
 		B220F97A213E603400DC40DA /* JT_KLineIndicatorSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineIndicatorSegment.h; sourceTree = "<group>"; };
 		B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineIndicatorSegment.m; sourceTree = "<group>"; };
+		B220F97D213E74E800DC40DA /* JT_KLineEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineEnum.h; sourceTree = "<group>"; };
 		B23E68392137C25D00E9EF3B /* JT_DrawCandleLine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_DrawCandleLine.h; sourceTree = "<group>"; };
 		B23E683A2137C25D00E9EF3B /* JT_DrawCandleLine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_DrawCandleLine.m; sourceTree = "<group>"; };
 		B23E683C2137C71D00E9EF3B /* JT_KLineConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineConfig.h; sourceTree = "<group>"; };
@@ -276,6 +277,7 @@
 				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
 				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
 				B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */,
+				B220F97D213E74E800DC40DA /* JT_KLineEnum.h */,
 				B23E683C2137C71D00E9EF3B /* JT_KLineConfig.h */,
 				B23E683D2137C71D00E9EF3B /* JT_KLineConfig.m */,
 				B23E68392137C25D00E9EF3B /* JT_DrawCandleLine.h */,

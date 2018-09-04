@@ -22,6 +22,8 @@ static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
 
 static NSUInteger JT_KlineFQType = 0;
 
+static JT_KLineIndicatorType JT_IndicatorType = JT_Volume;
+
 static NSUInteger JT_MA5 = 5;
 
 static NSUInteger JT_MA10 = 10;
@@ -80,12 +82,26 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 + (void)setkLineShadeLineWidth:(CGFloat)width{
     JT_KLineShadeLineWidth = width;
 }
-
+/**
+ 获取系统复权类型
+ 
+ @return 返回复权类型 0 不复权，1前复权，2后复权
+ */
 + (NSUInteger)kLineFQType {
     return JT_KlineFQType;
 }
 + (void)setkLineFQType:(NSUInteger)type {
     JT_KlineFQType = type;
+}
+
+/**
+ 获取选中的指标类型
+ */
++ (JT_KLineIndicatorType)kLineIndicatorType {
+    return JT_IndicatorType;
+}
++ (void)setkLineIndicatorType:(JT_KLineIndicatorType)type {
+    JT_IndicatorType = type;
 }
 
 /**

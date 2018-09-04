@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "JT_ColorManager.h"
-
+#import "JT_KLineEnum.h"
 
 //时间轴字体大小
 #define JT_KLineX_AxisTimeFontSize           10
@@ -33,6 +33,9 @@
 #define JT_KLineChartScaleFactor             0.03
 
 
+#define JT_KLineFQSegmentItemHight           40
+
+
 
 /**
  均线的颜色
@@ -50,10 +53,15 @@
 #define JT_KLineMA60Color                     JT_ColorDayOrNight(@"00C5B1",@"00C5B1")
 #define JT_KLineMABackgroundColor             JT_ColorDayOrNight(@"FFF7F3",@"32221C")
 
+//横屏复权按钮选中色
+#define JT_KLineFQSegmentSelectedColor        JT_ColorDayOrNight(@"6B727C", @"F2F2F5")
+//横屏复权按钮未选中色 
+#define JT_KLineFQSegmentUnSelectedColor      JT_ColorDayOrNight(@"B0B3BA", @"80878D")
+//复权、指标 segment 背景颜色
+#define JT_KLineSegmentBackgroundColor        JT_ColorDayOrNight(@"F3F4F8", @"1B1C20")
 
 
-
-#import "JT_TimelineAndKlineSegment.h"
+#import "JT_KLineEnum.h"
 @interface JT_KLineConfig : NSObject
 /**
  *  K线图的宽度，默认20
@@ -89,6 +97,13 @@
  */
 + (NSUInteger)kLineFQType;
 + (void)setkLineFQType:(NSUInteger)type;
+
+
+/**
+ 获取选中的指标类型
+ */
++ (JT_KLineIndicatorType)kLineIndicatorType;
++ (void)setkLineIndicatorType:(JT_KLineIndicatorType)type;
 
 
 /**

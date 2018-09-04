@@ -18,7 +18,7 @@
 #import "JT_KLineFQSegment.h"
 #import "JT_KLineIndicatorSegment.h"
 #import <MApi.h>
-@interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate>
+@interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate,JT_KLineFQSegmentDelegate,JT_KLineIndicatorSegmentDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
 //主视图，用于绘制蜡烛线及均线
 @property (nonatomic, strong) JT_KLineChartView *klineChart;
@@ -63,7 +63,20 @@
     self.klineTimeView.needDrawKLinePositionModels = needDrawKLinePositionModels;
     [self.klineMA updateMAWith:needDrawKLineModels.lastObject];
 }
+#pragma mark JT_KLineFQSegmentDelegate
 
+- (void)JT_KLineFQSegmentSelectedType:(JT_KLineFQType)type {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_KLineFQSegmentClick:)]) {
+        [self.delegate JT_KLineFQSegmentClick:type];
+    }
+}
+#pragma mark JT_KLineIndicatorSegmentDelegate
+
+- (void)JT_KLineIndicatorSegmentSelectedType:(JT_KLineIndicatorType)type {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_KLineIndicatorSegmentClick:)]) {
+        [self.delegate JT_KLineIndicatorSegmentClick:type];
+    }
+}
 #pragma mark UIScrollViewDelegaet
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
@@ -107,6 +120,7 @@
     [self.klineChart drawView];
 //    [self klineTimeView];
 //    [self klineVolume];
+    
     [self FQSegment];
     [self volumeSegment];
 }
@@ -146,6 +160,7 @@
     [self p_drawKLineView];
     
 }
+
 #pragma mark Getter
 
 - (UIScrollView *)scrollView
@@ -159,14 +174,18 @@
         _scrollView.maximumZoomScale = 1.0f;
         _scrollView.delegate = self;
         _scrollView.bounces = NO;
+        _scrollView.scrollEnabled = NO;
         [self addSubview:_scrollView];
-        //缩放手势
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGestureEvent:)];
-        [_scrollView addGestureRecognizer:pinchGesture];
-        
+        if (self.needZoomAndScroll) {
+            //缩放手势
+            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGestureEvent:)];
+            [_scrollView addGestureRecognizer:pinchGesture];
+            _scrollView.scrollEnabled = YES;
+        }
         //长按手势
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressGestureEvent:)];
         [_scrollView addGestureRecognizer:longPressGesture];
+        
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.bottom.mas_equalTo(0);
             make.top.mas_equalTo(self.MALineHeight);
@@ -233,20 +252,21 @@
 - (JT_KLineFQSegment *)FQSegment {
     if (!_FQSegment) {
         _FQSegment = [JT_KLineFQSegment new];
+        _FQSegment.delegate = self;
         [self addSubview:_FQSegment];
         [_FQSegment mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.right.equalTo(@(0));
             make.width.equalTo(@(self.rightSelecterWidth));
-            make.height.equalTo(@(90));
+            make.height.equalTo(@(3 * JT_KLineFQSegmentItemHight));
         }];
     }
-    _FQSegment.backgroundColor = [UIColor orangeColor];
     return _FQSegment;
 }
 
 - (JT_KLineIndicatorSegment *)volumeSegment {
     if (!_volumeSegment) {
         _volumeSegment = [JT_KLineIndicatorSegment new];
+        _volumeSegment.delegate = self;
         [self addSubview:_volumeSegment];
         [_volumeSegment mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.right.equalTo(@(0));
@@ -254,7 +274,6 @@
             make.top.equalTo(self.FQSegment.mas_bottom);
         }];
     }
-    _volumeSegment.backgroundColor = [UIColor greenColor];
     return _volumeSegment;
 }
 
