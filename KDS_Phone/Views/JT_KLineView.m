@@ -360,6 +360,8 @@
         //如果选中的是成交量
         if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
             positionModel.volume = CGPointMake(xPosition, ABS(maxVolumeY - ([kLineModel.tradeVolume integerValue] / ( maxVolume / maxVolumeY ))));
+            positionModel.volumeMA5 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA5 / ( maxVolume / maxVolumeY )));
+            positionModel.volumeMA10 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA10 / ( maxVolume / maxVolumeY )));
         }
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
@@ -434,7 +436,7 @@
  画指标显示视图
  */
 - (void)p_drawIndicatorAccessory {
-    self.indicatorAccessory;
+    [self.indicatorAccessory updateWith:self.needDrawKLineModels.firstObject];
 }
 
 /**
@@ -619,6 +621,7 @@
 - (JT_KLineIndicatorAccessoryView *)indicatorAccessory {
     if (!_indicatorAccessory) {
         _indicatorAccessory = [JT_KLineIndicatorAccessoryView new];
+        _indicatorAccessory.volumeButtonEnable = self.volumeButtonEnable;
         [self addSubview:_indicatorAccessory];
         [_indicatorAccessory mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(@0);

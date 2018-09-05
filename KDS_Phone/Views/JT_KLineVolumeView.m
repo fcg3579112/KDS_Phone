@@ -10,6 +10,7 @@
 #import "JT_KLineConfig.h"
 #import "JT_KLinePositionModel.h"
 #import "JT_DrawCandleLine.h"
+#import "JT_DrawMALine.h"
 @implementation JT_KLineVolumeView
 
 /*
@@ -51,13 +52,27 @@
     CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + gap);
     CGContextStrokePath(context);
     
-    //画蜡烛线
-    JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
-    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        kLine.kLinePositionModel = obj;
-        kLine.maxY = rect.size.height;
-        [kLine drawVolume];
-    }];
+    //画成交量
+    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
+        //画蜡烛线
+        JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
+        [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            kLine.kLinePositionModel = obj;
+            kLine.maxY = rect.size.height;
+            [kLine drawVolume];
+        }];
+        
+        //画成交量均线
+        [self drawAllVolumeMAline:context];
+    }
+}
+
+////画成交量均线 5日、10日等
+- (void)drawAllVolumeMAline:(CGContextRef)context {
+    JT_DrawMALine *drawMALineUtil = [[JT_DrawMALine alloc] initWithContext:context];
+    drawMALineUtil.kLinePositionModels = self.needDrawKLinePositionModels;
+    [drawMALineUtil drawVolumeMA5];
+    [drawMALineUtil drawVolumeMA10];
 }
 
 @end

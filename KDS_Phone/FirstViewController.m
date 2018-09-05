@@ -34,6 +34,7 @@
     _kLineView.needZoomAndScroll = YES;
     _kLineView.delegate = self;
     _kLineView.bottomMargin = 10;
+    _kLineView.volumeButtonEnable = YES;
     
     
     [self.view addSubview:_kLineView];

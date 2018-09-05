@@ -42,7 +42,7 @@
  */
 @property (nonatomic ,weak)  NSMutableArray <JT_KLineModel *>*allKLineModel;
 
-//5日均线 ,MA5 只是默认设置计算5天，对应位置可以设置为 7 日、15日均线等，下同
+//收盘价均线
 @property (nonatomic ,strong)NSString *MA5;
 //10日均线
 @property (nonatomic ,strong)NSString *MA10;
@@ -52,6 +52,11 @@
 @property (nonatomic ,strong)NSString *MA30;
 //60日均线
 @property (nonatomic ,strong)NSString *MA60;
+
+
+//成交量均线
+@property (nonatomic ,assign)NSUInteger volumeMA5;
+@property (nonatomic ,assign)NSUInteger volumeMA10;
 
 //上证 k 线model 转 JT_KLineModel
 

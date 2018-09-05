@@ -23,4 +23,8 @@
 
 //成交量
 @property (nonatomic ,assign) CGPoint volume;
+
+//成交量均线
+@property (nonatomic ,assign) CGPoint volumeMA5;
+@property (nonatomic ,assign) CGPoint volumeMA10;
 @end

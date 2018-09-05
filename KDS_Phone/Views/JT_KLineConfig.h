@@ -28,6 +28,10 @@
 // 复权、指标切换 segment 字体大小
 #define JT_KLineSegmentFontSize              13
 
+//指标区成交量按钮字体大小
+
+#define JT_KLineVolumeButtonFontSize         10
+
 #pragma mark k 线缩放
 // k 线缩放手势最小边界
 #define JT_KLineChartScaleBound              0.03
@@ -47,6 +51,9 @@
 #define JT_KLineFQSegmentItemHight           40
 
 #define JT_KLineViewGridLineWidth            1.0
+
+//画MA均线画笔宽度
+#define JT_KLineMALineWith                   1.0
 
 
 #pragma mark 颜色相关
@@ -79,6 +86,13 @@
 #define JT_KLineFQSegmentUnSelectedColor      JT_ColorDayOrNight(@"B0B3BA", @"80878D")
 //复权、指标 segment 背景颜色
 #define JT_KLineSegmentBackgroundColor        JT_ColorDayOrNight(@"F3F4F8", @"1B1C20")
+
+// 指标区成交量按钮背景色
+#define JT_KLineVolumeButtonBackgroundColor   JT_ColorDayOrNight(@"EEF0F6", @"292D38")
+// 指标区成交量按钮title颜色
+#define JT_KLineVolumeButtonTitleColor        JT_ColorDayOrNight(@"767C8A", @"B2B6BF")
+// 指标区成交量按钮三角颜色
+#define JT_KLineVolumeButtonTriangleColor     JT_ColorDayOrNight(@"5C6778", @"5B667A")
 
 
 #import "JT_KLineEnum.h"
@@ -180,5 +194,9 @@
 + (NSUInteger)MA60;
 
 + (void)setMA60:(NSUInteger)ma;
+
+//当前显示的指数的类别名称
++ (NSString *)currentIndicatorTitle;
+
 
 @end

@@ -52,7 +52,10 @@
 @property (nonatomic ,assign) CGFloat bottomMargin;
 
 
-
+/**
+ 成交量按钮是否可以点击,如果可以点击，需要显示右边的三角
+ */
+@property (nonatomic ,assign) BOOL volumeButtonEnable;
 
 /**
  下部指标选择区高度

@@ -24,7 +24,7 @@
 }
 - (void)drawMA5 {
     if ([JT_KLineConfig MA5]) {
-        CGContextSetLineWidth(_context, 1);
+        CGContextSetLineWidth(_context, JT_KLineMALineWith);
         CGContextSetStrokeColorWithColor(_context, JT_KLineMA5Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -40,7 +40,7 @@
 }
 - (void)drawMA10 {
     if ([JT_KLineConfig MA10]) {
-        CGContextSetLineWidth(_context, 1);
+        CGContextSetLineWidth(_context, JT_KLineMALineWith);
         CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -56,7 +56,7 @@
 }
 - (void)drawMA20 {
     if ([JT_KLineConfig MA20]) {
-        CGContextSetLineWidth(_context, 1);
+        CGContextSetLineWidth(_context, JT_KLineMALineWith);
         CGContextSetStrokeColorWithColor(_context, JT_KLineMA20Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -72,7 +72,7 @@
 }
 - (void)drawMA30 {
     if ([JT_KLineConfig MA30]) {
-        CGContextSetLineWidth(_context, 1);
+        CGContextSetLineWidth(_context, JT_KLineMALineWith);
         CGContextSetStrokeColorWithColor(_context, JT_KLineMA30Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -88,7 +88,7 @@
 }
 - (void)drawMA60 {
     if ([JT_KLineConfig MA60]) {
-        CGContextSetLineWidth(_context, 1);
+        CGContextSetLineWidth(_context, JT_KLineMALineWith);
         CGContextSetStrokeColorWithColor(_context, JT_KLineMA60Color.CGColor);
         @weakify(self)
         [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -101,5 +101,34 @@
         }];
         CGContextStrokePath(self.context);
     }
+}
+
+- (void)drawVolumeMA5 {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA5Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.volumeMA5.x, obj.volumeMA5.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.volumeMA5.x, obj.volumeMA5.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
+- (void)drawVolumeMA10 {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.volumeMA10.x, obj.volumeMA10.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.volumeMA10.x, obj.volumeMA10.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
 }
 @end

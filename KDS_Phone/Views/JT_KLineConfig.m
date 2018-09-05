@@ -179,4 +179,36 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 + (void)setShowHighAndLowPrice:(BOOL)show {
     JT_ShowHighAndLowPrice = show;
 }
+
+//当前显示的指数的类别名称
++ (NSString *)currentIndicatorTitle {
+    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
+        return @"成交量";
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
+        return @"KDJ";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
+        return @"MACD";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
+        return @"BOLL";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
+        return @"RSI";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
+        return @"DMA";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
+        return @"DMI";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
+        return @"BIAS";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CCI) {
+        return @"CCI";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_WR) {
+        return @"WR";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_VR) {
+        return @"VR";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CR) {
+        return @"CR";
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_OBV) {
+        return @"OBV";
+    }
+    return @"";
+}
 @end

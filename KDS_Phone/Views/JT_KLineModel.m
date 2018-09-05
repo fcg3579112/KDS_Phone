@@ -112,4 +112,27 @@
     }
 }
 
+- (NSUInteger)volumeMA5 {
+    return [self calculateVolumeMAValue:5];
+}
+- (NSUInteger)volumeMA10 {
+    return [self calculateVolumeMAValue:10];
+}
+- (NSUInteger)calculateVolumeMAValue:(NSUInteger)days {
+    if (self.index + 1 >= days) {
+        __block NSUInteger total = 0;
+        NSArray <JT_KLineModel *>*subArray = [self.allKLineModel subarrayWithRange:NSMakeRange(self.index - days + 1, days)];
+        [subArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            total += [obj.tradeVolume integerValue];
+        }];
+        return total / days;
+    } else {
+        __block NSUInteger total = 0;
+        NSArray <JT_KLineModel *>*subArray = [self.allKLineModel subarrayWithRange:NSMakeRange(0, self.index + 1)];
+        [subArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            total += [obj.tradeVolume integerValue];
+        }];
+        return total / (self.index + 1);
+    }
+}
 @end

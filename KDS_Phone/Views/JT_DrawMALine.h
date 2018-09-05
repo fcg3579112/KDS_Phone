@@ -20,10 +20,16 @@
  *  根据context初始化
  */
 - (instancetype)initWithContext:(CGContextRef)context;
+
+//画收盘价均线
 - (void)drawMA5;
 - (void)drawMA10;
 - (void)drawMA20;
 - (void)drawMA30;
 - (void)drawMA60;
 
+
+//画成交量均线
+- (void)drawVolumeMA5;
+- (void)drawVolumeMA10;
 @end
