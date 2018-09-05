@@ -36,6 +36,10 @@
 
 @property (nonatomic ,assign) NSUInteger index;
 
+
+/**
+ 为了计算均值，这个属性值是必须要设置的
+ */
 @property (nonatomic ,weak)  NSMutableArray <JT_KLineModel *>*allKLineModel;
 
 //5日均线 ,MA5 只是默认设置计算5天，对应位置可以设置为 7 日、15日均线等，下同

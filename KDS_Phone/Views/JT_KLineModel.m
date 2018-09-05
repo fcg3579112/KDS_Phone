@@ -31,7 +31,12 @@
 - (NSUInteger) index {
     return [self.allKLineModel indexOfObject:self];
 }
-
+- (NSMutableArray <JT_KLineModel *>*)allKLineModel {
+#if DEBUG
+    NSAssert(_allKLineModel != nil, @"JT_KLineModel 未设置 allKLineModel 属性");
+#endif
+    return _allKLineModel;
+}
 - (NSString *)MA5 {
     if ([JT_KLineConfig MA5]) {
         return [self calculateMAValue:[JT_KLineConfig MA5]];
@@ -71,7 +76,12 @@
         return nil;
     }
 }
-
+- (BOOL)needShowTime {
+    if (self.index % 30 == 0) {
+        return YES;
+    }
+    return NO;
+}
 - (NSString *)calculateMAValue:(NSUInteger)days {
     if (self.index + 1 >= days) {
         __block CGFloat total = 0;

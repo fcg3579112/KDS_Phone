@@ -39,10 +39,6 @@ static NSUInteger JT_MA60 = 0;
 static BOOL JT_ShowHighAndLowPrice = YES;
 
 
-
-//成交量最大值
-NSUInteger JT_KLineHighestVolume = 0;
-
 @implementation JT_KLineConfig
 /**
  *  K线图的宽度，默认20

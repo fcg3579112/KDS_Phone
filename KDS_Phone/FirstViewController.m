@@ -66,7 +66,6 @@
                 model.allKLineModel = self.allKLineModel;
             }];
             self.kLineView.kLineModels = self.allKLineModel;
-            [self.kLineView drawChart];
         }
     }];
 }

@@ -65,9 +65,9 @@
         JT_KLineModel *item  = self.needDrawKLineModels[idx];
         if (item.needShowTime) {
             kLine.kLinePositionModel = kLinePositionModel;
-            kLine.kLineModel = self.needDrawKLineModels[idx];
             kLine.timeSize = dateStringSize;
-            kLine.timeString = [self formateDateFrom:kLine.kLineModel.datetime];
+            JT_KLineModel *model = self.needDrawKLineModels[idx];
+            kLine.timeString = [self formateDateFrom:model.datetime];
             [kLine drawDateTime];
         }
     }];

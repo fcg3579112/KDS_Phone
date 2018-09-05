@@ -34,7 +34,7 @@
 - (UIColor *)drawCandleLine
 {
     //判断数据是否为空
-    if(!self.kLineModel || !self.context || !self.kLinePositionModel)
+    if(!self.context || !self.kLinePositionModel)
     {
         return UIColor.clearColor;
     }

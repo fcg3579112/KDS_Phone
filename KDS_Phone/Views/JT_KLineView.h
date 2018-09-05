@@ -19,13 +19,6 @@
  */
 - (void)JT_KLineFQSegmentClick:(JT_KLineFQType)type;
 
-/**
- 指标选项点击
-
- @param type 指标类型
- */
-- (void)JT_KLineIndicatorSegmentClick:(JT_KLineIndicatorType)type;
-@optional
 @end
 @interface JT_KLineView : UIView
 
@@ -73,7 +66,8 @@
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
 
-- (void)drawChart;
+
+- (void)reDrawAllView;
 
 @end
 

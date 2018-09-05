@@ -14,12 +14,6 @@
  *  K线的位置model
  */
 @property (nonatomic, strong) JT_KLinePositionModel *kLinePositionModel;
-
-/**
- *  k线的model
- */
-@property (nonatomic, strong) JT_KLineModel *kLineModel;
-
 /**
  *  最大的Y
  */

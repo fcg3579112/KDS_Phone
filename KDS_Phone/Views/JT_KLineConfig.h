@@ -37,6 +37,13 @@
 
 #pragma mark 坐标、线宽、高、宽
 
+// 最高点最低点斜线 X 偏移量
+#define JT_kLineMarkLineWidth                23
+// 最高点最低点斜线 Y 偏移量
+#define JT_KLineMarkLineHeight               6
+
+
+//复权 item 的高度
 #define JT_KLineFQSegmentItemHight           40
 
 #define JT_KLineViewGridLineWidth            1.0
@@ -75,9 +82,6 @@
 
 
 #import "JT_KLineEnum.h"
-
-//成交量最大值
-extern NSUInteger JT_KLineHighestVolume;
 
 @interface JT_KLineConfig : NSObject
 /**
