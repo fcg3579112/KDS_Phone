@@ -22,7 +22,7 @@
         _highPrice = model.highPrice;
         _lowPrice = model.lowPrice;
         _closePrice = model.closePrice;
-        _tradeVolume = model.tradeVolume;
+        _tradeVolume = [model.tradeVolume integerValue];
         _averagePrice = model.averagePrice;
         _referencePrice = model.referencePrice;
         _amount = model.amount;
@@ -88,6 +88,12 @@
         return nil;
     }
 }
+//- (JT_KLineModel *)PreModel {
+//    if (self.index > 0) {
+//        return self.allKLineModel[self.index -1];
+//    }
+//    return nil;
+//}
 - (BOOL)needShowTime {
     if (self.index % 30 == 0) {
         return YES;
@@ -123,14 +129,14 @@
         __block NSUInteger total = 0;
         NSArray <JT_KLineModel *>*subArray = [self.allKLineModel subarrayWithRange:NSMakeRange(self.index - days + 1, days)];
         [subArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            total += [obj.tradeVolume integerValue];
+            total += obj.tradeVolume;
         }];
         return total / days;
     } else {
         __block NSUInteger total = 0;
         NSArray <JT_KLineModel *>*subArray = [self.allKLineModel subarrayWithRange:NSMakeRange(0, self.index + 1)];
         [subArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            total += [obj.tradeVolume integerValue];
+            total += obj.tradeVolume;
         }];
         return total / (self.index + 1);
     }

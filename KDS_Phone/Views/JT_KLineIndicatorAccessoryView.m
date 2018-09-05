@@ -141,12 +141,11 @@
     [self.items enumerateObjectsUsingBlock:^(UILabel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.text = @"";
     }];
-    
     if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-        ((UILabel *)_items[0]).text = [self formateVolume:model.volumeMA5];
-        ((UILabel *)_items[1]).text = [self formateVolume:model.volumeMA10];
-        ((UILabel *)_items[2]);
-        ((UILabel *)_items[3]);
+        ((UILabel *)_items[0]).text = @"VOL(5,10):";
+        ((UILabel *)_items[1]).text = [self formateVolume:model.tradeVolume];
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA5:%@",[self formateVolume:model.volumeMA5]];
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"MA10:%@",[self formateVolume:model.volumeMA10]];
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {

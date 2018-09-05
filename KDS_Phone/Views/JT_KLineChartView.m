@@ -17,10 +17,6 @@
 #import "JT_DrawMALine.h"
 #import "JT_PriceMarkModel.h"
 @interface JT_KLineChartView ()
-/**
- *  旧的contentoffset值
- */
-@property (nonatomic, assign) CGFloat oldContentOffsetX;
 
 @end
 

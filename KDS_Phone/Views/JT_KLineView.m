@@ -195,8 +195,8 @@
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         // 计算屏幕上成交量的最大值
-        if (kLineModel.tradeVolume.integerValue > maxVolume) {
-            maxVolume = kLineModel.tradeVolume.integerValue;
+        if (kLineModel.tradeVolume > maxVolume) {
+            maxVolume = kLineModel.tradeVolume;
         }
         
         // 计算屏幕上最高点最低点价格,不包含 5、10 日均线的价格
@@ -359,7 +359,7 @@
         
         //如果选中的是成交量
         if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-            positionModel.volume = CGPointMake(xPosition, ABS(maxVolumeY - ([kLineModel.tradeVolume integerValue] / ( maxVolume / maxVolumeY ))));
+            positionModel.volume = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.tradeVolume / ( maxVolume / maxVolumeY )));
             positionModel.volumeMA5 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA5 / ( maxVolume / maxVolumeY )));
             positionModel.volumeMA10 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA10 / ( maxVolume / maxVolumeY )));
         }

@@ -23,7 +23,7 @@
 
 
 // MA 字体大小
-#define JT_KLineMAFontSize                   11
+#define JT_KLineMAFontSize                   10
 
 // 复权、指标切换 segment 字体大小
 #define JT_KLineSegmentFontSize              13

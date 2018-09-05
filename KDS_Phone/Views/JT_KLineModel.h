@@ -20,7 +20,7 @@
 /** 收盘价 */
 @property (nonatomic, copy) NSString *closePrice;
 /** 交易量 */
-@property (nonatomic, copy) NSString *tradeVolume;
+@property (nonatomic, assign) NSUInteger tradeVolume;
 /** 均价 */
 @property (nonatomic, copy) NSString *averagePrice;
 /** 昨收价 */
@@ -36,6 +36,7 @@
 
 @property (nonatomic ,assign) NSUInteger index;
 
+@property (nonatomic ,weak) JT_KLineModel *PreModel;
 
 /**
  为了计算均值，这个属性值是必须要设置的
