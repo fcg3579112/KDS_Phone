@@ -24,7 +24,7 @@
 
 #define JT_ScrollViewContentOffset   @"contentOffset"
 
-@interface JT_KLineView () <UIScrollViewDelegate,JT_KLineChartViewDelegate,JT_KLineFQSegmentDelegate,JT_KLineIndicatorSegmentDelegate>
+@interface JT_KLineView () <UIScrollViewDelegate,JT_KLineFQSegmentDelegate,JT_KLineIndicatorSegmentDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
 //主视图，用于绘制蜡烛线及均线
 @property (nonatomic, strong) JT_KLineChartView *klineChart;
@@ -50,6 +50,12 @@
  *  需要绘制的model位置数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+
+
+/**
+ 成交量视图高度
+ */
+@property (nonatomic ,assign) CGFloat volumeViewHeight;
 
 /**
  最高价model
@@ -81,6 +87,7 @@
 @property (nonatomic, assign) CGFloat oldContentOffsetX;
 
 @end
+
 
 @implementation JT_KLineView
 
@@ -278,17 +285,22 @@
     self.highestPriceY = maxAssert;
     self.lowestPriceY = minAssert;
     
-    CGFloat minY = self.KlineChartTopMargin;
-    CGFloat maxY = self.klineChart.frame.size.height - self.KlineChartTopMargin;
-    CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
+    // 蜡烛线视图，最大与最小 Y 值
+    CGFloat minKLineY = self.KlineChartTopMargin;
+    CGFloat maxKLineY = self.klineChart.frame.size.height - self.KlineChartTopMargin;
+    CGFloat unitValue = (maxAssert - minAssert)/(maxKLineY - minKLineY);
+    
+    //成交量视图最大 Y 值
+
+    CGFloat maxVolumeY = self.volumeViewHeight;
     
     [self.needDrawKLinePositionModels removeAllObjects];
     
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGFloat xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
-        CGPoint openPoint = CGPointMake(xPosition, ABS(maxY - (kLineModel.openPrice.floatValue - minAssert)/unitValue));
-        CGFloat closePointY = ABS(maxY - (kLineModel.closePrice.floatValue - minAssert)/unitValue);
+        CGPoint openPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.openPrice.floatValue - minAssert)/unitValue));
+        CGFloat closePointY = ABS(maxKLineY - (kLineModel.closePrice.floatValue - minAssert)/unitValue);
         
         //如果开盘价与收盘价很接近，蜡烛线的高度就无法看清，所以做下处理，让蜡烛线的高度有一个最小值  JT_KLineMinHeight
         if (ABS(closePointY - openPoint.y) < JT_KLineMinHeight) {
@@ -322,35 +334,33 @@
             }
         }
         CGPoint closePoint = CGPointMake(xPosition, closePointY);
-        CGPoint highPoint = CGPointMake(xPosition, ABS(maxY - (kLineModel.highPrice.floatValue - minAssert)/unitValue));
-        CGPoint lowPoint = CGPointMake(xPosition, ABS(maxY - (kLineModel.lowPrice.floatValue - minAssert)/unitValue));
+        CGPoint highPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.highPrice.floatValue - minAssert)/unitValue));
+        CGPoint lowPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.lowPrice.floatValue - minAssert)/unitValue));
         JT_KLinePositionModel *positionModel = [JT_KLinePositionModel new];
         positionModel.closePoint = closePoint;
         positionModel.openPoint = openPoint;
         positionModel.highPoint = highPoint;
         positionModel.lowPoint = lowPoint;
         if ([JT_KLineConfig MA5]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA5.floatValue - minAssert)/unitValue));
+            positionModel.MA5 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA5.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA10]) {
-            positionModel.MA10 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
+            positionModel.MA10 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA20]) {
-            positionModel.MA20 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
+            positionModel.MA20 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA30]) {
-            positionModel.MA30 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
+            positionModel.MA30 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
         }
         if ([JT_KLineConfig MA60]) {
-            positionModel.MA60 = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
+            positionModel.MA60 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
         }
         
         //如果选中的是成交量
         if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-            //            positionModel.volume  = CGPointMake(xPosition, ABS(maxY - (kLineModel.MA60.floatValue - minAssert)/
-            //            positionModel.volume = CGPointMake(xPosition, ABS());
+            positionModel.volume = CGPointMake(xPosition, ABS(maxVolumeY - ([kLineModel.tradeVolume integerValue] / ( maxVolume / maxVolumeY ))));
         }
-        
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
 }
@@ -431,7 +441,8 @@
  绘制底部成交量、指标等
  */
 - (void)p_drawVolume {
-
+    self.klineVolume.needDrawKLinePositionModels = self.needDrawKLinePositionModels;
+    [self.klineVolume drawView];
 }
 /**
  *  更新K线视图的宽度
@@ -509,10 +520,12 @@
     [self p_drawTimeView];
     [self p_drawIndicatorAccessory];
     [self p_drawVolume];
+    
+    [self FQSegment];
+    [self volumeSegment];
 }
 
 #pragma mark Setter
-
 - (void)setKLineModels:(NSArray<JT_KLineModel *> *)kLineModels {
     if (!kLineModels.count) {
         return;
@@ -531,7 +544,6 @@
         self.scrollView.contentOffset = CGPointMake(0, 0);
     }
 }
-
 #pragma mark Getter
 
 - (UIScrollView *)scrollView
@@ -595,8 +607,6 @@
 - (JT_KLineChartView *)klineChart {
     if (!_klineChart) {
         _klineChart = [JT_KLineChartView new];
-        _klineChart.delegate = self;
-        _klineChart.topAndBottomMargin = self.KlineChartTopMargin;
         [self.scrollView addSubview:_klineChart];
         [_klineChart mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.top.equalTo(self.scrollView);
@@ -627,7 +637,7 @@
             make.left.equalTo(self.klineChart);
             make.top.equalTo(self.klineTimeView.mas_bottom).offset(self.indicatorViewHeight);
             make.width.equalTo(self.klineChart);
-            make.height.equalTo(@(self.frame.size.height - self.MALineHeight - self.klineChartViewHeight - self.timeViewHeight -  self.indicatorViewHeight - self.bottomMargin));
+            make.height.equalTo(@(self.volumeViewHeight));
         }];
     }
     return _klineVolume;
@@ -664,7 +674,9 @@
 - (CGFloat)klineChartViewHeight {
     return _klineChartViewHeight ? _klineChartViewHeight : 200;
 }
-
+- (CGFloat)volumeViewHeight {
+    return self.frame.size.height - self.MALineHeight - self.klineChartViewHeight - self.timeViewHeight -  self.indicatorViewHeight - self.bottomMargin;
+}
 - (CGFloat)MALineHeight {
     return _MALineHeight ? _MALineHeight : 15;
 }

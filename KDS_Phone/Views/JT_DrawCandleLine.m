@@ -31,12 +31,12 @@
 }
 
 #pragma 绘制K线 - 单个
-- (UIColor *)drawCandleLine
+- (void)drawCandleLine
 {
     //判断数据是否为空
     if(!self.context || !self.kLinePositionModel)
     {
-        return UIColor.clearColor;
+        return;
     }
     
     CGContextRef context = self.context;
@@ -55,8 +55,6 @@
     const CGPoint shadowPoints[] = {self.kLinePositionModel.highPoint, self.kLinePositionModel.lowPoint};
     //画线
     CGContextStrokeLineSegments(context, shadowPoints, 2);
-    
-    return strokeColor;
 }
 - (void)drawDateTime {
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
@@ -64,5 +62,24 @@
     if (drawDatePoint.x > 0 && drawDatePoint.x < (self.timeViewWidth - self.timeSize.width / 2.f)) {
         [self.timeString drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize],NSForegroundColorAttributeName : color}];
     }
+}
+- (void)drawVolume {
+    //判断数据是否为空
+    if(!self.context || !self.kLinePositionModel)
+    {
+        return;
+    }
+    
+    CGContextRef context = self.context;
+    
+    //设置画笔颜色
+    UIColor *strokeColor = self.kLinePositionModel.openPoint.y < self.kLinePositionModel.closePoint.y ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
+    CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
+    //画成交量实体线
+    CGContextSetLineWidth(context, [JT_KLineConfig kLineWidth]);
+    //起点都是从Y轴最大值开始
+    CGPoint beginPoint = CGPointMake(self.kLinePositionModel.volume.x, self.maxY);
+    const CGPoint solidPoints[] = {beginPoint, self.kLinePositionModel.volume};
+    CGContextStrokeLineSegments(context, solidPoints, 2);
 }
 @end

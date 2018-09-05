@@ -8,6 +8,8 @@
 
 #import "JT_KLineVolumeView.h"
 #import "JT_KLineConfig.h"
+#import "JT_KLinePositionModel.h"
+#import "JT_DrawCandleLine.h"
 @implementation JT_KLineVolumeView
 
 /*
@@ -25,7 +27,9 @@
     }
     return self;
 }
-
+- (void)drawView {
+    [self setNeedsDisplay];
+}
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -46,6 +50,14 @@
     CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + gap);
     CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + gap);
     CGContextStrokePath(context);
+    
+    //画蜡烛线
+    JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
+    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        kLine.kLinePositionModel = obj;
+        kLine.maxY = rect.size.height;
+        [kLine drawVolume];
+    }];
 }
 
 @end

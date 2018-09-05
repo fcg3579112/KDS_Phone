@@ -14,12 +14,8 @@
  *  K线的位置model
  */
 @property (nonatomic, strong) JT_KLinePositionModel *kLinePositionModel;
-/**
- *  最大的Y
- */
+
 @property (nonatomic, assign) CGFloat maxY;
-
-
 /**
  日期的 size
  */
@@ -41,10 +37,15 @@
 /**
  *  绘制K线蜡烛线
  */
-- (UIColor *)drawCandleLine;
+- (void)drawCandleLine;
 
 /**
  画X轴时间
  */
 - (void)drawDateTime;
+
+/**
+ 画成交量
+ */
+- (void)drawVolume;
 @end

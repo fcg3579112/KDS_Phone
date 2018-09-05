@@ -72,7 +72,6 @@
     CGContextStrokePath(context);    
     //画蜡烛线
     JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
-    kLine.maxY = self.frame.size.height - self.topAndBottomMargin;
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         kLine.kLinePositionModel = obj;
         [kLine drawCandleLine];

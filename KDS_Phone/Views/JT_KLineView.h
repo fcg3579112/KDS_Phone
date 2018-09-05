@@ -60,13 +60,10 @@
 @property (nonatomic ,assign) CGFloat indicatorViewHeight;
 
 @property(nonatomic, copy) NSArray<JT_KLineModel *> *kLineModels;
-
-@property (nonatomic, assign) CGFloat KlineChartTopMargin;
-
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
-
-
+//可以设置蜡烛线区域top And Bottom Margin
+@property (nonatomic ,assign ) CGFloat KlineChartTopMargin;
 - (void)reDrawAllView;
 
 @end

@@ -10,38 +10,8 @@
 #define JT_KLineMinHeight                  2
 
 #import <UIKit/UIKit.h>
-@protocol  JT_KLineChartViewDelegate<NSObject>
-@optional;
-/**
- *  当前需要绘制的K线模型数组
- */
-- (void)JT_KLineChartViewWithModels:(NSArray *)needDrawKLineModels positionModels:(NSArray *)needDrawKLinePositionModels;
-
-
-/**
- 把蜡烛线滑动后，起点的索引及 xPosition 回传到主页面，因为成交量的绘制也需要 索引及 xPosition;
- */
-- (void)JT_KLineChartViewNeedDrawStartIndexChange:(NSUInteger)startIndex;
-- (void)JT_KLineChartViewNeedDrawStartIndexXPositionChange:(CGFloat)xPosition;
-
-@end
 @class JT_KLineModel,JT_KLinePositionModel,JT_PriceMarkModel;
 @interface JT_KLineChartView : UIView
-@property (nonatomic ,weak) id <JT_KLineChartViewDelegate> delegate;
-/**
- *  需要绘制Index开始值
- */
-@property (nonatomic, assign) NSInteger needDrawStartIndex;
-
-/**
- *  Index开始X的值
- */
-@property (nonatomic, assign) CGFloat startXPosition;
-/**
- k 线视图所占的比率
- */
-@property (nonatomic, assign) CGFloat klineViewRatio;
-
 
 @property (nonatomic, assign) CGFloat topAndBottomMargin;
 

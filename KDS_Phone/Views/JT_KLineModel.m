@@ -24,6 +24,7 @@
         _closePrice = model.closePrice;
         _tradeVolume = model.tradeVolume;
         _averagePrice = model.averagePrice;
+        _referencePrice = model.referencePrice;
         _amount = model.amount;
     }
     return self;
@@ -36,6 +37,17 @@
     NSAssert(_allKLineModel != nil, @"JT_KLineModel 未设置 allKLineModel 属性");
 #endif
     return _allKLineModel;
+}
+- (NSString *)referencePrice {
+    return _referencePrice ? _referencePrice : [self r_referencePrice];
+}
+//如果今日数据中的昨收不存在,取前一天数据中的收盘价
+- (NSString *)r_referencePrice {
+    if (self.index > 0) {
+        JT_KLineModel *preModel = self.allKLineModel[self.index - 1];
+        return preModel.closePrice;
+    }
+    return @"";
 }
 - (NSString *)MA5 {
     if ([JT_KLineConfig MA5]) {

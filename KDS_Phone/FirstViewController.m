@@ -35,6 +35,7 @@
     _kLineView.delegate = self;
     _kLineView.bottomMargin = 10;
     
+    
     [self.view addSubview:_kLineView];
     [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(0);
