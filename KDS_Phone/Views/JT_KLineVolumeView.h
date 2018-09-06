@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "JT_KLineEnum.h"
-@class JT_KLinePositionModel;
+@class JT_KLinePositionModel,JT_KLineModel;
 @interface JT_KLineVolumeView : UIView
 /**
  *  需要绘制的model位置数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+/**
+ *  需要绘制的model数组
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
+- (void)drawVolume:(NSUInteger)maxVolume;
 
-- (void)drawView;
+
 @end

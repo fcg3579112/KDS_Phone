@@ -25,7 +25,7 @@
 
     JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
     sg.frame = CGRectMake(0, kStatusBarHeight + kNavigationBarHeight, kScreen_Width, 33);
-    sg.seletedItemType = JT_SegmentItemTypeKline15Min;
+    sg.seletedItemType = JT_SegmentItemTypeKlineDay;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
     
@@ -54,7 +54,7 @@
 - (void)requestKLineData {
     MOHLCRequest *r = [[MOHLCRequest alloc] init];
     r.code = @"000001.sh";
-    r.period = MOHLCPeriodMin15;
+    r.period = MOHLCPeriodDay;
     r.subtype = @"1400";
     r.priceAdjustedMode = MOHLCPriceAdjustedModeForward;
     [MApi sendRequest:r completionHandler:^(MResponse *resp) {
@@ -62,10 +62,12 @@
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
             // 模型转换
+            NSLog(@"%f",[[NSDate date] timeIntervalSince1970]);
             [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
                 [self.allKLineModel addObject:model];
                 model.allKLineModel = self.allKLineModel;
+                [model initData];
             }];
             self.kLineView.kLineModels = self.allKLineModel;
         }

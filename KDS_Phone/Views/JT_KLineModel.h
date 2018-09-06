@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 @class MOHLCItem;
 @interface JT_KLineModel : NSObject
 /** 时间 */
@@ -36,7 +37,18 @@
 
 @property (nonatomic ,assign) NSUInteger index;
 
-@property (nonatomic ,weak) JT_KLineModel *PreModel;
+//指该Model前面一个Model
+@property (nonatomic ,weak) JT_KLineModel *preModel;
+
+/**
+ *  该Model及其之前所有收盘价之和
+ */
+@property (nonatomic, assign) float sumOfLastClose;
+
+/**
+ *  该Model及其之前所有成交量之和
+ */
+@property (nonatomic, assign) NSInteger sumOfLastVolume;
 
 /**
  为了计算均值，这个属性值是必须要设置的
@@ -54,13 +66,30 @@
 //60日均线
 @property (nonatomic ,strong)NSString *MA60;
 
-
 //成交量均线
 @property (nonatomic ,assign)NSUInteger volumeMA5;
 @property (nonatomic ,assign)NSUInteger volumeMA10;
 
+//KDJ
+
+//9日内最高价
+@property (nonatomic, assign) float nineClocksMaxPrice;
+//9日内最低价
+@property (nonatomic, assign) float nineClocksMinPrice;
+
+@property (nonatomic, assign) float RSV_9;
+
+@property (nonatomic, assign) float KDJ_K;
+
+@property (nonatomic, assign) float KDJ_D;
+
+@property (nonatomic, assign) float KDJ_J;
+
+
 //上证 k 线model 转 JT_KLineModel
 
 - (instancetype)initWithModel:(MOHLCItem *)model;
+
+- (void)initData;
 
 @end

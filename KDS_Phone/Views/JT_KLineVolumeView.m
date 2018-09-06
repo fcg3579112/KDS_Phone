@@ -11,6 +11,12 @@
 #import "JT_KLinePositionModel.h"
 #import "JT_DrawCandleLine.h"
 #import "JT_DrawMALine.h"
+#import "JT_KLineModel.h"
+
+
+@interface JT_KLineVolumeView ()
+@property (nonatomic ,assign) NSUInteger maxVolume;
+@end
 @implementation JT_KLineVolumeView
 
 /*
@@ -28,7 +34,8 @@
     }
     return self;
 }
-- (void)drawView {
+- (void)drawVolume:(NSUInteger)maxVolume {
+    _maxVolume = maxVolume;
     [self setNeedsDisplay];
 }
 - (void)drawRect:(CGRect)rect {
@@ -46,11 +53,13 @@
     CGContextAddRect(context, rect);
     CGContextStrokePath(context);
     //画中间的1条横线
-    CGFloat gap = rect.size.height / 2.f;
+    float gap = rect.size.height / 2.f;
     CGContextSetLineWidth(context, JT_KLineViewGridLineWidth);
     CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + gap);
     CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + gap);
     CGContextStrokePath(context);
+    
+    UIColor *maxVolumeColor = JT_ColorDayOrNight(@"858C9E", @"E6678");
     
     //画成交量
     if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
@@ -58,12 +67,19 @@
         JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
         [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             kLine.kLinePositionModel = obj;
+            kLine.kLineModel = self.needDrawKLineModels[idx];
             kLine.maxY = rect.size.height;
             [kLine drawVolume];
         }];
         
         //画成交量均线
         [self drawAllVolumeMAline:context];
+        
+        //画成交量最大值
+        NSString *maxVolume = formatVolume(self.maxVolume);
+        [maxVolume drawAtPoint:CGPointMake(2, 2) withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineMAFontSize],NSForegroundColorAttributeName : maxVolumeColor}];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // KDJ
+        
     }
 }
 

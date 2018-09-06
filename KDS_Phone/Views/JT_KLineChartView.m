@@ -59,7 +59,7 @@
     CGContextAddRect(context, rect);
     CGContextStrokePath(context);
     //画中间的3条横线
-    CGFloat gap = rect.size.height / 4.f;
+    float gap = rect.size.height / 4.f;
     CGContextSetLineWidth(context, JT_KLineViewGridLineWidth);
     for (int i = 1; i < 4; i ++) {
         CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + i * gap);
@@ -70,6 +70,7 @@
     JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         kLine.kLinePositionModel = obj;
+        kLine.kLineModel = self.needDrawKLineModels[idx];
         [kLine drawCandleLine];
     }];
     

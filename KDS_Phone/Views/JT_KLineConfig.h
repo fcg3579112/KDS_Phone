@@ -23,7 +23,7 @@
 
 
 // MA 字体大小
-#define JT_KLineMAFontSize                   10
+#define JT_KLineMAFontSize                   11
 
 // 复权、指标切换 segment 字体大小
 #define JT_KLineSegmentFontSize              13
@@ -198,5 +198,12 @@
 //当前显示的指数的类别名称
 + (NSString *)currentIndicatorTitle;
 
+/**
+ 格式化成交量
+ 9999
+ 1.00万
+ 1.00亿
+ */
+NSString *formatVolume(NSUInteger volume);
 
 @end

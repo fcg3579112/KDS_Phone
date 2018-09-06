@@ -18,7 +18,7 @@ static CGFloat JT_KLineGap = 1;
 
 static CGFloat JT_KLineShadeLineWidth = 1;
 
-static NSInteger JT_kLineType = JT_SegmentItemTypeKline5Min;
+static NSInteger JT_kLineType = JT_SegmentItemTypeKlineDay;
 
 static NSUInteger JT_KlineFQType = 0;
 
@@ -210,5 +210,15 @@ static BOOL JT_ShowHighAndLowPrice = YES;
         return @"OBV";
     }
     return @"";
+}
+//格式化成交量
+NSString *formatVolume(NSUInteger volume) {
+    if (volume > 100000000) {
+        return [NSString stringWithFormat:@"%.2f亿",volume / 100000000.0];
+    } else if (volume > 10000) {
+        return [NSString stringWithFormat:@"%.2f万",volume / 10000.0];
+    } else {
+        return [NSString stringWithFormat:@"%lu",volume];
+    }
 }
 @end

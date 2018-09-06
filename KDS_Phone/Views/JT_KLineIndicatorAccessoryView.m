@@ -142,10 +142,12 @@
         obj.text = @"";
     }];
     if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-        ((UILabel *)_items[0]).text = @"VOL(5,10):";
-        ((UILabel *)_items[1]).text = [self formateVolume:model.tradeVolume];
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA5:%@",[self formateVolume:model.volumeMA5]];
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"MA10:%@",[self formateVolume:model.volumeMA10]];
+        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"VOL(5,10):%@",formatVolume(model.tradeVolume)];
+        ((UILabel *)_items[0]).textColor = JT_KLineMATitleColor;
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MA5:%@",formatVolume(model.volumeMA5)];
+        ((UILabel *)_items[1]).textColor = JT_KLineMA5Color;
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA10:%@",formatVolume(model.volumeMA10)];
+        ((UILabel *)_items[2]).textColor = JT_KLineMA10Color;
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
@@ -172,16 +174,7 @@
         
     }
 }
-//格式化成交量
-- (NSString *)formateVolume:(NSUInteger)volume {
-    if (volume > 100000000) {
-        return [NSString stringWithFormat:@"%.2f亿",volume / 100000000.0];
-    } else if (volume > 10000) {
-        return [NSString stringWithFormat:@"%.2f万",volume / 10000.0];
-    } else {
-        return [NSString stringWithFormat:@"%lu",volume];
-    }
-}
+
 //func drawRectangleOnImage(image: UIImage) -> UIImage {
 //    let imageSize = image.size
 //    let scale: CGFloat = 0

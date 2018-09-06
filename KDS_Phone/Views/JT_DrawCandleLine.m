@@ -9,6 +9,7 @@
 #import "JT_DrawCandleLine.h"
 #import "JT_KLinePositionModel.h"
 #import <MApi.h>
+#import "JT_KLineModel.h"
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
 @interface JT_DrawCandleLine ()
@@ -42,7 +43,7 @@
     CGContextRef context = self.context;
     
     //设置画笔颜色
-    UIColor *strokeColor = self.kLinePositionModel.openPoint.y < self.kLinePositionModel.closePoint.y ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
+    UIColor *strokeColor = self.kLineModel.closePrice.floatValue > self.kLineModel.openPrice.floatValue ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
     CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
     //画中间较宽的开收盘线段-实体线
     CGContextSetLineWidth(context, [JT_KLineConfig kLineWidth]);
@@ -73,7 +74,7 @@
     CGContextRef context = self.context;
     
     //设置画笔颜色
-    UIColor *strokeColor = self.kLinePositionModel.openPoint.y < self.kLinePositionModel.closePoint.y ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
+    UIColor *strokeColor = self.kLineModel.closePrice.floatValue > self.kLineModel.openPrice.floatValue ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
     CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
     //画成交量实体线
     CGContextSetLineWidth(context, [JT_KLineConfig kLineWidth]);
