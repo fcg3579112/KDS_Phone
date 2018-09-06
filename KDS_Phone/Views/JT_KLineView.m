@@ -214,25 +214,12 @@
             maxVolume = MAX(maxVolume, kLineModel.volumeMA5);
             maxVolume = MAX(maxVolume, kLineModel.volumeMA10);
         } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ的最大值及最小值
-            if (kLineModel.KDJ_K > self.screenMaxKDJ) {
-                self.screenMaxKDJ = kLineModel.KDJ_K;
-            }
-            if (kLineModel.KDJ_D > self.screenMaxKDJ) {
-                self.screenMaxKDJ = kLineModel.KDJ_D;
-            }
-            if (kLineModel.KDJ_J > self.screenMaxKDJ) {
-                self.screenMaxKDJ = kLineModel.KDJ_J;
-            }
-            
-            if (kLineModel.KDJ_K < self.screenMaxKDJ) {
-                self.screenMinKDJ = kLineModel.KDJ_K;
-            }
-            if (kLineModel.KDJ_D < self.screenMaxKDJ) {
-                self.screenMinKDJ = kLineModel.KDJ_D;
-            }
-            if (kLineModel.KDJ_J < self.screenMaxKDJ) {
-                self.screenMaxKDJ = kLineModel.KDJ_J;
-            }
+            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_K);
+            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_D);
+            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_J);
+            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_K);
+            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_D);
+            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_J);
         }
         
         // 计算屏幕上最高点最低点价格,不包含 5、10 日均线的价格
@@ -247,65 +234,34 @@
         
         //计算屏幕上Y轴的最大价格最小价格，包括 5、10 日均线的价格
         
-        if(kLineModel.highPrice.floatValue > maxAssert)
-        {
-            maxAssert = kLineModel.highPrice.floatValue;
-            
-        }
-        if(kLineModel.lowPrice.floatValue < minAssert)
-        {
-            minAssert = kLineModel.lowPrice.floatValue;
-        }
+        maxAssert = MAX(maxAssert, kLineModel.highPrice.floatValue);
+        minAssert = MIN(minAssert, kLineModel.lowPrice.floatValue);
         
         if ([JT_KLineConfig MA5]) {
-            if(kLineModel.MA5.floatValue > maxAssert)
-            {
-                maxAssert = kLineModel.MA5.floatValue;
-            }
-            if(kLineModel.MA5.floatValue < minAssert)
-            {
-                minAssert = kLineModel.MA5.floatValue;
-            }
+
+            maxAssert = MAX(maxAssert, kLineModel.MA5.floatValue);
+            
+            minAssert = MIN(minAssert, kLineModel.MA5.floatValue);
         }
         if ([JT_KLineConfig MA10]) {
-            if(kLineModel.MA10.floatValue > maxAssert)
-            {
-                maxAssert = kLineModel.MA10.floatValue;
-            }
-            if(kLineModel.MA10.floatValue < minAssert)
-            {
-                minAssert = kLineModel.MA10.floatValue;
-            }
+
+            maxAssert = MAX(maxAssert, kLineModel.MA10.floatValue);
+            
+            minAssert = MIN(minAssert, kLineModel.MA10.floatValue);
         }
         if ([JT_KLineConfig MA20]) {
-            if(kLineModel.MA20.floatValue > maxAssert)
-            {
-                maxAssert = kLineModel.MA20.floatValue;
-            }
-            if(kLineModel.MA20.floatValue < minAssert)
-            {
-                minAssert = kLineModel.MA20.floatValue;
-            }
+            maxAssert = MAX(maxAssert, kLineModel.MA20.floatValue);
+            
+            minAssert = MIN(minAssert, kLineModel.MA20.floatValue);
         }
         if ([JT_KLineConfig MA30]) {
-            if(kLineModel.MA30.floatValue > maxAssert)
-            {
-                maxAssert = kLineModel.MA30.floatValue;
-            }
-            if(kLineModel.MA30.floatValue < minAssert)
-            {
-                minAssert = kLineModel.MA30.floatValue;
-            }
+            maxAssert = MAX(maxAssert, kLineModel.MA30.floatValue);
+            
+            minAssert = MIN(minAssert, kLineModel.MA30.floatValue);
         }
         if ([JT_KLineConfig MA60]) {
-            if(kLineModel.MA60.floatValue > maxAssert)
-            {
-                maxAssert = kLineModel.MA60.floatValue;
-            }
-            if(kLineModel.MA60.floatValue < minAssert)
-            {
-                minAssert = kLineModel.MA60.floatValue;
-            }
+            maxAssert = MAX(maxAssert, kLineModel.MA60.floatValue);
+            minAssert = MIN(minAssert, kLineModel.MA60.floatValue);
         }
         
     }];
