@@ -210,9 +210,9 @@
         
         
         if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) { // 计算屏幕上成交量的最大值
-            if (kLineModel.tradeVolume > maxVolume) {
-                maxVolume = kLineModel.tradeVolume;
-            }
+            maxVolume = MAX(maxVolume, kLineModel.tradeVolume);
+            maxVolume = MAX(maxVolume, kLineModel.volumeMA5);
+            maxVolume = MAX(maxVolume, kLineModel.volumeMA10);
         } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ的最大值及最小值
             if (kLineModel.KDJ_K > self.screenMaxKDJ) {
                 self.screenMaxKDJ = kLineModel.KDJ_K;
