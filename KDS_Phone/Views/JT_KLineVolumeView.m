@@ -18,6 +18,9 @@
 @property (nonatomic ,assign) NSUInteger maxVolume;
 @property (nonatomic ,assign) float maxKDJ;
 @property (nonatomic ,assign) float minKDJ;
+
+@property (nonatomic ,assign) float maxMACD;
+@property (nonatomic ,assign) float minMACD;
 @end
 @implementation JT_KLineVolumeView
 
@@ -43,6 +46,11 @@
 - (void)drawKDJ:(float)maxValue min:(float)minValue {
     _maxKDJ = maxValue;
     _minKDJ = minValue;
+    [self setNeedsDisplay];
+}
+- (void)drawMACD:(float)maxValue min:(float)minValue {
+    _maxMACD = maxValue;
+    _minMACD = minValue;
     [self setNeedsDisplay];
 }
 - (void)drawRect:(CGRect)rect {
@@ -95,9 +103,31 @@
         [max drawAtPoint:CGPointMake(2, 2) withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineMAFontSize],NSForegroundColorAttributeName : maxValueColor}];
         //画最小值
         [min drawAtPoint:CGPointMake(2, rect.size.height - 12) withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineMAFontSize],NSForegroundColorAttributeName : maxValueColor}];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) { // 画MACD
+        
+        //画MACD Bar
+        JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
+        [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            kLine.kLinePositionModel = obj;
+            kLine.kLineModel = self.needDrawKLineModels[idx];
+            kLine.maxY = rect.size.height;
+            [kLine drawMACD_Bar];
+        }];
+        
+        //画 DIF 与 DEA
+        JT_DrawMALine *drawMALineUtil = [[JT_DrawMALine alloc] initWithContext:context];
+        drawMALineUtil.kLinePositionModels = self.needDrawKLinePositionModels;
+        [drawMALineUtil draw_DIF];
+        [drawMALineUtil draw_DEA];
+    
+        //画成最大值
+        NSString *max = [NSString stringWithFormat:@"%.2f",self.maxMACD];
+        NSString *min = [NSString stringWithFormat:@"%.2f",self.minMACD];
+        [max drawAtPoint:CGPointMake(2, 2) withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineMAFontSize],NSForegroundColorAttributeName : maxValueColor}];
+        //画最小值
+        [min drawAtPoint:CGPointMake(2, rect.size.height - 12) withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineMAFontSize],NSForegroundColorAttributeName : maxValueColor}];
     }
 }
-
 
 /**
  画 KDJ 线

@@ -37,4 +37,9 @@
 - (void)drawKDJ_K;
 - (void)drawKDJ_D;
 - (void)drawKDJ_J;
+
+//画 DIF 与 DEA
+- (void)draw_DIF;
+- (void)draw_DEA;
+
 @end

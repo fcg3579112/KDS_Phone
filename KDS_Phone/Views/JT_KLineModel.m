@@ -252,6 +252,58 @@
     }
     return _KDJ_J;
 }
+
+- (float)EMA12
+{
+    if(!_EMA12) {
+        if (self.index == 0) {
+            _EMA12 = self.closePrice.floatValue;
+        } else {
+            _EMA12 = ( 11 * self.preModel.EMA12 + 2 * self.closePrice.floatValue )/13;
+        }
+    }
+    return _EMA12;
+}
+
+- (float)EMA26
+{
+    if (!_EMA26) {
+        if (self.index == 0) {
+            _EMA26 = self.closePrice.floatValue;
+        } else {
+            _EMA26 = ( 25 * self.preModel.EMA26 + 2 * self.closePrice.floatValue )/27;
+        }
+    }
+    return _EMA26;
+}
+
+- (float)DIF
+{
+    if(!_DIF) {
+        _DIF = self.EMA12 - self.EMA26;
+    }
+    NSLog(@"DIF: %f",_DIF);
+    return _DIF;
+}
+
+-(float)DEA
+{
+    if(!_DEA) {
+        _DEA = self.preModel.DEA * 0.8 + 0.2 * self.DIF;
+    }
+    NSLog(@"DEA: %f",_DEA);
+    return _DEA;
+}
+
+- (float)MACD
+{
+    if(!_MACD) {
+        _MACD = 2 * (self.DIF - self.DEA);
+    }
+    NSLog(@"MACD: %f",_MACD);
+    return _MACD;
+}
+
 - (void)initData {
     
     [self preModel];
@@ -276,5 +328,14 @@
     [self KDJ_K];
     [self KDJ_D];
     [self KDJ_J];
+    
+    //初始化MACD
+    [self EMA12];
+    [self EMA26];
+    [self DIF];
+    [self DEA];
+    [self MACD];
+    
+    
 }
 @end

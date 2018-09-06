@@ -86,6 +86,33 @@
 @property (nonatomic, assign) float KDJ_J;
 
 
+/* MACD 计算
+ 1、计算移动平均值（EMA）
+ 12日EMA的算式为
+ EMA（12）=前一日EMA（12）×11/13+今日收盘价×2/13
+ 26日EMA的算式为
+ EMA（26）=前一日EMA（26）×25/27+今日收盘价×2/27
+ 2、计算离差值（DIF）
+ DIF=今日EMA（12）－今日EMA（26）
+ 3、计算DIF的9日EMA
+ 根据离差值计算其9日的EMA，即离差平均值，是所求的MACD值。为了不与指标原名相混淆，此值又名
+ DEA或DEM。
+ 今日DEA（MACD）=前一日DEA×8/10+今日DIF×2/10计算出的DIF和DEA的数值均为正值或负值。
+ 用（DIF-DEA）×2即为MACD柱状图。
+*/
+@property (nonatomic, assign) float EMA12;
+
+@property (nonatomic, assign) float EMA26;
+
+@property (nonatomic, assign) float DIF;
+
+@property (nonatomic, assign) float DEA;
+
+@property (nonatomic, assign) float MACD;
+
+
+
+
 //上证 k 线model 转 JT_KLineModel
 
 - (instancetype)initWithModel:(MOHLCItem *)model;

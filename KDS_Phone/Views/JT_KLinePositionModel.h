@@ -32,4 +32,10 @@
 @property (nonatomic ,assign) CGPoint KDJ_K;
 @property (nonatomic ,assign) CGPoint KDJ_D;
 @property (nonatomic ,assign) CGPoint KDJ_J;
+
+//MACD
+@property (nonatomic ,assign) CGPoint MACD;
+@property (nonatomic ,assign) CGPoint MACD_Zero;
+@property (nonatomic ,assign) CGPoint DIF;
+@property (nonatomic ,assign) CGPoint DEA;
 @end

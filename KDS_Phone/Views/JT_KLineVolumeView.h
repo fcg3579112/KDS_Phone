@@ -21,5 +21,6 @@
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 - (void)drawVolume:(NSUInteger)maxVolume;
 - (void)drawKDJ:(float)maxValue min:(float)minValue;
+- (void)drawMACD:(float)maxValue min:(float)minValue;
 
 @end

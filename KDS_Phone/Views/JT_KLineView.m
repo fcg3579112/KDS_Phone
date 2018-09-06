@@ -99,6 +99,12 @@
 @property (nonatomic, assign) float screenMaxKDJ;
 @property (nonatomic, assign) float screenMinKDJ;
 
+/**
+ 屏幕上最大及最小的MACD 值
+ */
+@property (nonatomic, assign) float screenMaxMACD;
+@property (nonatomic, assign) float screenMinMACD;
+
 @end
 
 
@@ -132,7 +138,8 @@
 #pragma mark JT_KLineIndicatorSegmentDelegate
 
 - (void)JT_KLineIndicatorSegmentSelectedType:(JT_KLineIndicatorType)type {
-
+    [JT_KLineConfig setkLineIndicatorType:type];
+    [self reDrawAllView];
 }
 
 #pragma mark KVO监听实现
@@ -220,6 +227,13 @@
             self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_K);
             self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_D);
             self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_J);
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
+            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.MACD);
+            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.DIF);
+            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.DEA);
+            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.MACD);
+            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.DIF);
+            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.DEA);
         }
         
         // 计算屏幕上最高点最低点价格,不包含 5、10 日均线的价格
@@ -356,11 +370,17 @@
             positionModel.volumeMA5 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA5 / ( maxVolume / maxVolumeY )));
             positionModel.volumeMA10 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA10 / ( maxVolume / maxVolumeY )));
             self.screenMaxVolume = maxVolume;
-        } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ的最大值及最小值
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ坐标
             float unitValue = (self.screenMaxKDJ - self.screenMinKDJ) / maxVolumeY;
             positionModel.KDJ_K = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_K - self.screenMinKDJ)/(unitValue)));
             positionModel.KDJ_D = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_D - self.screenMinKDJ)/(unitValue)));
             positionModel.KDJ_J = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_J - self.screenMinKDJ)/(unitValue)));
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) { // 计算屏幕上MACD坐标
+            float unitValue = (self.screenMaxMACD - self.screenMinMACD) / maxVolumeY;
+            positionModel.MACD = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.MACD - self.screenMinMACD)/(unitValue)));
+            positionModel.DEA = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.DEA - self.screenMinMACD)/(unitValue)));
+            positionModel.DIF = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.DIF - self.screenMinMACD)/(unitValue)));
+            positionModel.MACD_Zero = CGPointMake(xPosition, ABS(maxVolumeY - (0 - self.screenMinMACD)/(unitValue)));
         }
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
@@ -450,6 +470,8 @@
         [self.klineVolume drawVolume:self.screenMaxVolume];
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 画KDJ
         [self.klineVolume drawKDJ:self.screenMaxKDJ min:self.screenMinKDJ];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
+        [self.klineVolume drawMACD:self.screenMaxMACD min:self.screenMinMACD];
     }
 }
 /**

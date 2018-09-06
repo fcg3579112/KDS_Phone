@@ -49,4 +49,9 @@
  画成交量
  */
 - (void)drawVolume;
+
+/**
+ 画 MACD  bar
+ */
+- (void)drawMACD_Bar;
 @end

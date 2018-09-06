@@ -174,4 +174,34 @@
     }];
     CGContextStrokePath(self.context);
 }
+
+//画 DIF 与 DEA
+- (void)draw_DIF {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.DIF.x, obj.DIF.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.DIF.x, obj.DIF.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
+- (void)draw_DEA {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.DEA.x, obj.DEA.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.DEA.x, obj.DEA.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
 @end

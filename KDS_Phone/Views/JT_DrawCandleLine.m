@@ -34,11 +34,6 @@
 #pragma 绘制K线 - 单个
 - (void)drawCandleLine
 {
-    //判断数据是否为空
-    if(!self.context || !self.kLinePositionModel)
-    {
-        return;
-    }
     
     CGContextRef context = self.context;
     
@@ -66,10 +61,6 @@
 }
 - (void)drawVolume {
     //判断数据是否为空
-    if(!self.context || !self.kLinePositionModel)
-    {
-        return;
-    }
     
     CGContextRef context = self.context;
     
@@ -83,4 +74,17 @@
     const CGPoint solidPoints[] = {beginPoint, self.kLinePositionModel.volume};
     CGContextStrokeLineSegments(context, solidPoints, 2);
 }
+- (void)drawMACD_Bar {
+    
+    CGContextRef context = self.context;
+    
+    //设置画笔颜色
+    UIColor *strokeColor = self.kLineModel.MACD > 0 ? [JT_KLineConfig kLineIncreaseColor] : [JT_KLineConfig kLineDecreaseColor];
+    CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
+    //画成交量实体线
+    CGContextSetLineWidth(context, JT_KLineMALineWith);
+    const CGPoint solidPoints[] = {self.kLinePositionModel.MACD_Zero, self.kLinePositionModel.MACD};
+    CGContextStrokeLineSegments(context, solidPoints, 2);
+}
+
 @end

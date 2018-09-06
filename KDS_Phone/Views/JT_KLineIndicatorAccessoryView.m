@@ -149,9 +149,15 @@
         ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA10:%@",formatVolume(model.volumeMA10)];
         ((UILabel *)_items[2]).textColor = JT_KLineMA10Color;
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
-        
+        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"KDJ(9,3,3)"];
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"K:%.2f",model.KDJ_K];
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"D:%.2f",model.KDJ_D];
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"J:%.2f",model.KDJ_J];
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-        
+        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"MACD(12,26,9)"];
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DIF:%.2f",model.DIF];
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"DEA:%.2f",model.DEA];
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"MACD:%.2f",model.MACD];
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
