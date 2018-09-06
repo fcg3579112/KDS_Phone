@@ -95,6 +95,12 @@
 #define JT_KLineVolumeButtonTriangleColor     JT_ColorDayOrNight(@"5C6778", @"5B667A")
 
 
+#define JT_KLineKDJ_K_LineColor               JT_ColorDayOrNight(@"FFB200", @"FFB200")
+#define JT_KLineKDJ_D_LineColor               JT_ColorDayOrNight(@"562CB6", @"562CB6")
+#define JT_KLineKDJ_J_LineColor               JT_ColorDayOrNight(@"00A7F8", @"00A7F8")
+
+
+
 #import "JT_KLineEnum.h"
 
 @interface JT_KLineConfig : NSObject

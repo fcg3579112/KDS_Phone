@@ -210,7 +210,7 @@
 //如果9日内的最高价等于9日内的最低价 RSV = 100
 - (float)RSV_9 {
     if (!_RSV_9) {
-        if (self.nineClocksMinPrice == self.nineClocksMinPrice) {
+        if (self.nineClocksMinPrice == self.nineClocksMaxPrice) {
             _RSV_9 = 100;
         } else {
             _RSV_9 = (self.closePrice.floatValue - self.nineClocksMinPrice) * 100 / (self.nineClocksMaxPrice - self.nineClocksMinPrice);

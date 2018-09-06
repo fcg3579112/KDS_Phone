@@ -356,6 +356,11 @@
             positionModel.volumeMA5 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA5 / ( maxVolume / maxVolumeY )));
             positionModel.volumeMA10 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA10 / ( maxVolume / maxVolumeY )));
             self.screenMaxVolume = maxVolume;
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ的最大值及最小值
+            float unitValue = (self.screenMaxKDJ - self.screenMinKDJ) / maxVolumeY;
+            positionModel.KDJ_K = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_K - self.screenMinKDJ)/(unitValue)));
+            positionModel.KDJ_D = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_D - self.screenMinKDJ)/(unitValue)));
+            positionModel.KDJ_J = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_J - self.screenMinKDJ)/(unitValue)));
         }
         [self.needDrawKLinePositionModels addObject:positionModel];
     }];
@@ -440,7 +445,12 @@
 - (void)p_drawVolume {
     self.klineVolume.needDrawKLinePositionModels = self.needDrawKLinePositionModels;
     self.klineVolume.needDrawKLineModels = self.needDrawKLineModels;
-    [self.klineVolume drawVolume:self.screenMaxVolume];
+    //画成交量
+    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
+        [self.klineVolume drawVolume:self.screenMaxVolume];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 画KDJ
+        [self.klineVolume drawKDJ:self.screenMaxKDJ min:self.screenMinKDJ];
+    }
 }
 /**
  *  更新K线视图的宽度

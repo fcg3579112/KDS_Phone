@@ -14,11 +14,12 @@
  *  需要绘制的model位置数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+
 /**
  *  需要绘制的model数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 - (void)drawVolume:(NSUInteger)maxVolume;
-
+- (void)drawKDJ:(float)maxValue min:(float)minValue;
 
 @end

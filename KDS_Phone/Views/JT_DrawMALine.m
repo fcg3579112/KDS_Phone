@@ -131,4 +131,47 @@
     }];
     CGContextStrokePath(self.context);
 }
+// 画KDJ 均线
+- (void)drawKDJ_K {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.KDJ_K.x, obj.KDJ_K.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.KDJ_K.x, obj.KDJ_K.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
+- (void)drawKDJ_D {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.KDJ_D.x, obj.KDJ_D.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.KDJ_D.x, obj.KDJ_D.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
+- (void)drawKDJ_J {
+    CGContextSetLineWidth(_context, JT_KLineMALineWith);
+    CGContextSetStrokeColorWithColor(_context, JT_KLineMA10Color.CGColor);
+    @weakify(self)
+    [self.kLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        @strongify(self)
+        if (idx == 0) {
+            CGContextMoveToPoint(self.context, obj.KDJ_J.x, obj.KDJ_J.y);
+        } else {
+            CGContextAddLineToPoint(self.context, obj.KDJ_J.x, obj.KDJ_J.y);
+        }
+    }];
+    CGContextStrokePath(self.context);
+}
 @end

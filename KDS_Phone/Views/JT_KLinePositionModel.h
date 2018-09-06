@@ -27,4 +27,9 @@
 //成交量均线
 @property (nonatomic ,assign) CGPoint volumeMA5;
 @property (nonatomic ,assign) CGPoint volumeMA10;
+
+//KDJ
+@property (nonatomic ,assign) CGPoint KDJ_K;
+@property (nonatomic ,assign) CGPoint KDJ_D;
+@property (nonatomic ,assign) CGPoint KDJ_J;
 @end

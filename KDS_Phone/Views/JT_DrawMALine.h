@@ -32,4 +32,9 @@
 //画成交量均线
 - (void)drawVolumeMA5;
 - (void)drawVolumeMA10;
+
+// 画KDJ 均线
+- (void)drawKDJ_K;
+- (void)drawKDJ_D;
+- (void)drawKDJ_J;
 @end
