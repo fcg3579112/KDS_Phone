@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class JT_KLineModel,JT_KLinePositionModel;
+@class JT_KLineModel,JT_KLineCandlePositionModel;
 @interface JT_KLineTimeView : UIView
 
 /**

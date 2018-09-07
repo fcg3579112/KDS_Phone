@@ -10,7 +10,7 @@
 #import "JT_KLineModel.h"
 #import <Masonry.h>
 #import "KDS_UtilsMacro.h"
-#import "JT_KLinePositionModel.h"
+#import "JT_KLineCandlePositionModel.h"
 #import "JT_ColorManager.h"
 #import "JT_DrawCandleLine.h"
 #import "JT_KLineConfig.h"
@@ -20,7 +20,7 @@
 /**
  *  需要绘制的model位置数组
  */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+@property (nonatomic, strong) NSMutableArray <JT_KLineCandlePositionModel *>*needDrawKLinePositionModels;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MA5_Positions;
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MA10_Positions;
@@ -195,7 +195,7 @@
         CGPoint closePoint = CGPointMake(xPosition, closePointY);
         CGPoint highPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.highPrice.floatValue - minAssert)/unitValue));
         CGPoint lowPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.lowPrice.floatValue - minAssert)/unitValue));
-        JT_KLinePositionModel *positionModel = [JT_KLinePositionModel new];
+        JT_KLineCandlePositionModel *positionModel = [JT_KLineCandlePositionModel new];
         positionModel.closePoint = closePoint;
         positionModel.openPoint = openPoint;
         positionModel.highPoint = highPoint;
@@ -232,8 +232,8 @@
 - (void)p_calculateHighestPriceAndLowestPricePosition {
     [self layoutIfNeeded];
     NSInteger canShowItemCount = self.frame.size.width / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
-    JT_KLinePositionModel *highPositionModel = self.needDrawKLinePositionModels[self.highestItem.index];
-    JT_KLinePositionModel *lowPositionModel = self.needDrawKLinePositionModels[self.lowestItem.index];
+    JT_KLineCandlePositionModel *highPositionModel = self.needDrawKLinePositionModels[self.highestItem.index];
+    JT_KLineCandlePositionModel *lowPositionModel = self.needDrawKLinePositionModels[self.lowestItem.index];
     
     
     CGSize highPriceSize = [self.highestItem.kLineModel.highPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize]}];
@@ -305,7 +305,7 @@
     CGContextStrokePath(context);    
     //画蜡烛线
     JT_DrawCandleLine *kLineDrawUtil = [[JT_DrawCandleLine alloc]initWithContext:context];
-    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLineCandlePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         JT_KLineModel *kLineModel = self.needDrawKLineModels[idx];
         UIColor *color = kLineModel.closePrice.floatValue > kLineModel.openPrice.floatValue ? JT_KLineIncreaseColor : JT_KLineDecreaseColor;
         [kLineDrawUtil drawBarWithColor:color width:[JT_KLineConfig kLineWidth] begin:obj.openPoint end:obj.closePoint];

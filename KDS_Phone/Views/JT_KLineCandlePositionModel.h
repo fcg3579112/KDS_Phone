@@ -1,5 +1,5 @@
 //
-//  JT_KLinePositionModel.h
+//  JT_KLineCandlePositionModel.h
 //  KDS_Phone
 //
 //  Created by feng on 2018/8/29.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@interface JT_KLinePositionModel : NSObject
+@interface JT_KLineCandlePositionModel : NSObject
 @property (nonatomic ,assign) CGPoint openPoint;
 @property (nonatomic ,assign) CGPoint closePoint;
 @property (nonatomic ,assign) CGPoint lowPoint;
