@@ -58,6 +58,15 @@
 
 #pragma mark 颜色相关
 
+/**
+ 涨的颜色
+ */
+#define JT_KLineIncreaseColor                JT_ColorDayOrNight(@"E83700", @"D64723")
+/**
+ 跌的颜色
+ */
+#define JT_KLineDecreaseColor                JT_ColorDayOrNight(@"00A23B", @"489F49")
+
 //k 线视图背景颜色
 #define JT_KLineViewBackgroundColor          JT_ColorDayOrNight(@"FFFFFF", @"1B1C20")
 //k 线视图方格线颜色
@@ -74,7 +83,7 @@
 
 #define JT_KLineMATitleColor                  JT_ColorDayOrNight(@"5E6678",@"858C9E")
 
-#define JT_KLineIndexTitleColor               JT_ColorDayOrNight(@"5E6678",@"858C9E")
+#define JT_KLineIndexTitleColor               JT_KLineMATitleColor
 
 
 #define JT_KLine_Orange_Color                 JT_ColorDayOrNight(@"FF8000",@"FF8000")
@@ -109,6 +118,7 @@
 
 #define JT_KLine_MACD_DIF_Color               JT_KLine_Yellow_Color
 #define JT_KLine_MACD_DEA_Color               JT_KLine_LightBlue_Color
+#define JT_KLine_MACD_MACD_Color              JT_KLine_Pink_Color
 
 #define JT_KLine_VR_VR_Color                  JT_KLine_Pink_Color
 #define JT_KLine_VR_MAVR_Color                JT_KLine_Blue_Color
@@ -161,9 +171,9 @@
 /**
  *  K线图的宽度，默认20
  */
-+(CGFloat)kLineWidth;
++(float)kLineWidth;
 
-+(void)setkLineWith:(CGFloat)kLineWidth;
++(void)setkLineWith:(float)kLineWidth;
 
 
 /**
@@ -174,15 +184,15 @@
 /**
  *  K线图的间隔，默认1
  */
-+(CGFloat)kLineGap;
++(float)kLineGap;
 
-+(void)setkLineGap:(CGFloat)kLineGap;
++(void)setkLineGap:(float)kLineGap;
 
 /**
   最高最低价影线的宽度
  */
-+ (CGFloat)kLineShadeLineWidth;
-+ (void)setkLineShadeLineWidth:(CGFloat)width;
++ (float)kLineShadeLineWidth;
++ (void)setkLineShadeLineWidth:(float)width;
 
 
 /**

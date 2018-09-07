@@ -19,7 +19,6 @@
 #import "JT_KLineIndicatorSegment.h"
 #import "JT_KLineIndicatorAccessoryView.h"
 #import "JT_PriceMarkModel.h"
-#import "JT_KLinePositionModel.h"
 #import <MApi.h>
 
 #define JT_ScrollViewContentOffset   @"contentOffset"
@@ -46,11 +45,6 @@
  *  需要绘制的model数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
-/**
- *  需要绘制的model位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
-
 
 /**
  成交量视图高度
@@ -60,17 +54,6 @@
 /**
  最高价model
  */
-@property (nonatomic, strong) JT_PriceMarkModel *highestItem;
-/**
- 最低价model
- */
-@property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
-
-//y轴最高点坐标，
-@property (nonatomic ,assign) float highestPriceY;
-
-//y轴最高低点坐标
-@property (nonatomic ,assign) float lowestPriceY;
 
 /**
  *  需要绘制Index开始值
@@ -86,24 +69,6 @@
  */
 @property (nonatomic, assign) float oldContentOffsetX;
 
-
-/**
- 屏幕上最大的成交量;
- */
-@property (nonatomic, assign) NSUInteger screenMaxVolume;
-
-
-/**
- 屏幕上最大及最小的KDJ 值
- */
-@property (nonatomic, assign) float screenMaxKDJ;
-@property (nonatomic, assign) float screenMinKDJ;
-
-/**
- 屏幕上最大及最小的MACD 值
- */
-@property (nonatomic, assign) float screenMaxMACD;
-@property (nonatomic, assign) float screenMinMACD;
 
 @end
 
@@ -122,7 +87,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         _needDrawKLineModels = @[].mutableCopy;
-        _needDrawKLinePositionModels = @[].mutableCopy;
         _needDrawStartIndex = 0;
         _oldContentOffsetX = 0;
     }
@@ -186,246 +150,6 @@
         [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.kLineModels.count - needDrawKLineStartIndex)]];
     }
 }
-- (void)p_convertKLineModelsToPositionModels {
-    
-    if(!self.needDrawKLineModels) {
-        return;
-    }
-    NSArray *kLineModels = self.needDrawKLineModels;
-    
-    //计算最小单位
-    JT_KLineModel *firstModel = kLineModels.firstObject;
-    
-    //屏幕上Y轴的最大价格最小价格，包括 5、10 日均线等的价格
-    __block float minAssert = firstModel.lowPrice.floatValue;
-    __block float maxAssert = firstModel.highPrice.floatValue;
-    
-    //屏幕上最高点最低点价格,不包含 5、10 日均线的价格
-    __block float maxPrice = minAssert;
-    __block float minPrice = maxAssert;
-    
-    //最高点最低点价格对应的索引
-    __block NSInteger minIndex = 0;
-    __block NSInteger maxIndex = 0;
-    
-    //屏幕上最大的成交量
-    
-    __block NSUInteger maxVolume = 0;
-    
-    
-    [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        
-        if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) { // 计算屏幕上成交量的最大值
-            maxVolume = MAX(maxVolume, kLineModel.tradeVolume);
-            maxVolume = MAX(maxVolume, kLineModel.volumeMA5);
-            maxVolume = MAX(maxVolume, kLineModel.volumeMA10);
-        } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ的最大值及最小值
-            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_K);
-            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_D);
-            self.screenMinKDJ = MIN(self.screenMinKDJ, kLineModel.KDJ_J);
-            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_K);
-            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_D);
-            self.screenMaxKDJ = MAX(self.screenMaxKDJ, kLineModel.KDJ_J);
-        } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.MACD);
-            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.DIF);
-            self.screenMaxMACD = MAX(self.screenMaxMACD, kLineModel.DEA);
-            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.MACD);
-            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.DIF);
-            self.screenMinMACD = MIN(self.screenMinMACD, kLineModel.DEA);
-        }
-        
-        // 计算屏幕上最高点最低点价格,不包含 5、10 日均线的价格
-        if (kLineModel.highPrice.floatValue > maxPrice) {
-            maxPrice = kLineModel.highPrice.floatValue;
-            maxIndex = idx;
-        }
-        if (kLineModel.lowPrice.floatValue < minPrice) {
-            minPrice  = kLineModel.lowPrice.floatValue;
-            minIndex = idx;
-        }
-        
-        //计算屏幕上Y轴的最大价格最小价格，包括 5、10 日均线的价格
-        
-        maxAssert = MAX(maxAssert, kLineModel.highPrice.floatValue);
-        minAssert = MIN(minAssert, kLineModel.lowPrice.floatValue);
-        
-        if ([JT_KLineConfig MA5]) {
-
-            maxAssert = MAX(maxAssert, kLineModel.MA5.floatValue);
-            
-            minAssert = MIN(minAssert, kLineModel.MA5.floatValue);
-        }
-        if ([JT_KLineConfig MA10]) {
-
-            maxAssert = MAX(maxAssert, kLineModel.MA10.floatValue);
-            
-            minAssert = MIN(minAssert, kLineModel.MA10.floatValue);
-        }
-        if ([JT_KLineConfig MA20]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA20.floatValue);
-            
-            minAssert = MIN(minAssert, kLineModel.MA20.floatValue);
-        }
-        if ([JT_KLineConfig MA30]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA30.floatValue);
-            
-            minAssert = MIN(minAssert, kLineModel.MA30.floatValue);
-        }
-        if ([JT_KLineConfig MA60]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA60.floatValue);
-            minAssert = MIN(minAssert, kLineModel.MA60.floatValue);
-        }
-        
-    }];
-    self.highestItem = [JT_PriceMarkModel new];
-    self.lowestItem = [JT_PriceMarkModel new];
-    self.highestItem.kLineModel = kLineModels[maxIndex];
-    self.highestItem.index = maxIndex;
-    self.lowestItem.kLineModel = kLineModels[minIndex];
-    self.lowestItem.index = minIndex;
-
-    //    maxAssert *= 1.0001;
-    //    minAssert *= 0.9991;
-    
-    self.highestPriceY = maxAssert;
-    self.lowestPriceY = minAssert;
-    
-    // 蜡烛线视图，最大与最小 Y 值
-    float minKLineY = self.KlineChartTopMargin;
-    float maxKLineY = self.klineChart.frame.size.height - self.KlineChartTopMargin;
-    float unitValue = (maxAssert - minAssert)/(maxKLineY - minKLineY);
-    
-    //成交量视图最大 Y 值
-
-    float maxVolumeY = self.volumeViewHeight;
-    
-    [self.needDrawKLinePositionModels removeAllObjects];
-    
-    [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        float xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
-        CGPoint openPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.openPrice.floatValue - minAssert)/unitValue));
-        float closePointY = ABS(maxKLineY - (kLineModel.closePrice.floatValue - minAssert)/unitValue);
-        
-        //如果开盘价与收盘价很接近，蜡烛线的高度就无法看清，所以做下处理，让蜡烛线的高度有一个最小值  JT_KLineMinHeight
-        if (ABS(closePointY - openPoint.y) < JT_KLineMinHeight) {
-            if(openPoint.y > closePointY)
-            {
-                openPoint.y = closePointY + JT_KLineMinHeight;
-            } else if(openPoint.y < closePointY)
-            {
-                closePointY = openPoint.y + JT_KLineMinHeight;
-            } else {
-                if(idx > 0)
-                {
-                    JT_KLineModel *preItem = kLineModels[idx-1];
-                    if(kLineModel.openPrice.floatValue > preItem.closePrice.floatValue)
-                    {
-                        openPoint.y = closePointY + JT_KLineMinHeight;
-                    } else {
-                        closePointY = openPoint.y + JT_KLineMinHeight;
-                    }
-                } else {
-                    //idx==0即第一个时
-                    JT_KLineModel *subKLineModel = kLineModels[idx+1];
-                    if(kLineModel.closePrice.floatValue < subKLineModel.closePrice.floatValue)
-                    {
-                        openPoint.y = closePointY + JT_KLineMinHeight;
-                    } else {
-                        closePointY = openPoint.y + JT_KLineMinHeight;
-                    }
-                }
-                
-            }
-        }
-        CGPoint closePoint = CGPointMake(xPosition, closePointY);
-        CGPoint highPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.highPrice.floatValue - minAssert)/unitValue));
-        CGPoint lowPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.lowPrice.floatValue - minAssert)/unitValue));
-        JT_KLinePositionModel *positionModel = [JT_KLinePositionModel new];
-        positionModel.closePoint = closePoint;
-        positionModel.openPoint = openPoint;
-        positionModel.highPoint = highPoint;
-        positionModel.lowPoint = lowPoint;
-        if ([JT_KLineConfig MA5]) {
-            positionModel.MA5 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA5.floatValue - minAssert)/unitValue));
-        }
-        if ([JT_KLineConfig MA10]) {
-            positionModel.MA10 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA10.floatValue - minAssert)/unitValue));
-        }
-        if ([JT_KLineConfig MA20]) {
-            positionModel.MA20 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA20.floatValue - minAssert)/unitValue));
-        }
-        if ([JT_KLineConfig MA30]) {
-            positionModel.MA30 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA30.floatValue - minAssert)/unitValue));
-        }
-        if ([JT_KLineConfig MA60]) {
-            positionModel.MA60 = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA60.floatValue - minAssert)/unitValue));
-        }
-        
-        //如果选中的是成交量
-        if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-            positionModel.volume = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.tradeVolume / ( maxVolume / maxVolumeY )));
-            positionModel.volumeMA5 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA5 / ( maxVolume / maxVolumeY )));
-            positionModel.volumeMA10 = CGPointMake(xPosition, ABS(maxVolumeY - kLineModel.volumeMA10 / ( maxVolume / maxVolumeY )));
-            self.screenMaxVolume = maxVolume;
-        } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 计算屏幕上KDJ坐标
-            float unitValue = (self.screenMaxKDJ - self.screenMinKDJ) / maxVolumeY;
-            positionModel.KDJ_K = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_K - self.screenMinKDJ)/(unitValue)));
-            positionModel.KDJ_D = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_D - self.screenMinKDJ)/(unitValue)));
-            positionModel.KDJ_J = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.KDJ_J - self.screenMinKDJ)/(unitValue)));
-        } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) { // 计算屏幕上MACD坐标
-            float unitValue = (self.screenMaxMACD - self.screenMinMACD) / maxVolumeY;
-            positionModel.MACD = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.MACD - self.screenMinMACD)/(unitValue)));
-            positionModel.DEA = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.DEA - self.screenMinMACD)/(unitValue)));
-            positionModel.DIF = CGPointMake(xPosition, ABS(maxVolumeY - (kLineModel.DIF - self.screenMinMACD)/(unitValue)));
-            positionModel.MACD_Zero = CGPointMake(xPosition, ABS(maxVolumeY - (0 - self.screenMinMACD)/(unitValue)));
-        }
-        [self.needDrawKLinePositionModels addObject:positionModel];
-    }];
-}
-
-/**
- 计算屏幕上最高点及最低对应的位置，包括2条斜线及2个文本的位置
- */
-- (void)p_calculateHighestPriceAndLowestPricePosition {
-    [self layoutIfNeeded];
-    NSInteger canShowItemCount = self.frame.size.width / ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
-    JT_KLinePositionModel *highPositionModel = self.needDrawKLinePositionModels[self.highestItem.index];
-    JT_KLinePositionModel *lowPositionModel = self.needDrawKLinePositionModels[self.lowestItem.index];
-    
-    
-    CGSize highPriceSize = [self.highestItem.kLineModel.highPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize]}];
-    CGSize lowPriceSize = [self.lowestItem.kLineModel.lowPrice sizeWithAttributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize]}];
-    
-    //添加第一个点
-    [self.highestItem.points addObject:[NSValue valueWithCGPoint:highPositionModel.highPoint]];
-    [self.lowestItem.points addObject:[NSValue valueWithCGPoint:lowPositionModel.lowPoint]];
-    //计算第二个点
-    CGPoint highPoint = highPositionModel.highPoint;
-    CGRect highPriceRect;
-    if (self.highestItem.index > canShowItemCount / 2) { // 最高点在屏幕右边，所以斜线是朝向左边的
-        highPoint = CGPointMake(highPoint.x - JT_kLineMarkLineWidth, highPoint.y - JT_KLineMarkLineHeight);
-        highPriceRect = CGRectMake(highPoint.x - highPriceSize.width, highPoint.y - highPriceSize.height / 2.f, highPriceSize.width, highPriceSize.height);
-    } else { // 最高点在屏幕左边，所以斜线是朝向右边的
-        highPoint = CGPointMake(highPoint.x + JT_kLineMarkLineWidth, highPoint.y - JT_KLineMarkLineHeight);
-        highPriceRect = CGRectMake(highPoint.x, highPoint.y - highPriceSize.height / 2.f, highPriceSize.width, highPriceSize.height);
-    }
-    [self.highestItem.points addObject:[NSValue valueWithCGPoint:highPoint]];
-    self.highestItem.priceRect = highPriceRect;
-    CGPoint lowPoint = lowPositionModel.lowPoint;
-    CGRect lowPriceRect;
-    if (self.lowestItem.index > canShowItemCount / 2) { // 最低点在屏幕右边，所以斜线是朝向左边的
-        lowPoint = CGPointMake(lowPoint.x - JT_kLineMarkLineWidth, lowPoint.y + JT_KLineMarkLineHeight);
-        lowPriceRect = CGRectMake(lowPoint.x - lowPriceSize.width, lowPoint.y - lowPriceSize.height / 2.f, lowPriceSize.width, lowPriceSize.height);
-    } else { // 最低点在屏幕左边，所以斜线是朝向右边的
-        lowPoint = CGPointMake(lowPoint.x + JT_kLineMarkLineWidth, lowPoint.y + JT_KLineMarkLineHeight);
-        lowPriceRect  = CGRectMake(lowPoint.x, lowPoint.y - lowPriceSize.height / 2.f, lowPriceSize.width, lowPriceSize.height);
-    }
-    [self.lowestItem.points addObject:[NSValue valueWithCGPoint: lowPoint]];
-    self.lowestItem.priceRect = lowPriceRect;
-}
 
 #pragma mark 私有方法绘制页面
 /**
@@ -439,40 +163,37 @@
  绘制蜡烛线，均线等
  */
 - (void)p_drawKLineView {
-    self.klineChart.needDrawKLinePositionModels = self.needDrawKLinePositionModels;
+    
+    self.klineChart.startXPosition = self.startXPosition;
+    
+    self.klineChart.KlineChartTopMargin = self.KlineChartTopMargin;
+    
     self.klineChart.needDrawKLineModels = self.needDrawKLineModels;
-    [self.klineChart drawView];
+    
 }
 
 /**
  绘制中心时间视图
  */
 - (void)p_drawTimeView {
+    self.klineTimeView.startXPosition = self.startXPosition;
     self.klineTimeView.needDrawKLineModels = self.needDrawKLineModels;
-    self.klineTimeView.needDrawKLinePositionModels = self.needDrawKLinePositionModels;
 }
 
 /**
  画指标显示视图
  */
 - (void)p_drawIndicatorAccessory {
-    [self.indicatorAccessory updateWith:self.needDrawKLineModels.firstObject];
+    [self.indicatorAccessory updateWith:self.needDrawKLineModels.lastObject];
 }
-
 /**
  绘制底部成交量、指标等
  */
 - (void)p_drawVolume {
-    self.klineVolume.needDrawKLinePositionModels = self.needDrawKLinePositionModels;
+    
+    self.klineVolume.maxY = self.volumeViewHeight;
+    self.klineVolume.startXPosition = self.startXPosition;
     self.klineVolume.needDrawKLineModels = self.needDrawKLineModels;
-    //画成交量
-    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-        [self.klineVolume drawVolume:self.screenMaxVolume];
-    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 画KDJ
-        [self.klineVolume drawKDJ:self.screenMaxKDJ min:self.screenMinKDJ];
-    } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-        [self.klineVolume drawMACD:self.screenMaxMACD min:self.screenMinMACD];
-    }
 }
 /**
  *  更新K线视图的宽度
@@ -534,17 +255,6 @@
     //提取需要的kLineModel
     [self p_extractNeedDrawModels];
     
-    //转换model为坐标model
-    [self p_convertKLineModelsToPositionModels];
-    self.klineChart.highestPriceY = self.highestPriceY;
-    self.klineChart.lowestPriceY = self.lowestPriceY;
-    
-    //计算最高点最低点坐标
-    if ([JT_KLineConfig showHighAndLowPrice]) {
-        [self p_calculateHighestPriceAndLowestPricePosition];
-        self.klineChart.highestItem = self.highestItem;
-        self.klineChart.lowestItem = self.lowestItem;
-    }
     [self p_updateTopMAAccessory];
     [self p_drawKLineView];
     [self p_drawTimeView];

@@ -7,11 +7,18 @@
 //
 
 #import "JT_KLineTimeView.h"
-#import "JT_KLinePositionModel.h"
 #import "JT_DrawCandleLine.h"
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
 #import "JT_KLineModel.h"
+
+/**
+ *  需要绘制的model位置数组
+ */
+
+@interface JT_KLineTimeView ()
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDrawKLinePositionModels;
+@end
 @implementation JT_KLineTimeView
 
 /*
@@ -26,14 +33,25 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        _needDrawKLinePositionModels = @[].mutableCopy;
     }
     return self;
 }
 
 - (void)setNeedDrawKLineModels:(NSArray<JT_KLineModel *> *)needDrawKLineModels {
     _needDrawKLineModels = needDrawKLineModels;
+    [self p_convertKLineModelsToPositionModels];
     [self setNeedsDisplay];
+}
+- (void)p_convertKLineModelsToPositionModels {
+    [self.needDrawKLinePositionModels removeAllObjects];
+    NSArray <JT_KLineModel *>*models = self.needDrawKLineModels;
+    [models enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        float xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
+        CGPoint point = CGPointMake(xPosition, 0);
+        NSValue *value = [NSValue valueWithCGPoint:point];
+        [self.needDrawKLinePositionModels addObject:value];
+    }];
 }
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
@@ -61,10 +79,10 @@
     CGSize dateStringSize = [timeFormat sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize]}];
     JT_DrawCandleLine *kLine = [[JT_DrawCandleLine alloc]initWithContext:context];
     kLine.timeViewWidth = self.frame.size.width;
-    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLinePositionModel * _Nonnull kLinePositionModel, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(NSValue * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         JT_KLineModel *item  = self.needDrawKLineModels[idx];
         if (item.needShowTime) {
-            kLine.kLinePositionModel = kLinePositionModel;
+            kLine.timePostion = obj.CGPointValue;
             kLine.timeSize = dateStringSize;
             JT_KLineModel *model = self.needDrawKLineModels[idx];
             kLine.timeString = [self formateDateFrom:model.datetime];

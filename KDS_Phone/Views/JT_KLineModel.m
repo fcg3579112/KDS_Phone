@@ -282,7 +282,6 @@
     if(!_DIF) {
         _DIF = self.EMA12 - self.EMA26;
     }
-    NSLog(@"DIF: %f",_DIF);
     return _DIF;
 }
 
@@ -291,7 +290,6 @@
     if(!_DEA) {
         _DEA = self.preModel.DEA * 0.8 + 0.2 * self.DIF;
     }
-    NSLog(@"DEA: %f",_DEA);
     return _DEA;
 }
 
@@ -300,7 +298,6 @@
     if(!_MACD) {
         _MACD = 2 * (self.DIF - self.DEA);
     }
-    NSLog(@"MACD: %f",_MACD);
     return _MACD;
 }
 

@@ -14,28 +14,4 @@
 @property (nonatomic ,assign) CGPoint lowPoint;
 @property (nonatomic ,assign) CGPoint highPoint;
 
-//MA均线
-@property (nonatomic ,assign) CGPoint MA5;
-@property (nonatomic ,assign) CGPoint MA10;
-@property (nonatomic ,assign) CGPoint MA20;
-@property (nonatomic ,assign) CGPoint MA30;
-@property (nonatomic ,assign) CGPoint MA60;
-
-//成交量
-@property (nonatomic ,assign) CGPoint volume;
-
-//成交量均线
-@property (nonatomic ,assign) CGPoint volumeMA5;
-@property (nonatomic ,assign) CGPoint volumeMA10;
-
-//KDJ
-@property (nonatomic ,assign) CGPoint KDJ_K;
-@property (nonatomic ,assign) CGPoint KDJ_D;
-@property (nonatomic ,assign) CGPoint KDJ_J;
-
-//MACD
-@property (nonatomic ,assign) CGPoint MACD;
-@property (nonatomic ,assign) CGPoint MACD_Zero;
-@property (nonatomic ,assign) CGPoint DIF;
-@property (nonatomic ,assign) CGPoint DEA;
 @end

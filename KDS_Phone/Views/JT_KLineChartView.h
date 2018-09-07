@@ -10,7 +10,7 @@
 #define JT_KLineMinHeight                  2
 
 #import <UIKit/UIKit.h>
-@class JT_KLineModel,JT_KLinePositionModel,JT_PriceMarkModel;
+@class JT_KLineModel,JT_PriceMarkModel;
 @interface JT_KLineChartView : UIView
 
 @property (nonatomic, assign) CGFloat topAndBottomMargin;
@@ -20,25 +20,8 @@
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 
-/**
- *  需要绘制的model位置数组
- */
-@property (nonatomic, strong) NSMutableArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+@property (nonatomic, assign) float KlineChartTopMargin;
 
-/**
- 最高价model
- */
-@property (nonatomic, strong) JT_PriceMarkModel *highestItem;
-/**
- 最低价model
- */
-@property (nonatomic, strong) JT_PriceMarkModel *lowestItem;
-
-//y轴最高点坐标，
-@property (nonatomic ,assign) CGFloat highestPriceY;
-//y轴最高低点坐标
-@property (nonatomic ,assign) CGFloat lowestPriceY;
-
-- (void)drawView;
+@property (nonatomic, assign) float startXPosition;
 
 @end

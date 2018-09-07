@@ -8,15 +8,15 @@
 
 #import "JT_KLineConfig.h"
 #import "JT_ColorManager.h"
-static CGFloat const JT_KLineDefaultWidth = 6;
-static CGFloat JT_KLineWidth = JT_KLineDefaultWidth;
-static CGFloat const JT_KLineMaxWidth = 16;
+static float const JT_KLineDefaultWidth = 6;
+static float JT_KLineWidth = JT_KLineDefaultWidth;
+static float const JT_KLineMaxWidth = 16;
 
-static CGFloat const JT_KLineMinWidth = 3;
+static float const JT_KLineMinWidth = 3;
 
-static CGFloat JT_KLineGap = 1;
+static float JT_KLineGap = 1;
 
-static CGFloat JT_KLineShadeLineWidth = 1;
+static float JT_KLineShadeLineWidth = 1;
 
 static NSInteger JT_kLineType = JT_SegmentItemTypeKlineDay;
 
@@ -43,11 +43,11 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 /**
  *  K线图的宽度，默认20
  */
-+(CGFloat)kLineWidth
++(float)kLineWidth
 {
     return JT_KLineWidth;
 }
-+(void)setkLineWith:(CGFloat)kLineWidth
++(void)setkLineWith:(float)kLineWidth
 {
     if (kLineWidth > JT_KLineMaxWidth) {
         JT_KLineWidth = JT_KLineMaxWidth;
@@ -64,22 +64,22 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 /**
  *  K线图的间隔，默认1
  */
-+(CGFloat)kLineGap
++(float)kLineGap
 {
     return JT_KLineGap;
 }
 
-+(void)setkLineGap:(CGFloat)kLineGap
++(void)setkLineGap:(float)kLineGap
 {
     JT_KLineGap = kLineGap;
 }
 /**
  最高最低价影线的宽度
  */
-+ (CGFloat)kLineShadeLineWidth{
++ (float)kLineShadeLineWidth{
     return JT_KLineShadeLineWidth;
 }
-+ (void)setkLineShadeLineWidth:(CGFloat)width{
++ (void)setkLineShadeLineWidth:(float)width{
     JT_KLineShadeLineWidth = width;
 }
 /**
@@ -102,22 +102,6 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 }
 + (void)setkLineIndicatorType:(JT_KLineIndicatorType)type {
     JT_IndicatorType = type;
-}
-
-/**
- 涨的颜色
- 
- */
-+ (UIColor *)kLineIncreaseColor {
-    return JT_ColorDayOrNight(@"E83700", @"D64723");
-}
-
-/**
- 
- 跌的颜色
- */
-+ (UIColor *)kLineDecreaseColor {
-    return JT_ColorDayOrNight(@"00A23B", @"489F49");
 }
 
 + (JT_TimelineAndKlineItemType)kLineType {

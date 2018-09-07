@@ -8,38 +8,22 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@class JT_KLinePositionModel;
 @interface JT_DrawMALine : NSObject
 
-/**
- *  K线的位置model
- */
-@property (nonatomic, strong) NSMutableArray<JT_KLinePositionModel *> *kLinePositionModels;
 
 /**
  *  根据context初始化
  */
 - (instancetype)initWithContext:(CGContextRef)context;
 
-//画收盘价均线
-- (void)drawMA5;
-- (void)drawMA10;
-- (void)drawMA20;
-- (void)drawMA30;
-- (void)drawMA60;
 
 
-//画成交量均线
-- (void)drawVolumeMA5;
-- (void)drawVolumeMA10;
+/**
+ 画线
 
-// 画KDJ 均线
-- (void)drawKDJ_K;
-- (void)drawKDJ_D;
-- (void)drawKDJ_J;
-
-//画 DIF 与 DEA
-- (void)draw_DIF;
-- (void)draw_DEA;
+ @param color 线颜色
+ @param postions 画线的点
+ */
+- (void)drawLineWith:(UIColor *)color positions:(NSArray <NSValue*>*)postions;
 
 @end

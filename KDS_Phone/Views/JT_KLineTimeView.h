@@ -18,6 +18,6 @@
 /**
  *  需要绘制的model位置数组
  */
-@property (nonatomic, strong) NSArray <JT_KLinePositionModel *>*needDrawKLinePositionModels;
+@property (nonatomic, assign) float startXPosition;
 
 @end

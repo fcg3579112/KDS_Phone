@@ -141,23 +141,31 @@
     [self.items enumerateObjectsUsingBlock:^(UILabel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.text = @"";
     }];
+    ((UILabel *)_items[0]).textColor = JT_KLineIndexTitleColor;
     if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
         ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"VOL(5,10):%@",formatVolume(model.tradeVolume)];
-        ((UILabel *)_items[0]).textColor = JT_KLineMATitleColor;
+        
         ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MA5:%@",formatVolume(model.volumeMA5)];
         ((UILabel *)_items[1]).textColor = JT_KLineMA5Color;
         ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA10:%@",formatVolume(model.volumeMA10)];
         ((UILabel *)_items[2]).textColor = JT_KLineMA10Color;
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
         ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"KDJ(9,3,3)"];
+        
         ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"K:%.2f",model.KDJ_K];
+        ((UILabel *)_items[1]).textColor = JT_KLine_KDJ_K_Color;
         ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"D:%.2f",model.KDJ_D];
+        ((UILabel *)_items[2]).textColor = JT_KLine_KDJ_D_Color;
         ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"J:%.2f",model.KDJ_J];
+        ((UILabel *)_items[3]).textColor = JT_KLine_KDJ_J_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"MACD(12,26,9)"];
+        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"MACD(12,26,9):%.2f",model.MACD];
+        
         ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DIF:%.2f",model.DIF];
+        ((UILabel *)_items[1]).textColor = JT_KLine_MACD_DIF_Color;
         ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"DEA:%.2f",model.DEA];
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"MACD:%.2f",model.MACD];
+        ((UILabel *)_items[2]).textColor = JT_KLine_MACD_DEA_Color;
+        
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {

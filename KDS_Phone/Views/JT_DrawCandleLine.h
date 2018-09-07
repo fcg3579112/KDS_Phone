@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@class JT_KLinePositionModel,JT_KLineModel;
+
+@class JT_KLineModel;
 @interface JT_DrawCandleLine : NSObject
 /**
  *  K线的位置model
  */
 @property (nonatomic ,strong) JT_KLineModel *kLineModel;
-@property (nonatomic, strong) JT_KLinePositionModel *kLinePositionModel;
+
+@property (nonatomic, assign) CGPoint timePostion;
 
 @property (nonatomic, assign) CGFloat maxY;
 /**
@@ -36,22 +38,19 @@
 - (instancetype)initWithContext:(CGContextRef)context;
 
 /**
- *  绘制K线蜡烛线
+ 画柱状图
+
+ @param color 颜色
+ @width 线宽
+ @param beginPoint 起点
+ @param endPoint 终点
  */
-- (void)drawCandleLine;
+- (void)drawBarWithColor:(UIColor *)color width:(float)width begin:(CGPoint)beginPoint end:(CGPoint)endPoint;
 
 /**
  画X轴时间
  */
 - (void)drawDateTime;
 
-/**
- 画成交量
- */
-- (void)drawVolume;
 
-/**
- 画 MACD  bar
- */
-- (void)drawMACD_Bar;
 @end
