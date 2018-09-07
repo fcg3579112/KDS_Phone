@@ -73,12 +73,70 @@
  */
 
 #define JT_KLineMATitleColor                  JT_ColorDayOrNight(@"5E6678",@"858C9E")
-#define JT_KLineMA5Color                      JT_ColorDayOrNight(@"FF8000",@"FF8000")
-#define JT_KLineMA10Color                     JT_ColorDayOrNight(@"00A7F8",@"00A7F8")
-#define JT_KLineMA20Color                     JT_ColorDayOrNight(@"FF58FE",@"FF58FE")
-#define JT_KLineMA30Color                     JT_ColorDayOrNight(@"2577FF",@"2577FF")
-#define JT_KLineMA60Color                     JT_ColorDayOrNight(@"00C5B1",@"00C5B1")
+
+#define JT_KLineIndexTitleColor               JT_ColorDayOrNight(@"5E6678",@"858C9E")
+
+
+#define JT_KLine_Orange_Color                 JT_ColorDayOrNight(@"FF8000",@"FF8000")
+#define JT_KLine_SkyBlue_Color                JT_ColorDayOrNight(@"00A7F8",@"00A7F8")
+#define JT_KLine_Pink_Color                   JT_ColorDayOrNight(@"FF58FE",@"FF58FE")
+#define JT_KLine_LightBlue_Color              JT_ColorDayOrNight(@"2577FF",@"2577FF")
+#define JT_KLine_Green_Color                  JT_ColorDayOrNight(@"00C5B1",@"00C5B1")
+#define JT_KLine_Blue_Color                   JT_ColorDayOrNight(@"562CB6",@"562CB6")
+#define JT_KLine_Yellow_Color                 JT_ColorDayOrNight(@"FFAC00",@"FFAC00")
+#define JT_KLine_DarkOrange_Color             JT_ColorDayOrNight(@"FF5A00",@"FF5A00")
+
+#define JT_KLine_CR_MA1_Color                 JT_KLine_Orange_Color
+#define JT_KLine_CR_MA2_Color                 JT_KLine_Yellow_Color
+#define JT_KLine_CR_MA3_Color                 JT_KLine_Pink_Color
+#define JT_KLine_CR_MA4_Color                 JT_KLine_LightBlue_Color
+
+#define JT_KLine_DMI_PDI_Color                JT_KLine_Orange_Color
+#define JT_KLine_DMI_MDI_Color                JT_KLine_Blue_Color
+#define JT_KLine_DMI_ADX_Color                JT_KLine_Pink_Color
+#define JT_KLine_DMI_ADXR_Color               JT_KLine_SkyBlue_Color
+
+#define JT_KLine_DMA_DMA_Color                JT_KLine_Yellow_Color
+#define JT_KLine_DMA_AMA_Color                JT_KLine_SkyBlue_Color
+
+#define JT_KLine_RSI_6_Color                  JT_KLine_Pink_Color
+#define JT_KLine_RSI_12_Color                 JT_KLine_LightBlue_Color
+#define JT_KLine_RSI_24_Color                 JT_KLine_DarkOrange_Color
+
+#define JT_KLine_BOLL_MID_Color               JT_KLine_SkyBlue_Color
+#define JT_KLine_BOLL_UP_Color                JT_KLine_Orange_Color
+#define JT_KLine_BOLL_LOW_Color               JT_KLine_Blue_Color
+
+#define JT_KLine_MACD_DIF_Color               JT_KLine_Yellow_Color
+#define JT_KLine_MACD_DEA_Color               JT_KLine_LightBlue_Color
+
+#define JT_KLine_VR_VR_Color                  JT_KLine_Pink_Color
+#define JT_KLine_VR_MAVR_Color                JT_KLine_Blue_Color
+
+#define JT_KLine_OBV_OBV_Color                JT_KLine_Yellow_Color
+#define JT_KLine_OBV_MAOBV_Color              JT_KLine_DarkOrange_Color
+
+#define JT_KLine_BIAS_6_Color                 JT_KLine_Yellow_Color
+#define JT_KLine_BIAS_12_Color                JT_KLine_Pink_Color
+#define JT_KLine_BIAS_24_Color                JT_KLine_Blue_Color
+
+#define JT_KLine_CCI_14_Color                 JT_ColorDayOrNight(@"5E6678",@"5E6678")
+
+#define JT_KLine_WR_10_Color                  JT_KLine_SkyBlue_Color
+#define JT_KLine_WR_6_Color                   JT_KLine_Blue_Color
+
+#define JT_KLine_KDJ_K_Color                  JT_KLine_Yellow_Color
+#define JT_KLine_KDJ_D_Color                  JT_KLine_LightBlue_Color
+#define JT_KLine_KDJ_J_Color                  JT_KLine_Blue_Color
+
+#define JT_KLineMA5Color                      JT_KLine_Orange_Color
+#define JT_KLineMA10Color                     JT_KLine_SkyBlue_Color
+#define JT_KLineMA20Color                     JT_KLine_Pink_Color
+#define JT_KLineMA30Color                     JT_KLine_LightBlue_Color
+#define JT_KLineMA60Color                     JT_KLine_Green_Color
+
 #define JT_KLineMABackgroundColor             JT_ColorDayOrNight(@"FFF7F3",@"32221C")
+
 
 //横屏复权按钮选中色
 #define JT_KLineFQSegmentSelectedColor        JT_ColorDayOrNight(@"6B727C", @"F2F2F5")
@@ -94,10 +152,6 @@
 // 指标区成交量按钮三角颜色
 #define JT_KLineVolumeButtonTriangleColor     JT_ColorDayOrNight(@"5C6778", @"5B667A")
 
-
-#define JT_KLineKDJ_K_LineColor               JT_ColorDayOrNight(@"FFB200", @"FFB200")
-#define JT_KLineKDJ_D_LineColor               JT_ColorDayOrNight(@"562CB6", @"562CB6")
-#define JT_KLineKDJ_J_LineColor               JT_ColorDayOrNight(@"00A7F8", @"00A7F8")
 
 
 
