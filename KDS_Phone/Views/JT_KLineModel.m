@@ -169,40 +169,28 @@
 - (float)nineClocksMinPrice {
     if (!_nineClocksMinPrice) {
         NSInteger index = self.index;
-        do {
-            if (index == self.index) {
-                _nineClocksMinPrice = self.allKLineModel[index].lowPrice.floatValue;
-            } else {
-                float lowPrice = self.allKLineModel[index].lowPrice.floatValue;
-                if (lowPrice < _nineClocksMinPrice) {
-                    _nineClocksMinPrice = lowPrice;
-                }
-            }
-            index --;
-            if (index != self.index - 9) {
+        float min = self.allKLineModel[index].lowPrice.floatValue;
+        for (NSInteger i = index - 1; i >= 0; -- i) {
+            min = MIN(min, self.allKLineModel[i].lowPrice.floatValue);
+            if (index - i > 7) {
                 break;
             }
-        } while (index >= 0);
+        }
+        _nineClocksMinPrice = min;
     }
     return _nineClocksMinPrice;
 }
 - (float)nineClocksMaxPrice {
     if (!_nineClocksMaxPrice) {
         NSInteger index = self.index;
-        do {
-            if (index == self.index) {
-                _nineClocksMaxPrice = self.allKLineModel[index].highPrice.floatValue;
-            } else {
-                float highPrice = self.allKLineModel[index].highPrice.floatValue;
-                if (highPrice > _nineClocksMinPrice) {
-                    _nineClocksMaxPrice = highPrice;
-                }
-            }
-            index --;
-            if (index != self.index - 9) {
+        float max = self.allKLineModel[index].highPrice.floatValue;
+        for (NSInteger i = index - 1; i >= 0; -- i) {
+            max = MAX(max, self.allKLineModel[i].highPrice.floatValue);
+            if (index - i > 7) {
                 break;
             }
-        } while (index >= 0);
+        }
+        _nineClocksMaxPrice = max;
     }
     return _nineClocksMaxPrice;
 }
@@ -213,7 +201,7 @@
         if (self.nineClocksMinPrice == self.nineClocksMaxPrice) {
             _RSV_9 = 100;
         } else {
-            _RSV_9 = (self.closePrice.floatValue - self.nineClocksMinPrice) * 100 / (self.nineClocksMaxPrice - self.nineClocksMinPrice);
+            _RSV_9 = (self.closePrice.floatValue - self.nineClocksMinPrice) / (self.nineClocksMaxPrice - self.nineClocksMinPrice) * 100;
         }
     }
     return _RSV_9;
@@ -228,21 +216,13 @@
  */
 - (float)KDJ_K {
     if (!_KDJ_K) {
-        if (self.index == 0) {
-            _KDJ_K = 50;
-        } else {
-            _KDJ_K = ( self.RSV_9 + 2 * (self.preModel.KDJ_K ? self.preModel.KDJ_K : 50) ) / 3;
-        }
+        _KDJ_K = (self.RSV_9 + 2 * (self.preModel.KDJ_K ? self.preModel.KDJ_K : 50) )/3;
     }
     return _KDJ_K;
 }
 - (float)KDJ_D {
     if(!_KDJ_D) {
-        if (self.index == 0) {
-            _KDJ_D = 50;
-        } else {
-            _KDJ_D = ( self.KDJ_K + 2 * (self.preModel.KDJ_D ? self.preModel.KDJ_D : 50 )) / 3;
-        }
+        _KDJ_D = (self.KDJ_K + 2 * (self.preModel.KDJ_D ? self.preModel.KDJ_D : 50)) / 3;
     }
     return _KDJ_D;
 }
@@ -301,12 +281,64 @@
     return _MACD;
 }
 
+- (float)MA_20 {
+    if (!_MA_20) {
+        _MA_20 = [self calculateMAValue:20].floatValue;
+    }
+    return _MA_20;
+}
+- (float)MD {
+    if (!_MD) {
+        float average;
+        if (self.index > 19) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 20];
+            average = (self.C_MA_Square_SUM - preDaysModel.C_MA_Square_SUM) / 20;
+        } else {
+            average = self.C_MA_Square_SUM / (self.index + 1);
+        }
+        _MD = sqrtf(average);
+    }
+    return _MD;
+}
+- (float)C_MA_Square {
+    if (!_C_MA_Square) {
+        _C_MA_Square = (self.closePrice.floatValue - self.MA_20) * (self.closePrice.floatValue - self.MA_20);
+    }
+    return _C_MA_Square;
+}
+- (float)C_MA_Square_SUM {
+    if (!_C_MA_Square_SUM) {
+        _C_MA_Square_SUM = self.preModel.C_MA_Square_SUM + self.C_MA_Square;
+    }
+    return _C_MA_Square_SUM;
+}
+- (float)MB {
+    if (!_MB) {
+        _MB = self.MA_20;
+    }
+    return _MB;
+}
+- (float)UP {
+    if (!_UP) {
+        _UP = self.MB + 2 * self.MD;
+    }
+    NSLog(@"index = %d UP = %f",self.index,_UP);
+    return _UP;
+}
+- (float)ND {
+    if (!_ND) {
+        _ND = self.MB - 2 * self.MD;
+    }
+    NSLog(@"index = %d  ND = %f",self.index,_ND);
+    return _ND;
+}
+
 - (void)initData {
     
     [self preModel];
     
     //初始化收盘MA
-    [self sumOfLastClose];
+    
     [self MA5];
     [self MA10];
     [self MA20];
@@ -314,25 +346,22 @@
     [self MA60];
     
     //初始化 Volume
-    [self sumOfLastVolume];
     [self volumeMA5];
     [self volumeMA10];
     
     //初始化 KDJ
-    [self nineClocksMaxPrice];
-    [self nineClocksMinPrice];
-    [self RSV_9];
     [self KDJ_K];
     [self KDJ_D];
     [self KDJ_J];
     
     //初始化MACD
-    [self EMA12];
-    [self EMA26];
     [self DIF];
     [self DEA];
     [self MACD];
     
-    
+    [self MB];
+    [self UP];
+    [self ND];
+
 }
 @end
