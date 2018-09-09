@@ -12,7 +12,7 @@
 #import "JT_DrawCandleLine.h"
 #import "JT_DrawMALine.h"
 #import "JT_KLineModel.h"
-
+#import "JT_KLineCandlePositionModel.h"
 
 @interface JT_KLineVolumeView ()
 
@@ -39,6 +39,25 @@
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DIF_Positions;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DEA_Positions;
+
+/**
+ BOOL线中轨
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MB_Positions;
+/**
+ BOOL线上轨
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_UP_Positions;
+/**
+ BOOL线下轨
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DN_Positions;
+
+/**
+ BOOL线页面上的美国线坐标
+ */
+@property (nonatomic, strong) NSMutableArray <JT_KLineCandlePositionModel *>*needDraw_AMLine_Positions;
+
 
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
 
@@ -70,6 +89,11 @@
         _needDraw_DIF_Positions = @[].mutableCopy;
         _needDraw_DEA_Positions = @[].mutableCopy;
         
+        _needDraw_MB_Positions = @[].mutableCopy;
+        _needDraw_UP_Positions = @[].mutableCopy;
+        _needDraw_DN_Positions = @[].mutableCopy;
+        _needDraw_AMLine_Positions = @[].mutableCopy;
+        
     }
     return self;
 }
@@ -87,6 +111,12 @@
     [_needDraw_DIF_Positions removeAllObjects];
     [_needDraw_DEA_Positions removeAllObjects];
     
+    //移除BOOL线相关坐标
+    [_needDraw_DN_Positions removeAllObjects];
+    [_needDraw_UP_Positions removeAllObjects];
+    [_needDraw_MB_Positions removeAllObjects];
+    [_needDraw_AMLine_Positions removeAllObjects];
+    
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
     
@@ -100,6 +130,8 @@
         self.screenMinValue = lastModel.MACD;
         self.screenMaxValue = lastModel.MACD;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
+        self.screenMaxValue = lastModel.highPrice.floatValue;
+        self.screenMinValue = lastModel.lowPrice.floatValue;
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
         
@@ -144,6 +176,12 @@
             self.screenMinValue = MIN(self.screenMinValue, kLineModel.MACD);
             self.screenMinValue = MIN(self.screenMinValue, kLineModel.DIF);
             self.screenMinValue = MIN(self.screenMinValue, kLineModel.DEA);
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.lowPrice.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.DN);
+            
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.highPrice.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.UP);
         }
     }];
     
@@ -177,6 +215,17 @@
             [self.needDrawBarPositionModels addObject:barModel];
             [self.needDraw_DEA_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition,  ABS(self.maxY - (kLineModel.DEA - self.screenMinValue) / unitValue ))]];
             [self.needDraw_DIF_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition,  ABS(self.maxY - (kLineModel.DIF - self.screenMinValue) / unitValue ))]];
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
+            JT_KLineCandlePositionModel *amModel = [JT_KLineCandlePositionModel new];
+            amModel.highPoint = CGPointMake(xPosition, ABS(self.maxY - (kLineModel.highPrice.floatValue - self.screenMinValue) / unitValue ));
+            amModel.lowPoint = CGPointMake(xPosition, ABS(self.maxY - (kLineModel.lowPrice.floatValue - self.screenMinValue) / unitValue ));
+            amModel.openPoint = CGPointMake(xPosition, ABS(self.maxY - (kLineModel.openPrice.floatValue - self.screenMinValue) / unitValue ));
+            amModel.closePoint = CGPointMake(xPosition, ABS(self.maxY - (kLineModel.closePrice.floatValue - self.screenMinValue) / unitValue ));
+            [self.needDraw_AMLine_Positions addObject:amModel];
+            
+            [self.needDraw_MB_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.MB - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_UP_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.UP - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_DN_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.DN - self.screenMinValue) / unitValue ))]];
         }
     }];
 }
@@ -253,6 +302,22 @@
         [_drawLineUtil drawLineWith:JT_KLine_MACD_DEA_Color positions:self.needDraw_DEA_Positions];
         [_drawLineUtil drawLineWith:JT_KLine_MACD_DIF_Color positions:self.needDraw_DIF_Positions];
     
+        //画成最大值与最小值
+        NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
+        NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
+        [self drawMaxValue:max andMin:min rect:rect];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
+        [_drawLineUtil drawLineWith:JT_KLine_BOLL_UP_Color positions:self.needDraw_UP_Positions];
+        [_drawLineUtil drawLineWith:JT_KLine_BOLL_MID_Color positions:self.needDraw_MB_Positions];
+        [_drawLineUtil drawLineWith:JT_KLine_BOLL_LOW_Color positions:self.needDraw_DN_Positions];
+        
+        //画美国线
+        [self.needDraw_AMLine_Positions enumerateObjectsUsingBlock:^(JT_KLineCandlePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            JT_KLineModel *kLineModel = self.needDrawKLineModels[idx];
+            UIColor *color = kLineModel.closePrice.floatValue > kLineModel.openPrice.floatValue ? JT_KLineIncreaseColor : JT_KLineDecreaseColor;
+            [self.drawBarUtil drawBarWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] begin:obj.lowPoint end:obj.highPoint];
+            [self.drawBarUtil drawAMLineWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] left:obj.openPoint right:obj.closePoint];
+        }];
         //画成最大值与最小值
         NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
         NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];

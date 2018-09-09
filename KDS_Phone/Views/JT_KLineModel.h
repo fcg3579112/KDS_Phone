@@ -114,19 +114,23 @@
 
 /**
  BOOL计算方式
- https://www.wikiwand.com/zh/%E5%B8%83%E6%9E%97%E5%B8%A6
- 中轨 = N时间段的简单移动平均线
- 上轨 = 中轨 + K × N时间段的标准差
- 下轨 = 中轨 − K × N时间段的标准差
- 一般情况下，設定N=20和K=2，这两个数值也是在布林带当中使用最多的。在日線圖裡，N=20其實就是「月均線」（MA20）。依照常態分布規則，約有95%的數值會分布在距離平均值有正負2個標準差（\pm 2\sigma ）的範圍內。
+ （1）计算MA
+ MA=N日内的收盘价之和÷N
+ （2）计算标准差MD
+ MD=平方根（N-1）日的（C－MA）的两次方之和除以N
+ （3）计算MB、UP、DN线
+ MB=（N－1）日的MA
+ UP=MB+k×MD
+ DN=MB－k×MD
+ （K为参数，可根据股票的特性来做相应的调整，一般默认为2）
  */
 @property (nonatomic, assign) float MA_20;
-@property (nonatomic, assign) float C_MA_Square;
-@property (nonatomic, assign) float C_MA_Square_SUM;
+//@property (nonatomic, assign) float C_MA_Square;
+//@property (nonatomic, assign) float C_MA_Square_SUM;
 @property (nonatomic, assign) float MD;
 @property (nonatomic, assign) float MB;
 @property (nonatomic, assign) float UP;
-@property (nonatomic, assign) float ND;
+@property (nonatomic, assign) float DN;
 
 
 

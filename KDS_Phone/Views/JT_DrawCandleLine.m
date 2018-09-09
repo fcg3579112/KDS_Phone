@@ -39,6 +39,20 @@
     //画线
     CGContextStrokeLineSegments(context, solidPoints, 2);
 }
+- (void)drawAMLineWithColor:(UIColor *)color width:(float)width left:(CGPoint)openPoint right:(CGPoint)closePoint {
+    
+    CGContextRef context = self.context;
+    //设置画笔颜色
+    
+    CGContextSetStrokeColorWithColor(context, color.CGColor);
+    CGContextSetLineWidth(context,width);
+    //坐标开盘线
+    const CGPoint leftSolidPoints[] = {openPoint, CGPointMake(openPoint.x - ([JT_KLineConfig kLineWidth] / 2), openPoint.y)};
+    CGContextStrokeLineSegments(context, leftSolidPoints, 2);
+    //右边收盘线
+    const CGPoint rightSolidPoints[] = {closePoint, CGPointMake(closePoint.x + ([JT_KLineConfig kLineWidth] / 2), closePoint.y)};
+    CGContextStrokeLineSegments(context, rightSolidPoints, 2);
+}
 - (void)drawDateTime {
     UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
     CGPoint drawDatePoint = self.timePostion;

@@ -289,28 +289,20 @@
 }
 - (float)MD {
     if (!_MD) {
-        float average;
-        if (self.index > 19) {
-            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 20];
-            average = (self.C_MA_Square_SUM - preDaysModel.C_MA_Square_SUM) / 20;
-        } else {
-            average = self.C_MA_Square_SUM / (self.index + 1);
+        float sum = 0;
+        NSInteger index = self.index;
+        for (NSInteger i = index; i >= 0; i --) {
+            float closePrice = self.allKLineModel[i].closePrice.floatValue;
+            sum = (closePrice - self.MA_20) * (closePrice - self.MA_20) + sum;
+            if (index - i > 18) {
+                break;
+            }
         }
+        NSUInteger count = self.index > 18 ? 20 : self.index + 2;
+        float average = sum / count;
         _MD = sqrtf(average);
     }
     return _MD;
-}
-- (float)C_MA_Square {
-    if (!_C_MA_Square) {
-        _C_MA_Square = (self.closePrice.floatValue - self.MA_20) * (self.closePrice.floatValue - self.MA_20);
-    }
-    return _C_MA_Square;
-}
-- (float)C_MA_Square_SUM {
-    if (!_C_MA_Square_SUM) {
-        _C_MA_Square_SUM = self.preModel.C_MA_Square_SUM + self.C_MA_Square;
-    }
-    return _C_MA_Square_SUM;
 }
 - (float)MB {
     if (!_MB) {
@@ -322,15 +314,13 @@
     if (!_UP) {
         _UP = self.MB + 2 * self.MD;
     }
-    NSLog(@"index = %d UP = %f",self.index,_UP);
     return _UP;
 }
-- (float)ND {
-    if (!_ND) {
-        _ND = self.MB - 2 * self.MD;
+- (float)DN {
+    if (!_DN) {
+        _DN = self.MB - 2 * self.MD;
     }
-    NSLog(@"index = %d  ND = %f",self.index,_ND);
-    return _ND;
+    return _DN;
 }
 
 - (void)initData {
@@ -359,9 +349,10 @@
     [self DEA];
     [self MACD];
     
+    //初始化BOOL线
     [self MB];
     [self UP];
-    [self ND];
+    [self DN];
 
 }
 @end

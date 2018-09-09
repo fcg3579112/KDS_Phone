@@ -167,7 +167,13 @@
         ((UILabel *)_items[2]).textColor = JT_KLine_MACD_DEA_Color;
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
-        
+        ((UILabel *)_items[0]).text = @"BOOL(20,2)";
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MID:%.2f",model.MB];
+        ((UILabel *)_items[1]).textColor = JT_KLine_BOLL_MID_Color;
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"UP:%.2f",model.UP];
+        ((UILabel *)_items[2]).textColor = JT_KLine_BOLL_UP_Color;
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"LOW:%.2f",model.DN];
+        ((UILabel *)_items[3]).textColor = JT_KLine_BOLL_LOW_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {

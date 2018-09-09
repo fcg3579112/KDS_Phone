@@ -103,7 +103,8 @@
 
 - (void)JT_KLineIndicatorSegmentSelectedType:(JT_KLineIndicatorType)type {
     [JT_KLineConfig setkLineIndicatorType:type];
-    [self reDrawAllView];
+    [self p_drawIndicatorAccessory];
+    [self p_drawVolume];
 }
 
 #pragma mark KVO监听实现

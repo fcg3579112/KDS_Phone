@@ -53,4 +53,14 @@
 - (void)drawDateTime;
 
 
+/**
+ 画美国线
+
+ @param color 颜色
+ @width 线宽
+ @param openPoint 开盘坐标
+ @param closePoint 收盘坐标
+ */
+- (void)drawAMLineWithColor:(UIColor *)color width:(float)width left:(CGPoint)openPoint right:(CGPoint)closePoint;
+
 @end
