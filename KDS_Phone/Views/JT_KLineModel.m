@@ -323,6 +323,65 @@
     return _DN;
 }
 
+
+/**
+ 计算股票涨跌幅
+
+
+ */
+- (float)change {
+    if (!_change) {
+        _change = self.closePrice.floatValue - self.referencePrice.floatValue;
+    }
+    return _change;
+}
+- (float)changeRate {
+    if (!_changeRate) {
+        _changeRate = self.change / self.referencePrice.floatValue;
+    }
+    return _changeRate;
+}
+- (float)RSI6 {
+    if (!_RSI6) {
+        _RSI6 = [self caculateRSI:6];
+    }
+    NSLog(@"index = %d  %f",self.index,_RSI6);
+    return _RSI6;
+}
+- (float)RSI12 {
+    if (!_RSI12) {
+        _RSI12 = [self caculateRSI:12];
+    }
+    NSLog(@"index = %d  %f",self.index,_RSI12);
+    return _RSI12;
+}
+- (float)RSI24 {
+    if (!_RSI24) {
+        _RSI24 = [self caculateRSI:24];
+    }
+    NSLog(@"index = %d  %f",self.index,_RSI24);
+    return _RSI24;
+}
+- (float)caculateRSI:(NSUInteger)days {
+    NSUInteger index = self.index;
+    float rsi = 0;
+    float sum_z = 0; // 涨
+    float sum_d = 0; // 跌
+    for (NSInteger  i = index; i >=0 ; i --) {
+        JT_KLineModel *model = self.allKLineModel[i];
+        if (model.change > 0) {
+            sum_z += model.changeRate;
+        } else {
+            sum_d += fabsf(model.changeRate);
+        }
+        if (index - i >= days - 2) {
+            break;
+        }
+    }
+    rsi = sum_z / (sum_d + sum_z ) * 100;
+    return rsi;
+}
+
 - (void)initData {
     
     [self preModel];
@@ -353,6 +412,11 @@
     [self MB];
     [self UP];
     [self DN];
+    
+    //初始化RSI
+    [self RSI6];
+    [self RSI12];
+    [self RSI24];
 
 }
 @end

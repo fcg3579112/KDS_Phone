@@ -29,9 +29,9 @@
 /** 成交金额 */
 @property (nonatomic, copy) NSString *amount;
 /** 涨跌 */
-@property (nonatomic ,copy) NSString *change;
+@property (nonatomic ,assign) float change;
 /** 涨跌幅 */
-@property (nonatomic ,copy) NSString *changeRate;
+@property (nonatomic ,assign) float changeRate;
 
 @property (nonatomic, assign) BOOL needShowTime;
 
@@ -133,7 +133,13 @@
 @property (nonatomic, assign) float DN;
 
 
+/**
+ 计算RSI
+ */
 
+@property (nonatomic, assign) float RSI6;
+@property (nonatomic, assign) float RSI12;
+@property (nonatomic, assign) float RSI24;
 
 
 //上证 k 线model 转 JT_KLineModel
