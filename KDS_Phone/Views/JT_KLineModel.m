@@ -402,6 +402,8 @@
 }
 
 /*
+ 
+ N日RSI =N日内收盘涨幅的平均值/(N日内收盘涨幅均值+N日内收盘跌幅均值) ×100
 - (float)RSI6 {
     if (!_RSI6) {
         _RSI6 = [self caculateRSI:6];
@@ -420,16 +422,17 @@
     }
     return _RSI24;
 }
+
 - (float)caculateRSI:(NSUInteger)days {
     NSUInteger index = self.index;
     float sum_z = 0; // 涨
     float sum_all = 0; // 涨 + 跌
     for (NSInteger  i = index; i >=0 ; i --) {
         JT_KLineModel *model = self.allKLineModel[i];
-        if (model.change > 0) {
-            sum_z += model.change;
+        if (model.changeRate > 0) {
+            sum_z += model.changeRate;
         }
-        sum_all += fabsf(model.change);
+        sum_all += fabsf(model.changeRate);
         if (index - i >= days - 1) {
             break;
         }
@@ -474,7 +477,142 @@
     return _sumOfLastDMA;
 }
 
+- (float)BIAS6 {
+    if (!_BIAS6) {
+        float average6 = [self calculateMAValue:6].floatValue;
+        _BIAS6 = (self.closePrice.floatValue - average6) / average6 * 100;
+    }
+    NSLog(@"%f",_BIAS6);
+    return _BIAS6;
+}
+- (float)BIAS12 {
+    if (!_BIAS12) {
+        float average12 = [self calculateMAValue:12].floatValue;
+        _BIAS12 = (self.closePrice.floatValue - average12) / average12 * 100;
+    }
+    return _BIAS12;
+}
+- (float)BIAS24 {
+    if (!_BIAS24) {
+        float average24 = [self calculateMAValue:24].floatValue;
+        _BIAS24 = (self.closePrice.floatValue - average24) / average24 * 100;
+    }
+    return _BIAS24;
+}
 
+- (float)TR {
+    if (!_TR) {
+        _TR = MAX(self.highPrice.floatValue - self.lowPrice.floatValue, fabsf(self.highPrice.floatValue - self.referencePrice.floatValue));
+        _TR = MAX(_TR, fabsf(self.lowPrice.floatValue - self.referencePrice.floatValue));
+    }
+    return _TR;
+}
+//+DM代表正趋向变动值即上升动向值，其数值等于当日的最高价减去前一日的最高价，如果<=0 则+DM=0。
+//﹣DM代表负趋向变动值即下降动向值，其数值等于前一日的最低价减去当日的最低价，如果<=0 则-DM=0。注意-DM也是非负数。
+//再比较+DM和-DM，较大的那个数字保持，较小的数字归0。
+- (float)DM_U {
+    if (!_DM_U) {
+        _DM_U = self.DM_U_Temp;
+    }
+//    NSLog(@"index = %d  DM_U = %f",self.index,_DM_U);
+    return _DM_U;
+}
+- (float)DM_D {
+    if (!_DM_D) {
+        _DM_D = self.DM_D_Temp;
+    }
+//    NSLog(@"index = %d  DM_D = %f",self.index,_DM_D);
+    return _DM_D;
+}
+- (float)DM_U_Temp {
+    if (!_DM_U_Temp) {
+        _DM_U_Temp = self.highPrice.floatValue - self.preModel.highPrice.floatValue;
+        _DM_U_Temp = _DM_U_Temp > 0 ? _DM_U_Temp : 0;
+        if (self.index == 0) {
+            _DM_U_Temp = 0;
+        }
+    }
+//    NSLog(@"index = %d  DM_U_Temp = %f",self.index,_DM_U_Temp);
+    return _DM_U_Temp;
+}
+- (float)DM_D_Temp {
+    if (!_DM_D_Temp) {
+        _DM_D_Temp = self.preModel.lowPrice.floatValue - self.lowPrice.floatValue;
+        _DM_D_Temp = _DM_D_Temp > 0 ? _DM_D_Temp : 0;
+        if (self.index == 0) {
+            _DM_D_Temp = 0;
+        }
+    }
+//    NSLog(@"index = %d  _DM_D_Temp = %f",self.index,_DM_D_Temp);
+    return _DM_D_Temp;
+}
+- (float)sumOfLastTR {
+    if (!_sumOfLastTR) {
+        _sumOfLastTR = self.preModel.sumOfLastTR + self.TR;
+    }
+    return _sumOfLastTR;
+}
+- (float)sumOfLastDM_D {
+    if (!_sumOfLastDM_D) {
+        _sumOfLastDM_D = self.preModel.sumOfLastDM_D + self.DM_D;
+    }
+    return _sumOfLastDM_D;
+}
+- (float)sumOfLastDM_U {
+    if (!_sumOfLastDM_U) {
+        _sumOfLastDM_U = self.preModel.sumOfLastDM_U + self.DM_U;
+    }
+    return _sumOfLastDM_U;
+}
+- (float)TR_14 {
+    if (!_TR_14) {
+        if (self.index > 13) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 14];
+            _TR_14 = (self.sumOfLastTR - preDaysModel.sumOfLastTR) / 14;
+        } else {
+            _TR_14 = self.sumOfLastTR / (self.index + 1);
+        }
+    }
+    return _TR_14;
+}
+- (float)DM_U_14 {
+    if (!_DM_U_14) {
+        if (self.index > 13) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 14];
+            _DM_U_14 = (self.sumOfLastDM_U - preDaysModel.sumOfLastDM_U) / 14;
+        } else {
+            _DM_U_14 = self.sumOfLastDM_U / (self.index + 1);
+        }
+    }
+    return _DM_U_14;
+}
+- (float)DM_D_14 {
+    if (!_DM_D_14) {
+        if (self.index > 13) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 14];
+            _DM_U_14 = (self.sumOfLastDM_D - preDaysModel.sumOfLastDM_D) / 14;
+        } else {
+            _DM_U_14 = self.sumOfLastDM_D / (self.index + 1);
+        }
+    }
+    return _DM_D_14;
+}
+- (float)PDI_14 {
+    if (!_PDI_14) {
+        _PDI_14 = (self.DM_U_14 / self.TR_14) * 100;
+    }
+    NSLog(@"index = %d  %f",self.index,_PDI_14);
+    return _PDI_14;
+}
+- (float)MDI_14 {
+    if (!_MDI_14) {
+        _MDI_14 = (self.DM_D_14 / self.TR_14) * 100;
+    }
+    NSLog(@"index = %d  %f",self.index,_MDI_14);
+    return _MDI_14;
+}
+//@property (nonatomic, assign) float PDI_14;//多方
+//@property (nonatomic, assign) float MDI_14;//空方
 - (void)initData {
     
     [self preModel];
@@ -507,13 +645,21 @@
 //    [self DN];
     
     //初始化RSI
-    [self RSI6];
-    [self RSI12];
-    [self RSI24];
+//    [self RSI6];
+//    [self RSI12];
+//    [self RSI24];
     
     //初始化 DMA
 //    [self DMA];
 //    [self AMA];
-
+    
+    //初始化BIAS
+//    [self BIAS6];
+//    [self BIAS12];
+//    [self BIAS24];
+    
+    //初始化 DMI指标
+    [self PDI_14];
+    [self MDI_14];
 }
 @end

@@ -191,7 +191,13 @@
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
-        
+        ((UILabel *)_items[0]).text = @"BIAS(6,12,24)";
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.BIAS6];
+        ((UILabel *)_items[1]).textColor = JT_KLine_BIAS_6_Color;
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.BIAS12];
+        ((UILabel *)_items[2]).textColor = JT_KLine_BIAS_12_Color;
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.BIAS24];
+        ((UILabel *)_items[3]).textColor = JT_KLine_BIAS_24_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_CCI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_WR) {

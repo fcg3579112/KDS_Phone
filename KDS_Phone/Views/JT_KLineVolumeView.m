@@ -87,7 +87,12 @@
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DMA_Positions;
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_AMA_Positions;
 
-
+/**
+ 乘离率 (BIAS)
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_BIAS6_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_BIAS12_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_BIAS24_Positions;
 
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
 
@@ -138,6 +143,12 @@
         _needDraw_DMA_Positions = @[].mutableCopy;
         _needDraw_AMA_Positions = @[].mutableCopy;
         
+        //乘离率 (BIAS)
+        _needDraw_BIAS6_Positions = @[].mutableCopy;
+        _needDraw_BIAS12_Positions = @[].mutableCopy;
+        _needDraw_BIAS24_Positions = @[].mutableCopy;
+        
+    
         
     }
     return self;
@@ -171,6 +182,11 @@
     [_needDraw_DMA_Positions removeAllObjects];
     [_needDraw_AMA_Positions removeAllObjects];
     
+    //乘离率 (BIAS)
+    [_needDraw_BIAS6_Positions removeAllObjects];
+    [_needDraw_BIAS12_Positions removeAllObjects];
+    [_needDraw_BIAS24_Positions removeAllObjects];
+    
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
     
@@ -196,7 +212,8 @@
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
-        
+        self.screenMaxValue = lastModel.BIAS6;
+        self.screenMinValue = lastModel.BIAS6;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_CCI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_WR) {
@@ -251,6 +268,15 @@
             self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.AMA);
             self.screenMinValue = MIN(self.screenMinValue, kLineModel.DMA);
             self.screenMinValue = MIN(self.screenMinValue, kLineModel.AMA);
+        }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
+            
+        }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.BIAS6);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.BIAS12);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.BIAS24);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.BIAS6);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.BIAS12);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.BIAS24);
         }
     }];
     
@@ -302,6 +328,12 @@
         } else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
             [self.needDraw_DMA_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.DMA - self.screenMinValue) / unitValue ))]];
             [self.needDraw_AMA_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.AMA - self.screenMinValue) / unitValue ))]];
+        }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
+            
+        }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
+            [self.needDraw_BIAS6_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.BIAS6 - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_BIAS12_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.BIAS12 - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_BIAS24_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.BIAS24 - self.screenMinValue) / unitValue ))]];
         }
     }];
 }
@@ -390,11 +422,21 @@
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
         [_drawLineUtil drawLineWithColor:JT_KLine_DMA_DMA_Color positions:self.needDraw_DMA_Positions];
         [_drawLineUtil drawLineWithColor:JT_KLine_DMA_AMA_Color positions:self.needDraw_AMA_Positions];
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
+        
+    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
+        [_drawLineUtil drawLineWithColor:JT_KLine_BIAS_6_Color positions:self.needDraw_BIAS6_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_BIAS_12_Color positions:self.needDraw_BIAS12_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_BIAS_24_Color positions:self.needDraw_BIAS24_Positions];
     }
     
     //画最大值与最小值
     NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
     NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
+    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
+        max = formatVolume(self.screenMaxValue);
+        min = @"";
+    }
     [self drawMaxValue:max andMin:min rect:rect];
 }
 

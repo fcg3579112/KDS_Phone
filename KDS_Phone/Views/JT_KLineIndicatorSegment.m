@@ -23,12 +23,28 @@
     // Drawing code
 }
 */
+
+/**
+ JT_Volume = 0,
+ JT_KDJ,
+ JT_MACD,
+ JT_BOLL,
+ JT_RSI,
+ JT_DMA,
+ JT_DMI,
+ JT_BIAS,
+ JT_CCI,
+ JT_WR,
+ JT_VR,
+ JT_CR,
+ JT_OBV
+ */
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = JT_KLineSegmentBackgroundColor;
-        _titles = @[@"成交量",@"KDJ",@"MACD",@"BOLL",@"RSI",@"DMA",@"BIAS",@"CCI",@"WR",@"CR",@"OBV"];
+        _titles = @[@"成交量",@"KDJ",@"MACD",@"BOLL",@"RSI",@"DMA",@"DMI",@"BIAS",@"CCI",@"WR",@"VR",@"CR",@"OBV"];
         _items = @[].mutableCopy;
         self.clipsToBounds = YES;
         [self newSubviews];

@@ -175,6 +175,67 @@
 @property (nonatomic, assign) float AMA;
 
 
+/**
+ 乖离率(BIAS)，又称偏离率，简称Y值，是通过计算市场指数或收盘价与某条移动平均线之间的差距百分比，以反映一定时期内价格与其MA偏离程度的指标，
+ 从而得出价格在剧烈波动时因偏离移动平均趋势而造成回档或反弹的可能性，以及价格在正常波动范围内移动而形成继续原有势的可信度。
+ 乖离率=[(当日收盘价-N日平均价)/N日平均价]*100%
+ */
+
+@property (nonatomic, assign) float MA_6;
+@property (nonatomic, assign) float MA_12;
+@property (nonatomic, assign) float MA_24;
+
+@property (nonatomic, assign) float BIAS6;
+@property (nonatomic, assign) float BIAS12;
+@property (nonatomic, assign) float BIAS24;
+
+
+/**
+ 动向指标(DMI)
+ 介绍及计算方法 https://baike.baidu.com/item/DMI%E6%8C%87%E6%A0%87/3423254?fromtitle=DMI&fromid=10910045&fr=aladdin
+ */
+@property (nonatomic, assign) float PDI;
+@property (nonatomic, assign) float MDI;
+@property (nonatomic, assign) float ADX;
+@property (nonatomic, assign) float ADXR;
+
+/**
+ A、当日的最高价减去当日的最低价的价差。
+ B、当日的最高价减去前一日的收盘价的价差。
+ C、当日的最低价减去前一日的收盘价的价差。
+ TR是A、B、C中的数值绝对值最大者
+ */
+@property (nonatomic, assign) float TR;
+@property (nonatomic, assign) float TR_14;
+
+/**
+ 动向指数的当日动向值分为上升动向、下降动向和无动向等三种情况，每日的当日动向值只能是三种情况的一种。
+ A、上升动向（+DM）
+ +DM代表正趋向变动值即上升动向值，其数值等于当日的最高价减去前一日的最高价，如果<=0 则+DM=0。
+ B、下降动向（-DM）
+ ﹣DM代表负趋向变动值即下降动向值，其数值等于前一日的最低价减去当日的最低价，如果<=0 则-DM=0。注意-DM也是非负数。
+ 再比较+DM和-DM，较大的那个数字保持，较小的数字归0。
+ C、无动向
+ 无动向代表当日动向值为“零”的情况，即当日的+DM和﹣DM同时等于零。有两种股价波动情况下可能出现无动向。一是当当日的最高价低于前一日的最高价并且当日的最低价高于前一日的最低价，二是当上升动向值正好等于下降动向值。
+ */
+@property (nonatomic, assign) float DM_U_Temp;
+@property (nonatomic, assign) float DM_D_Temp;
+@property (nonatomic, assign) float DM_U;//上升动向
+@property (nonatomic, assign) float DM_D;//下降动向
+
+@property (nonatomic, assign) float DM_U_14;//上升动向14日均值
+@property (nonatomic, assign) float DM_D_14;//下降动向14日均值
+/**
+ *  该Model及其之前所有  TR / DM_U / DM_D 之后
+ */
+@property (nonatomic, assign) float sumOfLastTR;
+@property (nonatomic, assign) float sumOfLastDM_U;
+@property (nonatomic, assign) float sumOfLastDM_D;
+//多空指标包括(+DI多方、-DI空方) 计算14日均线
+@property (nonatomic, assign) float PDI_14;//多方
+@property (nonatomic, assign) float MDI_14;//空方
+
+
 //上证 k 线model 转 JT_KLineModel
 
 - (instancetype)initWithModel:(MOHLCItem *)model;
