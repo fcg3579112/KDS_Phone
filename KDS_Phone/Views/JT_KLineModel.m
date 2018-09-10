@@ -512,16 +512,15 @@
 //再比较+DM和-DM，较大的那个数字保持，较小的数字归0。
 - (float)DM_U {
     if (!_DM_U) {
-        _DM_U = self.DM_U_Temp;
+        _DM_U  = self.DM_U_Temp > self.DM_D_Temp ? self.DM_U_Temp : 0;
     }
-//    NSLog(@"index = %d  DM_U = %f",self.index,_DM_U);
     return _DM_U;
 }
 - (float)DM_D {
     if (!_DM_D) {
-        _DM_D = self.DM_D_Temp;
+        _DM_D  = self.DM_D_Temp > self.DM_U_Temp ? self.DM_D_Temp : 0;
     }
-//    NSLog(@"index = %d  DM_D = %f",self.index,_DM_D);
+//    NSLog(@"index = %d _DM_D = %f",self.index,_DM_D);
     return _DM_D;
 }
 - (float)DM_U_Temp {
@@ -532,7 +531,6 @@
             _DM_U_Temp = 0;
         }
     }
-//    NSLog(@"index = %d  DM_U_Temp = %f",self.index,_DM_U_Temp);
     return _DM_U_Temp;
 }
 - (float)DM_D_Temp {
@@ -543,7 +541,6 @@
             _DM_D_Temp = 0;
         }
     }
-//    NSLog(@"index = %d  _DM_D_Temp = %f",self.index,_DM_D_Temp);
     return _DM_D_Temp;
 }
 - (float)sumOfLastTR {
@@ -590,10 +587,11 @@
     if (!_DM_D_14) {
         if (self.index > 13) {
             JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 14];
-            _DM_U_14 = (self.sumOfLastDM_D - preDaysModel.sumOfLastDM_D) / 14;
+            _DM_D_14 = (self.sumOfLastDM_D - preDaysModel.sumOfLastDM_D) / 14;
         } else {
-            _DM_U_14 = self.sumOfLastDM_D / (self.index + 1);
+            _DM_D_14 = self.sumOfLastDM_D / (self.index + 1);
         }
+        NSLog(@"%f",_DM_U_14);
     }
     return _DM_D_14;
 }
@@ -601,18 +599,58 @@
     if (!_PDI_14) {
         _PDI_14 = (self.DM_U_14 / self.TR_14) * 100;
     }
-    NSLog(@"index = %d  %f",self.index,_PDI_14);
     return _PDI_14;
 }
 - (float)MDI_14 {
     if (!_MDI_14) {
         _MDI_14 = (self.DM_D_14 / self.TR_14) * 100;
     }
-    NSLog(@"index = %d  %f",self.index,_MDI_14);
     return _MDI_14;
 }
-//@property (nonatomic, assign) float PDI_14;//多方
-//@property (nonatomic, assign) float MDI_14;//空方
+- (float)PDI {
+    if (!_PDI) {
+        _PDI = self.DM_U / self.TR * 100;
+    }
+    NSLog(@"index =%d _PDI = %f",self.index,_PDI);
+    return _PDI;
+}
+- (float)MDI {
+    if (!_MDI) {
+        _MDI = self.DM_D / self.TR * 100;
+    }
+    NSLog(@"index =%d _MDI = %f",self.index,_MDI);
+    return _MDI;
+}
+
+/**
+ DX=(DI DIF÷DI SUM) ×100
+ */
+- (float)DX {
+    if (!_DX) {
+        _DX = fabsf(self.PDI - self.MDI) / (self.PDI + self.MDI) * 100;
+    }
+//    NSLog(@"_DX = %f",_DX);
+    return _DX;
+}
+- (float)sumOfLastDX {
+    if (!_sumOfLastDX) {
+        _sumOfLastDX = self.preModel.sumOfLastDX + self.DX;
+    }
+    return _sumOfLastDX;
+}
+//ADX就是DX的一定周期n的移动平均值。
+- (float)ADX {
+    if (!_ADX) {
+        if (self.index > 5) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 6];
+            _ADX = (self.sumOfLastDX - preDaysModel.sumOfLastDX) / 6;
+        } else {
+            _ADX = self.sumOfLastDX / (self.index + 1);
+        }
+    }
+//    NSLog(@"ADX = %f",_ADX);
+    return _ADX;
+}
 - (void)initData {
     
     [self preModel];
@@ -659,7 +697,11 @@
 //    [self BIAS24];
     
     //初始化 DMI指标
-    [self PDI_14];
-    [self MDI_14];
+//    [self PDI_14];
+//    [self MDI_14];
+//    [self ADX];
+//    [self DX];
+    [self MDI];
+    [self PDI];
 }
 @end

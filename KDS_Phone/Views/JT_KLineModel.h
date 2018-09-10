@@ -232,8 +232,15 @@
 @property (nonatomic, assign) float sumOfLastDM_U;
 @property (nonatomic, assign) float sumOfLastDM_D;
 //多空指标包括(+DI多方、-DI空方) 计算14日均线
+
 @property (nonatomic, assign) float PDI_14;//多方
 @property (nonatomic, assign) float MDI_14;//空方
+
+@property (nonatomic, assign) float DX;
+/**
+ *  该Model及其之前所有DX
+ */
+@property (nonatomic, assign) float sumOfLastDX;
 
 
 //上证 k 线model 转 JT_KLineModel
