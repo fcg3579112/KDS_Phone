@@ -24,16 +24,25 @@
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineBarPositionModel *>*needDrawBarPositionModels;
 
+/**
+ 成交量均线坐标
+ */
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_Volume_MA5_Positions;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_Volume_MA10_Positions;
 
+/**
+ KDJ 线坐标
+ */
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_KDJ_K_Positions;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_KDJ_D_Positions;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_KDJ_J_Positions;
 
+/**
+ MACD 线坐标
+ */
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MACD_Positions;
 
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DIF_Positions;
@@ -52,11 +61,32 @@
  BOOL线下轨
  */
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DN_Positions;
-
 /**
  BOOL线页面上的美国线坐标
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineCandlePositionModel *>*needDraw_AMLine_Positions;
+
+
+/**
+ RSI_6 坐标
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_RSI6_Positions;
+/**
+ RSI_12 坐标
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_RSI12_Positions;
+/**
+ RSI_24 坐标
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_RSI24_Positions;
+
+
+/**
+ 平行线差（DMA）指标坐标
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_DMA_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_AMA_Positions;
+
 
 
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
@@ -77,22 +107,37 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        //成交量
         _needDrawBarPositionModels = @[].mutableCopy;
         _needDraw_Volume_MA5_Positions = @[].mutableCopy;
         _needDraw_Volume_MA10_Positions = @[].mutableCopy;
         
+        //KDJ指标(随机指标)
         _needDraw_KDJ_K_Positions = @[].mutableCopy;
         _needDraw_KDJ_D_Positions = @[].mutableCopy;
         _needDraw_KDJ_J_Positions = @[].mutableCopy;
         
+        //MACD (指数平滑移动平均线)
         _needDraw_MACD_Positions = @[].mutableCopy;
         _needDraw_DIF_Positions = @[].mutableCopy;
         _needDraw_DEA_Positions = @[].mutableCopy;
         
+        //BOOL(布林线指标)
         _needDraw_MB_Positions = @[].mutableCopy;
         _needDraw_UP_Positions = @[].mutableCopy;
         _needDraw_DN_Positions = @[].mutableCopy;
         _needDraw_AMLine_Positions = @[].mutableCopy;
+        
+        //相对强弱指标RSI
+        _needDraw_RSI6_Positions = @[].mutableCopy;
+        _needDraw_RSI12_Positions = @[].mutableCopy;
+        _needDraw_RSI24_Positions = @[].mutableCopy;
+        
+        //DMA(平行线差指标)
+        _needDraw_DMA_Positions = @[].mutableCopy;
+        _needDraw_AMA_Positions = @[].mutableCopy;
+        
         
     }
     return self;
@@ -117,6 +162,15 @@
     [_needDraw_MB_Positions removeAllObjects];
     [_needDraw_AMLine_Positions removeAllObjects];
     
+    //移除RSI线相关坐标
+    [_needDraw_RSI6_Positions removeAllObjects];
+    [_needDraw_RSI12_Positions removeAllObjects];
+    [_needDraw_RSI24_Positions removeAllObjects];
+    
+    //移除DMA(平行线差指标)坐标
+    [_needDraw_DMA_Positions removeAllObjects];
+    [_needDraw_AMA_Positions removeAllObjects];
+    
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
     
@@ -134,9 +188,11 @@
         self.screenMinValue = lastModel.lowPrice.floatValue;
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
-        
+        self.screenMaxValue = lastModel.RSI6;
+        self.screenMinValue = lastModel.RSI6;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
-        
+        self.screenMinValue = lastModel.DMA;
+        self.screenMaxValue = lastModel.DMA;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
@@ -182,6 +238,19 @@
             
             self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.highPrice.floatValue);
             self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.UP);
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.RSI6);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.RSI12);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.RSI24);
+            
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.RSI6);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.RSI12);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.RSI24);
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.DMA);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.AMA);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.DMA);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.AMA);
         }
     }];
     
@@ -226,6 +295,13 @@
             [self.needDraw_MB_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.MB - self.screenMinValue) / unitValue ))]];
             [self.needDraw_UP_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.UP - self.screenMinValue) / unitValue ))]];
             [self.needDraw_DN_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.DN - self.screenMinValue) / unitValue ))]];
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
+            [self.needDraw_RSI6_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.RSI6 - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_RSI12_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.RSI12 - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_RSI24_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.RSI24 - self.screenMinValue) / unitValue ))]];
+        } else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
+            [self.needDraw_DMA_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.DMA - self.screenMinValue) / unitValue ))]];
+            [self.needDraw_AMA_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.AMA - self.screenMinValue) / unitValue ))]];
         }
     }];
 }
@@ -272,22 +348,14 @@
         }];
         
         //画成交量均线
-        [_drawLineUtil drawLineWith:JT_KLineMA5Color positions:self.needDraw_Volume_MA5_Positions];
-        [_drawLineUtil drawLineWith:JT_KLineMA10Color positions:self.needDraw_Volume_MA10_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLineMA5Color positions:self.needDraw_Volume_MA5_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLineMA10Color positions:self.needDraw_Volume_MA10_Positions];
         
-        //画成交量最大值
-        NSString *maxVolume = formatVolume(self.screenMaxValue);
-        [self drawMaxValue:maxVolume andMin:nil rect:rect];
-       
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) { // 画KDJ
 
-        [_drawLineUtil drawLineWith:JT_KLine_KDJ_K_Color positions:self.needDraw_KDJ_K_Positions];
-        [_drawLineUtil drawLineWith:JT_KLine_KDJ_D_Color positions:self.needDraw_KDJ_D_Positions];
-        [_drawLineUtil drawLineWith:JT_KLine_KDJ_J_Color positions:self.needDraw_KDJ_J_Positions];
-        //画最大值与最小值
-        NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
-        NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
-        [self drawMaxValue:max andMin:min rect:rect];
+        [_drawLineUtil drawLineWithColor:JT_KLine_KDJ_K_Color positions:self.needDraw_KDJ_K_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_KDJ_D_Color positions:self.needDraw_KDJ_D_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_KDJ_J_Color positions:self.needDraw_KDJ_J_Positions];
         
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) { // 画MACD
         
@@ -299,17 +367,13 @@
         }];
         
         //画 DIF 与 DEA
-        [_drawLineUtil drawLineWith:JT_KLine_MACD_DEA_Color positions:self.needDraw_DEA_Positions];
-        [_drawLineUtil drawLineWith:JT_KLine_MACD_DIF_Color positions:self.needDraw_DIF_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_MACD_DEA_Color positions:self.needDraw_DEA_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_MACD_DIF_Color positions:self.needDraw_DIF_Positions];
     
-        //画成最大值与最小值
-        NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
-        NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
-        [self drawMaxValue:max andMin:min rect:rect];
     } else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
-        [_drawLineUtil drawLineWith:JT_KLine_BOLL_UP_Color positions:self.needDraw_UP_Positions];
-        [_drawLineUtil drawLineWith:JT_KLine_BOLL_MID_Color positions:self.needDraw_MB_Positions];
-        [_drawLineUtil drawLineWith:JT_KLine_BOLL_LOW_Color positions:self.needDraw_DN_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_BOLL_UP_Color positions:self.needDraw_UP_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_BOLL_MID_Color positions:self.needDraw_MB_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_BOLL_LOW_Color positions:self.needDraw_DN_Positions];
         
         //画美国线
         [self.needDraw_AMLine_Positions enumerateObjectsUsingBlock:^(JT_KLineCandlePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -318,11 +382,20 @@
             [self.drawBarUtil drawBarWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] begin:obj.lowPoint end:obj.highPoint];
             [self.drawBarUtil drawAMLineWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] left:obj.openPoint right:obj.closePoint];
         }];
-        //画成最大值与最小值
-        NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
-        NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
-        [self drawMaxValue:max andMin:min rect:rect];
+
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
+        [_drawLineUtil drawLineWithColor:JT_KLine_RSI_6_Color positions:self.needDraw_RSI6_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_RSI_12_Color positions:self.needDraw_RSI12_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_RSI_24_Color positions:self.needDraw_RSI24_Positions];
+    } else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
+        [_drawLineUtil drawLineWithColor:JT_KLine_DMA_DMA_Color positions:self.needDraw_DMA_Positions];
+        [_drawLineUtil drawLineWithColor:JT_KLine_DMA_AMA_Color positions:self.needDraw_AMA_Positions];
     }
+    
+    //画最大值与最小值
+    NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
+    NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
+    [self drawMaxValue:max andMin:min rect:rect];
 }
 
 - (void)drawMaxValue:(NSString *)maxValue andMin:(NSString *)minValue rect:(CGRect)rect {

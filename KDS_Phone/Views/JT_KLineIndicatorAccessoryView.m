@@ -175,9 +175,19 @@
         ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"LOW:%.2f",model.DN];
         ((UILabel *)_items[3]).textColor = JT_KLine_BOLL_LOW_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
-        
+        ((UILabel *)_items[0]).text = @"RSI(6,12,24)";
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.RSI6];
+        ((UILabel *)_items[1]).textColor = JT_KLine_RSI_6_Color;
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.RSI12];
+        ((UILabel *)_items[2]).textColor = JT_KLine_RSI_12_Color;
+        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.RSI24];
+        ((UILabel *)_items[3]).textColor = JT_KLine_RSI_24_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
-        
+        ((UILabel *)_items[0]).text = @"DMA(10,50,10)";
+        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DMA:%.2f",model.DMA];
+        ((UILabel *)_items[1]).textColor = JT_KLine_DMA_DMA_Color;
+        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"AMA:%.2f",model.AMA];
+        ((UILabel *)_items[2]).textColor = JT_KLine_DMA_AMA_Color;
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
         
     }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {

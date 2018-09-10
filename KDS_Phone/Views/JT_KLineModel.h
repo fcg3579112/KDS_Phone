@@ -125,8 +125,7 @@
  （K为参数，可根据股票的特性来做相应的调整，一般默认为2）
  */
 @property (nonatomic, assign) float MA_20;
-//@property (nonatomic, assign) float C_MA_Square;
-//@property (nonatomic, assign) float C_MA_Square_SUM;
+
 @property (nonatomic, assign) float MD;
 @property (nonatomic, assign) float MB;
 @property (nonatomic, assign) float UP;
@@ -135,11 +134,45 @@
 
 /**
  计算RSI
+ 方法一：
+ SMA(X,N,M)，求X的N日移动平均，M为权重。算法：若Y=SMA(X,N,M) 则 Y=(M*X+(N-M)*Y')/N，其中Y'表示上一周期Y值，N必须大于M。
+ 
+ RSI:= SMA(MAX(Close-LastClose,0),N,1)/SMA(ABS(Close-LastClose),N,1)*100
+ 
+ 方法二：
+ N日RSI =N日内收盘涨幅的平均值/(N日内收盘涨幅均值+N日内收盘跌幅均值) ×100
+ 
+ 两种方式计算结果不一样，大部分 app 都用的是方法一。
  */
+
+@property (nonatomic ,assign) float SMA6;
+@property (nonatomic ,assign) float SMA6_A;
+@property (nonatomic ,assign) float SMA12;
+@property (nonatomic ,assign) float SMA12_A;
+@property (nonatomic ,assign) float SMA24;
+@property (nonatomic ,assign) float SMA24_A;
 
 @property (nonatomic, assign) float RSI6;
 @property (nonatomic, assign) float RSI12;
 @property (nonatomic, assign) float RSI24;
+
+/**
+ 计算DMA
+ 计算公式编辑
+ DMA=股价短期平均值—股价长期平均值
+ AMA=DMA短期平均值
+ 以求10日、50日为基准周期的DMA指标为例，其计算过程具体如下：
+ DMA（10）=10日股价平均值—50日股价平均值
+ AMA（10）=10日DMA平均值
+ */
+@property (nonatomic, assign) float MA_10;
+@property (nonatomic, assign) float MA_50;
+@property (nonatomic, assign) float DMA;
+/**
+ *  该Model及其之前所有DMA
+ */
+@property (nonatomic, assign) float sumOfLastDMA;
+@property (nonatomic, assign) float AMA;
 
 
 //上证 k 线model 转 JT_KLineModel

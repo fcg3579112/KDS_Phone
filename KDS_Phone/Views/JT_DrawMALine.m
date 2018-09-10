@@ -22,7 +22,7 @@
     return self;
 }
 
-- (void)drawLineWith:(UIColor *)color positions:(NSArray <NSValue*>*)postions {
+- (void)drawLineWithColor:(UIColor *)color positions:(NSArray <NSValue*>*)postions {
     CGContextRef context = self.context;
     CGContextSetLineWidth(_context, JT_KLineMALineWith);
     CGContextSetStrokeColorWithColor(_context, color.CGColor);

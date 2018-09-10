@@ -341,46 +341,139 @@
     }
     return _changeRate;
 }
+
+/**
+ SMA(X,N,M)，求X的N日移动平均，M为权重。算法：若Y=SMA(X,N,M) 则 Y=(M*X+(N-M)*Y')/N，其中Y'表示上一周期Y值，N必须大于M。
+ RSI:= SMA(MAX(Close-LastClose,0),N,1)/SMA(ABS(Close-LastClose),N,1)*100
+ */
+- (float)SMA6 {
+    if (!_SMA6) {
+        _SMA6 = (MAX(self.closePrice.floatValue - self.referencePrice.floatValue, 0) + 5 * self.preModel.SMA6) / 6;
+    }
+    return _SMA6;
+}
+- (float)SMA6_A {
+    if (!_SMA6_A) {
+        _SMA6_A = (fabsf(self.closePrice.floatValue - self.referencePrice.floatValue) + 5 * self.preModel.SMA6_A) / 6;
+    }
+    return _SMA6_A;
+}
+- (float)SMA12 {
+    if (!_SMA12) {
+        _SMA12 = (MAX(self.closePrice.floatValue - self.referencePrice.floatValue, 0) + 11 * self.preModel.SMA12) / 12;
+    }
+    return _SMA12;
+}
+- (float)SMA12_A {
+    if (!_SMA12_A) {
+        _SMA12_A = (fabsf(self.closePrice.floatValue - self.referencePrice.floatValue) + 11 * self.preModel.SMA12_A) / 12;
+    }
+    return _SMA12_A;
+}
+- (float)SMA24 {
+    if (!_SMA24) {
+        _SMA24 = (MAX(self.closePrice.floatValue - self.referencePrice.floatValue, 0) + 23 * self.preModel.SMA24) / 24;
+    }
+    return _SMA24;
+}
+- (float)SMA24_A {
+    if (!_SMA24_A) {
+        _SMA24_A = (fabsf(self.closePrice.floatValue - self.referencePrice.floatValue) + 23 * self.preModel.SMA24_A) / 24;
+    }
+    return _SMA24_A;
+}
+- (float)RSI6 {
+    if (!_RSI6) {
+        _RSI6 = self.SMA6 / self.SMA6_A * 100;
+    }
+    return _RSI6;
+}
+- (float)RSI12 {
+    if (!_RSI12) {
+        _RSI12 = self.SMA12 / self.SMA12_A * 100;
+    }
+    return _RSI12;
+}
+- (float)RSI24 {
+    if (!_RSI24) {
+        _RSI24 = self.SMA24 / self.SMA24_A * 100;
+    }
+    return _RSI24;
+}
+
+/*
 - (float)RSI6 {
     if (!_RSI6) {
         _RSI6 = [self caculateRSI:6];
     }
-    NSLog(@"index = %d  %f",self.index,_RSI6);
     return _RSI6;
 }
 - (float)RSI12 {
     if (!_RSI12) {
         _RSI12 = [self caculateRSI:12];
     }
-    NSLog(@"index = %d  %f",self.index,_RSI12);
     return _RSI12;
 }
 - (float)RSI24 {
     if (!_RSI24) {
         _RSI24 = [self caculateRSI:24];
     }
-    NSLog(@"index = %d  %f",self.index,_RSI24);
     return _RSI24;
 }
 - (float)caculateRSI:(NSUInteger)days {
     NSUInteger index = self.index;
-    float rsi = 0;
     float sum_z = 0; // 涨
-    float sum_d = 0; // 跌
+    float sum_all = 0; // 涨 + 跌
     for (NSInteger  i = index; i >=0 ; i --) {
         JT_KLineModel *model = self.allKLineModel[i];
         if (model.change > 0) {
-            sum_z += model.changeRate;
-        } else {
-            sum_d += fabsf(model.changeRate);
+            sum_z += model.change;
         }
-        if (index - i >= days - 2) {
+        sum_all += fabsf(model.change);
+        if (index - i >= days - 1) {
             break;
         }
     }
-    rsi = sum_z / (sum_d + sum_z ) * 100;
-    return rsi;
+    return sum_z / sum_all * 100;
 }
+*/
+
+- (float)MA_10 {
+    if (!_MA_10) {
+        _MA_10 = [self calculateMAValue:10].floatValue;
+    }
+    return _MA_10;
+}
+- (float)MA_50 {
+    if (!_MA_50) {
+        _MA_50 = [self calculateMAValue:50].floatValue;
+    }
+    return _MA_50;
+}
+- (float)DMA {
+    if (!_DMA) {
+        _DMA = self.MA_10 - self.MA_50;
+    }
+    return _DMA;
+}
+- (float)AMA {
+    if (!_AMA) {
+        if (self.index > 9) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 10];
+            _AMA = (self.sumOfLastDMA - preDaysModel.sumOfLastDMA) / 10;
+        } else {
+            _AMA = self.sumOfLastDMA / (self.index + 1);
+        }
+    }
+    return _AMA;
+}
+- (float)sumOfLastDMA {
+    if (!_sumOfLastDMA) {
+        _sumOfLastDMA = self.preModel.sumOfLastDMA + self.DMA;
+    }
+    return _sumOfLastDMA;
+}
+
 
 - (void)initData {
     
@@ -399,24 +492,28 @@
     [self volumeMA10];
     
     //初始化 KDJ
-    [self KDJ_K];
-    [self KDJ_D];
-    [self KDJ_J];
+//    [self KDJ_K];
+//    [self KDJ_D];
+//    [self KDJ_J];
     
     //初始化MACD
-    [self DIF];
-    [self DEA];
-    [self MACD];
+//    [self DIF];
+//    [self DEA];
+//    [self MACD];
     
     //初始化BOOL线
-    [self MB];
-    [self UP];
-    [self DN];
+//    [self MB];
+//    [self UP];
+//    [self DN];
     
     //初始化RSI
     [self RSI6];
     [self RSI12];
     [self RSI24];
+    
+    //初始化 DMA
+//    [self DMA];
+//    [self AMA];
 
 }
 @end

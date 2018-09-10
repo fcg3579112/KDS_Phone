@@ -315,19 +315,19 @@
     JT_DrawMALine *drawLine = [[JT_DrawMALine alloc] initWithContext:context];
     //画均线 5日、10日等
     if ([JT_KLineConfig MA5]) {
-        [drawLine drawLineWith:JT_KLineMA5Color positions:self.needDraw_MA5_Positions];
+        [drawLine drawLineWithColor:JT_KLineMA5Color positions:self.needDraw_MA5_Positions];
     }
     if ([JT_KLineConfig MA10]) {
-        [drawLine drawLineWith:JT_KLineMA10Color positions:self.needDraw_MA10_Positions];
+        [drawLine drawLineWithColor:JT_KLineMA10Color positions:self.needDraw_MA10_Positions];
     }
     if ([JT_KLineConfig MA20]) {
-        [drawLine drawLineWith:JT_KLineMA20Color positions:self.needDraw_MA20_Positions];
+        [drawLine drawLineWithColor:JT_KLineMA20Color positions:self.needDraw_MA20_Positions];
     }
     if ([JT_KLineConfig MA30]) {
-        [drawLine drawLineWith:JT_KLineMA30Color positions:self.needDraw_MA30_Positions];
+        [drawLine drawLineWithColor:JT_KLineMA30Color positions:self.needDraw_MA30_Positions];
     }
     if ([JT_KLineConfig MA60]) {
-        [drawLine drawLineWith:JT_KLineMA60Color positions:self.needDraw_MA60_Positions];
+        [drawLine drawLineWithColor:JT_KLineMA60Color positions:self.needDraw_MA60_Positions];
     }
 
     //画Y轴上对应的价格坐标

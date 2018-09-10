@@ -24,6 +24,6 @@
  @param color 线颜色
  @param postions 画线的点
  */
-- (void)drawLineWith:(UIColor *)color positions:(NSArray <NSValue*>*)postions;
+- (void)drawLineWithColor:(UIColor *)color positions:(NSArray <NSValue*>*)postions;
 
 @end
