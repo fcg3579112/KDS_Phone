@@ -238,7 +238,11 @@
             break;
         case JT_WR:
         {
-            
+            ((UILabel *)_items[0]).text = @"WR(10,6)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"10:%.2f",model.WR10];
+            ((UILabel *)_items[1]).textColor = JT_KLine_WR_10_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"6:%.2f",model.WR6];
+            ((UILabel *)_items[2]).textColor = JT_KLine_WR_6_Color;
         }
             break;
         case JT_VR:

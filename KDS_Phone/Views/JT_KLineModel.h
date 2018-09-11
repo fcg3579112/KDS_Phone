@@ -267,6 +267,19 @@
  */
 @property (nonatomic, assign) float averageAbsoluteTP;
 
+/*
+ 强弱指标 (WR)
+ WR1一般是10天买卖强弱指标；
+ WR2一般是6天买卖强弱指标。
+ 以N日威廉指标为例，
+ WR(N) = 100 * [ HIGH(N)-C ] / [ HIGH(N)-LOW(N) ]
+ C：当日收盘价
+ HIGH(N)：N日内的最高价
+ LOW(n)：N日内的最低价 [1]
+*/
+
+@property (nonatomic, assign) float WR10;
+@property (nonatomic, assign) float WR6;
 
 //上证 k 线model 转 JT_KLineModel
 

@@ -706,8 +706,33 @@
     NSLog(@"CCI = %f",_CCI);
     return _CCI;
 }
+- (float)WR10 {
+    if (!_WR10) {
+        _WR10 = [self calculateWRWithDays:10];
+    }
+    return _WR10;
+}
+- (float)WR6 {
+    if (!_WR6) {
+        _WR6 = [self calculateWRWithDays:6];
+    }
+    return _WR6;
+}
+- (float)calculateWRWithDays:(NSInteger)days{
+    NSInteger index = self.index;
+    float high = self.highPrice.floatValue;
+    float low = self.lowPrice.floatValue;
+    for (NSInteger i = index; i > 0; -- i) {
+        JT_KLineModel *model = self.allKLineModel[i];
+        high = MAX(high, model.highPrice.floatValue);
+        low = MIN(low, model.lowPrice.floatValue);
+        if (index - i >= days - 1) {
+            break;
+        }
+    }
+    return 100 * fabsf(high - self.closePrice.floatValue) / fabsf(high - low);
+}
 
-//　　CCI：(TYP-TYP的N日简单移动平均)/(0.015*TYP的N日平均绝对方差)
 - (void)initData {
     
     [self preModel];
@@ -761,6 +786,9 @@
 //    [self ADX];
 //    [self ADXR];
     //CCI顺势指标指标
-      [self CCI];
+//      [self CCI];
+    
+    //强弱指标
+    [self WR6];
 }
 @end
