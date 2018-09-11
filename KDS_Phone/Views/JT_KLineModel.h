@@ -194,8 +194,7 @@
  动向指标(DMI)
  介绍及计算方法 https://baike.baidu.com/item/DMI%E6%8C%87%E6%A0%87/3423254?fromtitle=DMI&fromid=10910045&fr=aladdin
  */
-@property (nonatomic, assign) float PDI;
-@property (nonatomic, assign) float MDI;
+
 @property (nonatomic, assign) float ADX;
 @property (nonatomic, assign) float ADXR;
 
@@ -226,7 +225,7 @@
 @property (nonatomic, assign) float DM_U_14;//上升动向14日均值
 @property (nonatomic, assign) float DM_D_14;//下降动向14日均值
 /**
- *  该Model及其之前所有  TR / DM_U / DM_D 之后
+ *  该Model及其之前所有  TR / DM_U / DM_D / ADX之后
  */
 @property (nonatomic, assign) float sumOfLastTR;
 @property (nonatomic, assign) float sumOfLastDM_U;

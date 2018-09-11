@@ -142,91 +142,124 @@
         obj.text = @"";
     }];
     ((UILabel *)_items[0]).textColor = JT_KLineIndexTitleColor;
-    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"VOL(5,10):%@",formatVolume(model.tradeVolume)];
-        
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MA5:%@",formatVolume(model.volumeMA5)];
-        ((UILabel *)_items[1]).textColor = JT_KLineMA5Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA10:%@",formatVolume(model.volumeMA10)];
-        ((UILabel *)_items[2]).textColor = JT_KLineMA10Color;
-    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
-        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"KDJ(9,3,3)"];
-        
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"K:%.2f",model.KDJ_K];
-        ((UILabel *)_items[1]).textColor = JT_KLine_KDJ_K_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"D:%.2f",model.KDJ_D];
-        ((UILabel *)_items[2]).textColor = JT_KLine_KDJ_D_Color;
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"J:%.2f",model.KDJ_J];
-        ((UILabel *)_items[3]).textColor = JT_KLine_KDJ_J_Color;
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-        ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"MACD(12,26,9):%.2f",model.MACD];
-        
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DIF:%.2f",model.DIF];
-        ((UILabel *)_items[1]).textColor = JT_KLine_MACD_DIF_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"DEA:%.2f",model.DEA];
-        ((UILabel *)_items[2]).textColor = JT_KLine_MACD_DEA_Color;
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
-        ((UILabel *)_items[0]).text = @"BOOL(20,2)";
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MID:%.2f",model.MB];
-        ((UILabel *)_items[1]).textColor = JT_KLine_BOLL_MID_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"UP:%.2f",model.UP];
-        ((UILabel *)_items[2]).textColor = JT_KLine_BOLL_UP_Color;
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"LOW:%.2f",model.DN];
-        ((UILabel *)_items[3]).textColor = JT_KLine_BOLL_LOW_Color;
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
-        ((UILabel *)_items[0]).text = @"RSI(6,12,24)";
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.RSI6];
-        ((UILabel *)_items[1]).textColor = JT_KLine_RSI_6_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.RSI12];
-        ((UILabel *)_items[2]).textColor = JT_KLine_RSI_12_Color;
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.RSI24];
-        ((UILabel *)_items[3]).textColor = JT_KLine_RSI_24_Color;
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
-        ((UILabel *)_items[0]).text = @"DMA(10,50,10)";
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DMA:%.2f",model.DMA];
-        ((UILabel *)_items[1]).textColor = JT_KLine_DMA_DMA_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"AMA:%.2f",model.AMA];
-        ((UILabel *)_items[2]).textColor = JT_KLine_DMA_AMA_Color;
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
-        ((UILabel *)_items[0]).text = @"BIAS(6,12,24)";
-        ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.BIAS6];
-        ((UILabel *)_items[1]).textColor = JT_KLine_BIAS_6_Color;
-        ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.BIAS12];
-        ((UILabel *)_items[2]).textColor = JT_KLine_BIAS_12_Color;
-        ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.BIAS24];
-        ((UILabel *)_items[3]).textColor = JT_KLine_BIAS_24_Color;
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CCI) {
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_WR) {
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_VR) {
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CR) {
-        
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_OBV) {
-        
+    
+    JT_KLineIndicatorType type = [JT_KLineConfig kLineIndicatorType];
+    switch (type) {
+        case JT_Volume:
+        {
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"VOL(5,10):%@",formatVolume(model.tradeVolume)];
+            
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MA5:%@",formatVolume(model.volumeMA5)];
+            ((UILabel *)_items[1]).textColor = JT_KLineMA5Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MA10:%@",formatVolume(model.volumeMA10)];
+            ((UILabel *)_items[2]).textColor = JT_KLineMA10Color;
+        }
+            break;
+        case JT_KDJ:
+        {
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"KDJ(9,3,3)"];
+            
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"K:%.2f",model.KDJ_K];
+            ((UILabel *)_items[1]).textColor = JT_KLine_KDJ_K_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"D:%.2f",model.KDJ_D];
+            ((UILabel *)_items[2]).textColor = JT_KLine_KDJ_D_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"J:%.2f",model.KDJ_J];
+            ((UILabel *)_items[3]).textColor = JT_KLine_KDJ_J_Color;
+        }
+            break;
+        case JT_MACD:
+        {
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"MACD(12,26,9):%.2f",model.MACD];
+            
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DIF:%.2f",model.DIF];
+            ((UILabel *)_items[1]).textColor = JT_KLine_MACD_DIF_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"DEA:%.2f",model.DEA];
+            ((UILabel *)_items[2]).textColor = JT_KLine_MACD_DEA_Color;
+        }
+            break;
+        case JT_BOLL:
+        {
+            ((UILabel *)_items[0]).text = @"BOOL(20,2)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MID:%.2f",model.MB];
+            ((UILabel *)_items[1]).textColor = JT_KLine_BOLL_MID_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"UP:%.2f",model.UP];
+            ((UILabel *)_items[2]).textColor = JT_KLine_BOLL_UP_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"LOW:%.2f",model.DN];
+            ((UILabel *)_items[3]).textColor = JT_KLine_BOLL_LOW_Color;
+        }
+            break;
+        case JT_RSI:
+        {
+            ((UILabel *)_items[0]).text = @"RSI(6,12,24)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.RSI6];
+            ((UILabel *)_items[1]).textColor = JT_KLine_RSI_6_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.RSI12];
+            ((UILabel *)_items[2]).textColor = JT_KLine_RSI_12_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.RSI24];
+            ((UILabel *)_items[3]).textColor = JT_KLine_RSI_24_Color;
+        }
+            break;
+        case JT_DMA:
+        {
+            ((UILabel *)_items[0]).text = @"DMA(10,50,10)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"DMA:%.2f",model.DMA];
+            ((UILabel *)_items[1]).textColor = JT_KLine_DMA_DMA_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"AMA:%.2f",model.AMA];
+            ((UILabel *)_items[2]).textColor = JT_KLine_DMA_AMA_Color;
+        }
+            break;
+        case JT_DMI:
+        {
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"PDI:%.2f",model.PDI_14];
+            ((UILabel *)_items[0]).textColor = JT_KLine_DMI_PDI_Color;
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MDI:%.2f",model.MDI_14];
+            ((UILabel *)_items[1]).textColor = JT_KLine_DMI_MDI_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"ADX:%.2f",model.ADX];
+            ((UILabel *)_items[2]).textColor = JT_KLine_DMI_ADX_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"ADXR:%.2f",model.ADXR];
+            ((UILabel *)_items[3]).textColor = JT_KLine_DMI_ADXR_Color;
+        }
+            break;
+        case JT_BIAS:
+        {
+            ((UILabel *)_items[0]).text = @"BIAS(6,12,24)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"6:%.2f",model.BIAS6];
+            ((UILabel *)_items[1]).textColor = JT_KLine_BIAS_6_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"12:%.2f",model.BIAS12];
+            ((UILabel *)_items[2]).textColor = JT_KLine_BIAS_12_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"24:%.2f",model.BIAS24];
+            ((UILabel *)_items[3]).textColor = JT_KLine_BIAS_24_Color;
+        }
+            break;
+        case JT_CCI:
+        {
+            
+        }
+            break;
+        case JT_WR:
+        {
+            
+        }
+            break;
+        case JT_VR:
+        {
+            
+        }
+            break;
+        case JT_CR:
+        {
+            
+        }
+            break;
+        case JT_OBV:
+        {
+            
+        }
+            break;
+        default:
+            break;
     }
+
 }
 
-//func drawRectangleOnImage(image: UIImage) -> UIImage {
-//    let imageSize = image.size
-//    let scale: CGFloat = 0
-//    UIGraphicsBeginImageContextWithOptions(imageSize, false, scale)
-//    let context = UIGraphicsGetCurrentContext()
-//
-//    image.drawAtPoint(CGPointZero)
-//
-//    let rectangle = CGRect(x: 0, y: (imageSize.height/2) - 30, width: imageSize.width, height: 60)
-//
-//    CGContextSetFillColorWithColor(context, UIColor.blackColor().CGColor)
-//    CGContextAddRect(context, rectangle)
-//    CGContextDrawPath(context, .Fill)
-//
-//    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-//    UIGraphicsEndImageContext()
-//    return newImage
-//}
 @end

@@ -520,7 +520,6 @@
     if (!_DM_D) {
         _DM_D  = self.DM_D_Temp > self.DM_U_Temp ? self.DM_D_Temp : 0;
     }
-//    NSLog(@"index = %d _DM_D = %f",self.index,_DM_D);
     return _DM_D;
 }
 - (float)DM_U_Temp {
@@ -591,7 +590,6 @@
         } else {
             _DM_D_14 = self.sumOfLastDM_D / (self.index + 1);
         }
-        NSLog(@"%f",_DM_U_14);
     }
     return _DM_D_14;
 }
@@ -607,29 +605,17 @@
     }
     return _MDI_14;
 }
-- (float)PDI {
-    if (!_PDI) {
-        _PDI = self.DM_U / self.TR * 100;
-    }
-    NSLog(@"index =%d _PDI = %f",self.index,_PDI);
-    return _PDI;
-}
-- (float)MDI {
-    if (!_MDI) {
-        _MDI = self.DM_D / self.TR * 100;
-    }
-    NSLog(@"index =%d _MDI = %f",self.index,_MDI);
-    return _MDI;
-}
-
 /**
  DX=(DI DIF÷DI SUM) ×100
  */
 - (float)DX {
     if (!_DX) {
-        _DX = fabsf(self.PDI - self.MDI) / (self.PDI + self.MDI) * 100;
+        if (self.index == 0) {
+            _DX = 0;
+        } else {
+            _DX = fabsf(self.PDI_14 - self.MDI_14) / (self.PDI_14 + self.MDI_14) * 100;
+        }
     }
-//    NSLog(@"_DX = %f",_DX);
     return _DX;
 }
 - (float)sumOfLastDX {
@@ -648,8 +634,27 @@
             _ADX = self.sumOfLastDX / (self.index + 1);
         }
     }
-//    NSLog(@"ADX = %f",_ADX);
+    NSLog(@"_ADX = %f",_ADX);
     return _ADX;
+}
+
+
+/**
+ ADXR:=(ADX+REF(ADX,M))/2;其中 M = 6 ,
+ 函数REF(X,N)用于引用N周期前的X值，X是一个变量，N是一个常量，REF(close（）,1)表示计算上一周期的收盘价。REF(c,3) 前三日的收盘价。
+ 
+ */
+- (float)ADXR {
+    if (!_ADXR) {
+        if (self.index >= 6) { // 当天价与 前6天之前的总价 就是 REF(ADX,6) 的值
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 6];
+            _ADXR = (self.ADX + preDaysModel.ADX) / 2.f;
+        } else {
+            _ADXR = self.ADX / 2;
+        }
+    }
+    NSLog(@"_ADXR = %f",_ADXR);
+    return _ADXR;
 }
 - (void)initData {
     
@@ -699,9 +704,9 @@
     //初始化 DMI指标
 //    [self PDI_14];
 //    [self MDI_14];
-//    [self ADX];
+
 //    [self DX];
-    [self MDI];
-    [self PDI];
+//    [self ADX];
+//    [self ADXR];
 }
 @end
