@@ -482,7 +482,6 @@
         float average6 = [self calculateMAValue:6].floatValue;
         _BIAS6 = (self.closePrice.floatValue - average6) / average6 * 100;
     }
-    NSLog(@"%f",_BIAS6);
     return _BIAS6;
 }
 - (float)BIAS12 {
@@ -634,7 +633,6 @@
             _ADX = self.sumOfLastDX / (self.index + 1);
         }
     }
-    NSLog(@"_ADX = %f",_ADX);
     return _ADX;
 }
 
@@ -653,7 +651,6 @@
             _ADXR = self.ADX / 2;
         }
     }
-    NSLog(@"_ADXR = %f",_ADXR);
     return _ADXR;
 }
 
@@ -703,7 +700,6 @@
     if (!_CCI) {
         _CCI = (self.TP - self.TP_MA) / (0.015 * self.averageAbsoluteTP);
     }
-    NSLog(@"CCI = %f",_CCI);
     return _CCI;
 }
 - (float)WR10 {
@@ -731,6 +727,58 @@
         }
     }
     return 100 * fabsf(high - self.closePrice.floatValue) / fabsf(high - low);
+}
+
+/**
+ 成交量比率
+ */
+
+
+//周期为 26 天
+- (float)VR {
+    if (!_VR) {
+        float avs = 0;
+        float bvs = 0;
+        float cvs = 0;
+        NSUInteger index = self.index;
+        for (NSInteger i = index; i >= 0; i --) {
+            JT_KLineModel *model = self.allKLineModel[i];
+            if (model.closePrice.floatValue > model.referencePrice.floatValue) {
+                avs += model.tradeVolume;
+            } else if (model.closePrice.floatValue < model.referencePrice.floatValue) {
+                bvs += model.tradeVolume;
+            } else {
+                cvs += model.tradeVolume;
+            }
+            if (index - i >= 25) {
+                break;
+            }
+        }
+        if (cvs == 0 && bvs == 0) {
+            _VR = 100;
+        } else {
+            _VR = (avs + 1/2 * cvs) / (bvs + 1/2 * cvs) * 100;
+        }
+        NSLog(@"index = %d  %f",self.index,_VR);
+    }
+    return _VR;
+}
+- (float)sumOfLastVR {
+    if (!_sumOfLastVR) {
+        _sumOfLastVR = self.preModel.sumOfLastVR + self.VR;
+    }
+    return _sumOfLastVR;
+}
+- (float)MAVR {
+    if (!_MAVR) {
+        if (self.index >= 6) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 6];
+            _MAVR = (self.sumOfLastVR - preDaysModel.sumOfLastVR) / 6;
+        } else {
+            _MAVR = self.sumOfLastVR / (self.index + 1);
+        }
+    }
+    return _MAVR;
 }
 
 - (void)initData {
@@ -789,6 +837,9 @@
 //      [self CCI];
     
     //强弱指标
-    [self WR6];
+//    [self WR6];
+    
+    //成交量比率
+//    [self VR];
 }
 @end

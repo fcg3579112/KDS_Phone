@@ -116,6 +116,12 @@
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_WR6_Positions;
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_WR10_Positions;
 
+/**
+ 成交量比率(VR)
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_VR_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MAVR_Positions;
+
 
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
 
@@ -183,7 +189,9 @@
         _needDraw_WR6_Positions = @[].mutableCopy;
         _needDraw_WR10_Positions = @[].mutableCopy;
         
-        
+        //成交量比率(VR)
+        _needDraw_WR6_Positions = @[].mutableCopy;
+        _needDraw_MAVR_Positions = @[].mutableCopy;
     }
     return self;
 }
@@ -235,6 +243,10 @@
     //强弱指标 (WR)
     [_needDraw_WR6_Positions removeAllObjects];
     [_needDraw_WR10_Positions removeAllObjects];
+    
+    //成交量比率(VR)
+    [_needDraw_VR_Positions removeAllObjects];
+    [_needDraw_MAVR_Positions removeAllObjects];
     
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
@@ -302,7 +314,8 @@
             break;
         case JT_VR:
             {
-                
+                self.screenMaxValue = lastModel.VR;
+                self.screenMinValue = lastModel.VR;
             }
             break;
         case JT_CR:
@@ -421,7 +434,10 @@
                 break;
             case JT_VR:
             {
-                
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.VR);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MAVR);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.VR);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.MAVR);
             }
                 break;
             case JT_CR:
@@ -534,7 +550,8 @@
                 break;
             case JT_VR:
             {
-                
+                [self.needDraw_VR_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.VR - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_MAVR_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.MAVR - self.screenMinValue) / unitValue ))]];
             }
                 break;
             case JT_CR:
@@ -676,7 +693,8 @@
             break;
         case JT_VR:
         {
-            
+            [_drawLineUtil drawLineWithColor:JT_KLine_VR_VR_Color positions:self.needDraw_VR_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_VR_MAVR_Color positions:self.needDraw_MAVR_Positions];
         }
             break;
         case JT_CR:

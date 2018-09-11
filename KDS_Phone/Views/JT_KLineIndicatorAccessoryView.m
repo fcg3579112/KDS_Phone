@@ -247,7 +247,11 @@
             break;
         case JT_VR:
         {
-            
+            ((UILabel *)_items[0]).text = @"VR(26)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"VR:%.2f",model.VR];
+            ((UILabel *)_items[1]).textColor = JT_KLine_VR_VR_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MAVR:%.2f",model.MAVR];
+            ((UILabel *)_items[2]).textColor = JT_KLine_VR_MAVR_Color;
         }
             break;
         case JT_CR:

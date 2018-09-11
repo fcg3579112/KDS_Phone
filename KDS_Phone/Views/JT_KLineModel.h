@@ -281,6 +281,25 @@
 @property (nonatomic, assign) float WR10;
 @property (nonatomic, assign) float WR6;
 
+
+
+/**
+ 成交量比率
+ 1．24天以来凡是股价上涨那一天的成交量都称为AV，将24天内的AV总和相加后称为AVS。
+ 2．24天以来凡是股价下跌那一天的成交量都称为BV，将24天内的BV总和相加后称为BVS。
+ 3．24天以来凡是股价不涨不跌，则那一天的成交量都称为CV，将24天内的CV总和相加后称为CVS。
+ 4． 24天开始计算：
+ VR=（AVS+1/2CVS）/（BVS+1/2CVS） * 100
+ 5． 计算例参数24天可以修改，但是周期不宜小于12，否则，采样天数不足容易造成偏差。
+ 
+ */
+@property (nonatomic, assign) float VR;
+@property (nonatomic, assign) float sumOfLastVR;
+/**
+ 计算VR 6 日均线
+ */
+@property (nonatomic, assign) float MAVR;
+
 //上证 k 线model 转 JT_KLineModel
 
 - (instancetype)initWithModel:(MOHLCItem *)model;

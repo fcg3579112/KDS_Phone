@@ -14,7 +14,7 @@
 #define KDS_Phone_KDS_UtilsMacro_h
 
 
-
+#define NSLog(FORMAT, ...) fprintf(stderr,"[%s:%d]\t%s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 
 #define kListEmptyString      @"ABC123"    //如果是这个字符串，列表显示时显示空

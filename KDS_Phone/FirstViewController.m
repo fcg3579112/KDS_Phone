@@ -62,7 +62,6 @@
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
             // 模型转换
-            NSLog(@"%f",[[NSDate date] timeIntervalSince1970]);
             [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
                 [self.allKLineModel addObject:model];
