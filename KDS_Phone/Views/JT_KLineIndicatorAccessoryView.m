@@ -233,7 +233,7 @@
             break;
         case JT_CCI:
         {
-            
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"CCI(14):%.2f",model.CCI];
         }
             break;
         case JT_WR:

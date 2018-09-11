@@ -104,6 +104,11 @@
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_ADX_Positions;
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_ADXR_Positions;
 
+/**
+ CCI顺势指标
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CCI_Positions;
+
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
 
 @property (nonatomic, strong) JT_DrawCandleLine *drawBarUtil;
@@ -163,7 +168,8 @@
         _needDraw_ADX_Positions = @[].mutableCopy;
         _needDraw_ADXR_Positions = @[].mutableCopy;
         
-    
+        //CCI顺势指标
+        _needDraw_CCI_Positions = @[].mutableCopy;
         
     }
     return self;
@@ -209,6 +215,9 @@
     [_needDraw_MDI_Positions removeAllObjects];
     [_needDraw_ADX_Positions removeAllObjects];
     [_needDraw_ADXR_Positions removeAllObjects];
+    
+    //CCI顺势指标
+    [_needDraw_CCI_Positions removeAllObjects];
     
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
@@ -264,7 +273,8 @@
             break;
         case JT_CCI:
             {
-
+                self.screenMaxValue = lastModel.CCI;
+                self.screenMinValue = lastModel.CCI;
             }
             break;
         case JT_WR:
@@ -378,7 +388,8 @@
                 break;
             case JT_CCI:
             {
-                
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CCI);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CCI);
             }
                 break;
             case JT_WR:
@@ -489,7 +500,7 @@
                 break;
             case JT_CCI:
             {
-                
+                [self.needDraw_CCI_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CCI - self.screenMinValue) / unitValue ))]];
             }
                 break;
             case JT_WR:
@@ -630,7 +641,7 @@
             break;
         case JT_CCI:
         {
-            
+            [_drawLineUtil drawLineWithColor:JT_KLine_CCI_14_Color positions:self.needDraw_CCI_Positions];
         }
             break;
         case JT_WR:

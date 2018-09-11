@@ -656,6 +656,58 @@
     NSLog(@"_ADXR = %f",_ADXR);
     return _ADXR;
 }
+
+/**
+ 顺势指标指标 (CCI)
+ */
+- (float)TP {
+    if (!_TP) {
+        _TP = (self.highPrice.floatValue + self.lowPrice.floatValue + self.closePrice.floatValue) / 3;
+    }
+    return _TP;
+}
+- (float)sumOfLastTP {
+    if (!_sumOfLastTP) {
+        _sumOfLastTP = self.preModel.sumOfLastTP + self.TP;
+    }
+    return _sumOfLastTP;
+}
+- (float)TP_MA {
+    if (!_TP_MA) {
+        if (self.index >= 14) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 14];
+            _TP_MA = (self.sumOfLastTP - preDaysModel.sumOfLastTP) / 14;
+        } else {
+            _TP_MA = self.sumOfLastTP / (self.index + 1);
+        }
+    }
+    return _TP_MA;
+}
+- (float)averageAbsoluteTP {
+    if (!_averageAbsoluteTP) {
+        NSInteger index = self.index;
+        float sum = 0;
+        for (NSInteger i = index; i >= 0 ; i --) {
+            JT_KLineModel *model = self.allKLineModel[i];
+            sum += fabsf(self.TP_MA - model.TP);
+            if (index - i >= 13) {
+                break;
+            }
+        }
+        NSUInteger count = self.index >= 13 ? 14 : self.index + 1;
+        _averageAbsoluteTP = sum / count;
+    }
+    return _averageAbsoluteTP;
+}
+- (float)CCI {
+    if (!_CCI) {
+        _CCI = (self.TP - self.TP_MA) / (0.015 * self.averageAbsoluteTP);
+    }
+    NSLog(@"CCI = %f",_CCI);
+    return _CCI;
+}
+
+//　　CCI：(TYP-TYP的N日简单移动平均)/(0.015*TYP的N日平均绝对方差)
 - (void)initData {
     
     [self preModel];
@@ -708,5 +760,7 @@
 //    [self DX];
 //    [self ADX];
 //    [self ADXR];
+    //CCI顺势指标指标
+      [self CCI];
 }
 @end

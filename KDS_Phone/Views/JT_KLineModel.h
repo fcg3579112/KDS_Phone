@@ -242,6 +242,32 @@
 @property (nonatomic, assign) float sumOfLastDX;
 
 
+/**
+ 顺势指标指标 (CCI)
+ 方法一：
+ * CCI(n) = (TP－ MA) ÷MD ÷0.015
+ * TP = (最高价 + 最低价 + 收盘价) ÷ 3
+ * MA = 最近n日(TP)价的累计和÷n
+ * MD = 最近n日 (MA - 收盘价)的绝对值的累计和 ÷ n
+ * 系统默认n为14
+ 方法二：
+ 第二种计算方法表述为中价与中价的N日内移动平均的差除以0.015*N日内中价的平均绝对偏差
+ 其中，中价等于最高价、最低价和收盘价之和除以3
+ 平均绝对偏差为统计函数
+ 
+ 
+ */
+@property (nonatomic, assign) float CCI;
+@property (nonatomic, assign) float TP;
+@property (nonatomic, assign) float TP_MA;
+
+@property (nonatomic, assign) float sumOfLastTP;
+/**
+ 平均绝对偏差
+ */
+@property (nonatomic, assign) float averageAbsoluteTP;
+
+
 //上证 k 线model 转 JT_KLineModel
 
 - (instancetype)initWithModel:(MOHLCItem *)model;
