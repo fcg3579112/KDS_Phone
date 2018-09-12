@@ -678,6 +678,7 @@
             _TP_MA = self.sumOfLastTP / (self.index + 1);
         }
     }
+//    NSLog(@"_TP_MA = %f" ,_TP_MA);
     return _TP_MA;
 }
 - (float)averageAbsoluteTP {
@@ -694,12 +695,18 @@
         NSUInteger count = self.index >= 13 ? 14 : self.index + 1;
         _averageAbsoluteTP = sum / count;
     }
+    NSLog(@"_averageAbsoluteTP = %f" ,_averageAbsoluteTP);
     return _averageAbsoluteTP;
 }
 - (float)CCI {
     if (!_CCI) {
-        _CCI = (self.TP - self.TP_MA) / (0.015 * self.averageAbsoluteTP);
+        if (self.averageAbsoluteTP == 0) {
+            _CCI = 0;
+        } else {
+            _CCI = (self.TP - self.TP_MA) / (0.015 * self.averageAbsoluteTP);
+        }
     }
+    NSLog(@"index = %d _CCI = %f",self.index ,_CCI);
     return _CCI;
 }
 - (float)WR10 {
@@ -759,7 +766,6 @@
         } else {
             _VR = (avs + 1/2 * cvs) / (bvs + 1/2 * cvs) * 100;
         }
-        NSLog(@"index = %d  %f",self.index,_VR);
     }
     return _VR;
 }
@@ -834,12 +840,13 @@
 //    [self ADX];
 //    [self ADXR];
     //CCI顺势指标指标
-//      [self CCI];
+      [self CCI];
     
     //强弱指标
 //    [self WR6];
     
     //成交量比率
 //    [self VR];
+//    [self MAVR];
 }
 @end

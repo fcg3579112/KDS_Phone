@@ -190,7 +190,7 @@
         _needDraw_WR10_Positions = @[].mutableCopy;
         
         //成交量比率(VR)
-        _needDraw_WR6_Positions = @[].mutableCopy;
+        _needDraw_VR_Positions = @[].mutableCopy;
         _needDraw_MAVR_Positions = @[].mutableCopy;
     }
     return self;
