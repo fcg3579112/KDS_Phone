@@ -14,4 +14,6 @@
 @interface JT_KLineIndicatorSegment : UIView
 
 @property (nonatomic ,weak) id <JT_KLineIndicatorSegmentDelegate> delegate;
+
+- (void)update;
 @end

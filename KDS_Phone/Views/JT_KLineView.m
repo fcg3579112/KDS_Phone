@@ -375,6 +375,8 @@
     if (!_klineVolume) {
         _klineVolume = [JT_KLineVolumeView new];
         [self.scrollView addSubview:_klineVolume];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeIndex:)];
+        [_klineVolume addGestureRecognizer:tap];
         [_klineVolume mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.klineChart);
             make.top.equalTo(self.klineTimeView.mas_bottom).offset(self.indicatorViewHeight);
@@ -385,6 +387,21 @@
     return _klineVolume;
 }
 
+/**
+ 切换指标
+ */
+- (void)changeIndex:(UITapGestureRecognizer *)tap {
+    JT_KLineIndicatorType type = [JT_KLineConfig kLineIndicatorType];
+    if (type == JT_OBV) {
+        type = JT_Volume;
+    } else {
+        type ++;
+    }
+    [JT_KLineConfig setkLineIndicatorType:type];
+    [self p_drawIndicatorAccessory];
+    [self p_drawVolume];
+    [self.volumeSegment update];
+}
 - (JT_KLineFQSegment *)FQSegment {
     if (!_FQSegment) {
         _FQSegment = [JT_KLineFQSegment new];
