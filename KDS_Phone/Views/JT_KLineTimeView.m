@@ -33,6 +33,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = JT_KLineViewBackgroundColor;
         _needDrawKLinePositionModels = @[].mutableCopy;
     }
     return self;
@@ -56,11 +57,7 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     CGContextRef context = UIGraphicsGetCurrentContext();
-    //设置View的背景颜色
     
-    CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, JT_KLineViewBackgroundColor.CGColor);
-    CGContextFillRect(context, rect);
     if (!self.needDrawKLineModels.count) {
         return;
     }

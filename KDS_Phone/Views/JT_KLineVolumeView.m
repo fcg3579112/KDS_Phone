@@ -156,7 +156,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.backgroundColor = JT_KLineViewBackgroundColor;
         //成交量
         _needDrawBarPositionModels = @[].mutableCopy;
         _needDraw_Volume_MA5_Positions = @[].mutableCopy;
@@ -638,11 +638,6 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     CGContextRef context = UIGraphicsGetCurrentContext();
-    //设置View的背景颜色
-    
-    CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, JT_KLineViewBackgroundColor.CGColor);
-    CGContextFillRect(context, rect);
     //画背景方格线
     CGContextSetStrokeColorWithColor(context, JT_KLineViewGridLineColor.CGColor);
     CGContextSetLineWidth(context, JT_KLineViewGridLineWidth * 2);

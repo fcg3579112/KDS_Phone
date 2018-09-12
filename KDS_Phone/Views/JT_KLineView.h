@@ -11,7 +11,7 @@
 @class JT_KLineModel;
 
 @protocol JT_KLineViewDelegate <NSObject>
-
+@optional
 /**
  复权选项点击
 
@@ -19,11 +19,27 @@
  */
 - (void)JT_KLineFQSegmentClick:(JT_KLineFQType)type;
 
+/**
+ 切换到竖屏状态
+ */
+- (void)JT_KLineViewChange2Horizontal;
+
+/**
+ 切换到横屏状态
+ */
+- (void)JT_KLineViewChange2Vertical;
+
+
+/**
+ 长按显示十字线时的回调
+
+ @param show 十字线是否显示
+ @param kLineModel 十字线选中的 K 线数据
+ */
+- (void)JT_KLineViewCrossLineShow:(BOOL)show kLineModel:(JT_KLineModel *)kLineModel;
+
 @end
 @interface JT_KLineView : UIView
-
-@property (nonatomic ,weak) id <JT_KLineViewDelegate> delegate;
-
 /**
  顶部5日均线、10日均线显示区域的高度
  */
@@ -69,5 +85,9 @@
 @property (nonatomic ,assign ) float KlineChartTopMargin;
 - (void)reDrawAllView;
 
+/**
+ @param orientation k 线的方向，横屏或者竖屏
+ */
+- (instancetype)initWithDelegate:(id <JT_KLineViewDelegate>) delegate orientation:(JT_DeviceOrientation)orientation;
 @end
 

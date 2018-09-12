@@ -63,6 +63,7 @@
         _needDraw_MA20_Positions = @[].mutableCopy;
         _needDraw_MA30_Positions = @[].mutableCopy;
         _needDraw_MA60_Positions = @[].mutableCopy;
+        self.backgroundColor = JT_KLineViewBackgroundColor;
     }
     return self;
 }
@@ -284,11 +285,6 @@
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    //设置View的背景颜色
-    
-    CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, JT_KLineViewBackgroundColor.CGColor);
-    CGContextFillRect(context, rect);
     //画背景方格线
     CGContextSetStrokeColorWithColor(context, JT_KLineViewGridLineColor.CGColor);
     CGContextSetLineWidth(context, JT_KLineViewGridLineWidth * 2);

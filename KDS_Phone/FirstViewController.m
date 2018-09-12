@@ -28,11 +28,11 @@
     sg.seletedItemType = JT_SegmentItemTypeKlineDay;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
-    
-    _kLineView = [JT_KLineView new];
+   
+    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationVertical];
     _kLineView.rightSelecterWidth = 55;
     _kLineView.needZoomAndScroll = YES;
-    _kLineView.delegate = self;
+
     _kLineView.bottomMargin = 10;
     _kLineView.volumeButtonEnable = YES;
     

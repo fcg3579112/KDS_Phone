@@ -19,6 +19,7 @@
 #import "JT_KLineIndicatorSegment.h"
 #import "JT_KLineIndicatorAccessoryView.h"
 #import "JT_PriceMarkModel.h"
+#import "JT_KLineCrossLineView.h"
 #import <MApi.h>
 
 #define JT_ScrollViewContentOffset   @"contentOffset"
@@ -37,6 +38,11 @@
 @property (nonatomic ,strong) JT_KLineFQSegment *FQSegment;
 //成交量指标切换 segment
 @property (nonatomic ,strong) JT_KLineIndicatorSegment *volumeSegment;
+
+/**
+ 画十字线视图
+ */
+@property (nonatomic ,strong) JT_KLineCrossLineView *crossLineView;
 
 //指标上方显示对应指标信息视图
 @property (nonatomic ,strong) JT_KLineIndicatorAccessoryView *indicatorAccessory;
@@ -69,6 +75,8 @@
  */
 @property (nonatomic, assign) float oldContentOffsetX;
 
+@property (nonatomic ,weak) id <JT_KLineViewDelegate> delegate;
+@property (nonatomic ,assign) JT_DeviceOrientation orientation;
 
 @end
 
@@ -82,10 +90,12 @@
     // Drawing code
 }
 */
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
+
+- (instancetype)initWithDelegate:(id <JT_KLineViewDelegate>) delegate orientation:(JT_DeviceOrientation)orientation {
+    self = [super init];
     if (self) {
+        _delegate = delegate;
+        _orientation = orientation;
         _needDrawKLineModels = @[].mutableCopy;
         _needDrawStartIndex = 0;
         _oldContentOffsetX = 0;
@@ -196,6 +206,7 @@
     self.klineVolume.startXPosition = self.startXPosition;
     self.klineVolume.needDrawKLineModels = self.needDrawKLineModels;
 }
+
 /**
  *  更新K线视图的宽度
  */
@@ -244,9 +255,38 @@
 }
 #pragma mark 长按手势执行方法
 - (void)longPressGestureEvent:(UILongPressGestureRecognizer *)longPress {
+    CGPoint point = [longPress locationInView:self];
 
+    switch (longPress.state) {
+        case UIGestureRecognizerStateBegan:
+            self.crossLineView.hidden = NO;
+            [self.crossLineView updateCrossLine:point kLineModel:nil];
+            break;
+        case UIGestureRecognizerStateChanged:
+            [self.crossLineView updateCrossLine:point kLineModel:nil];
+            break;
+        case UIGestureRecognizerStateEnded:
+            self.crossLineView.hidden = YES;
+            break;
+        case UIGestureRecognizerStateCancelled:
+            self.crossLineView.hidden = YES;
+            break;
+        default:
+            break;
+    }
 }
-
+#pragma mark 双击手势，切换到竖屏
+- (void)doubleTap:(UITapGestureRecognizer *)tap {
+    if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineViewChange2Vertical)]) {
+        [_delegate JT_KLineViewChange2Vertical];
+    }
+}
+#pragma mark 单击手势，切换到横屏
+- (void)singleTap:(UITapGestureRecognizer *)tap {
+    if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineViewChange2Horizontal)]) {
+        [_delegate JT_KLineViewChange2Horizontal];
+    }
+}
 #pragma mark 重绘
 
 - (void)reDrawAllView {
@@ -309,6 +349,7 @@
         }
         //长按手势
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressGestureEvent:)];
+        longPressGesture.minimumPressDuration = 0.5;
         [_scrollView addGestureRecognizer:longPressGesture];
         
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -354,6 +395,14 @@
             make.height.equalTo(@(self.klineChartViewHeight));
             make.width.equalTo(self.scrollView);
         }];
+        if (_orientation == JT_DeviceOrientationVertical) {
+            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
+            [_klineChart addGestureRecognizer:singleTap];
+        } else {
+            UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+            doubleTap.numberOfTapsRequired = 2;
+            [_klineChart addGestureRecognizer:doubleTap];
+        }
     }
     return _klineChart;
 }
@@ -370,6 +419,18 @@
         }];
     }
     return _indicatorAccessory;
+}
+- (JT_KLineCrossLineView *)crossLineView {
+    if (!_crossLineView) {
+        _crossLineView = [JT_KLineCrossLineView new];
+        _crossLineView.userInteractionEnabled = NO;
+        [self addSubview:_crossLineView];
+        [_crossLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,self.rightSelecterWidth));
+        }];
+        [self bringSubviewToFront:self.indicatorAccessory];
+    }
+    return _crossLineView;
 }
 - (JT_KLineVolumeView *)klineVolume {
     if (!_klineVolume) {

@@ -25,6 +25,7 @@
 		B293712C213D096800DE6974 /* JT_KLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712B213D096800DE6974 /* JT_KLineModel.m */; };
 		B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */; };
 		B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2937131213D1F3400DE6974 /* TabOneViewController.m */; };
+		B2A5A99B214910F90090DDEA /* JT_KLineCrossLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
 		B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB910213384A200CA2EB6 /* Main.storyboard */; };
@@ -106,6 +107,8 @@
 		B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineGlobalVar.m; sourceTree = "<group>"; };
 		B2937130213D1F3400DE6974 /* TabOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabOneViewController.h; sourceTree = "<group>"; };
 		B2937131213D1F3400DE6974 /* TabOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabOneViewController.m; sourceTree = "<group>"; };
+		B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineCrossLineView.h; sourceTree = "<group>"; };
+		B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineCrossLineView.m; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB90A213384A200CA2EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2ACB90B213384A200CA2EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -301,6 +304,8 @@
 				B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */,
 				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
 				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
+				B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */,
+				B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */,
 				B21328A9213F662C001901B6 /* JT_PriceMarkModel.h */,
 				B21328AA213F662C001901B6 /* JT_PriceMarkModel.m */,
 				B293712A213D096800DE6974 /* JT_KLineModel.h */,
@@ -517,6 +522,7 @@
 				B220F979213E5FF700DC40DA /* JT_KLineFQSegment.m in Sources */,
 				B2676E0B213672B3002F47A0 /* JT_KLineView.m in Sources */,
 				B23E683E2137C71D00E9EF3B /* JT_KLineConfig.m in Sources */,
+				B2A5A99B214910F90090DDEA /* JT_KLineCrossLineView.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
 				B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */,
