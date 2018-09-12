@@ -79,7 +79,7 @@
     CGPoint verticalLineDownPoints[] = {CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin + self.timeViewHeight), CGPointMake(_crossLineCenterPoint.x,rect.size.height )};
     CGContextStrokeLineSegments(context, verticalLineDownPoints, 2);
     
-    NSString *time = @"2018/10/10";
+    NSString *time = [_kLineModel.datetime substringToIndex:8];
     UIFont *font = [UIFont systemFontOfSize:JT_KLineMAFontSize - 1];
     CGFloat textWidth = [time sizeWithAttributes:@{NSFontAttributeName : font}].width;
     CGFloat originX = _crossLineCenterPoint.x - textWidth / 2;

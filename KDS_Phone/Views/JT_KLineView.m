@@ -256,14 +256,20 @@
 #pragma mark 长按手势执行方法
 - (void)longPressGestureEvent:(UILongPressGestureRecognizer *)longPress {
     CGPoint point = [longPress locationInView:self];
-
+    float itemWidth = ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
+    NSInteger index = floorf((point.x - self.startXPosition) / itemWidth);
+    index = index >= self.needDrawKLineModels.count ? self.needDrawKLineModels.count - 1 : index;
+    index = index < 0 ? 0 : index;
+    
+    point.x = self.startXPosition + index * itemWidth;
+    JT_KLineModel *kLineModel = self.needDrawKLineModels[index];
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
             self.crossLineView.hidden = NO;
-            [self.crossLineView updateCrossLine:point kLineModel:nil];
+            [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
-            [self.crossLineView updateCrossLine:point kLineModel:nil];
+            [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
             self.crossLineView.hidden = YES;
