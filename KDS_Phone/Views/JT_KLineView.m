@@ -424,6 +424,8 @@
     if (!_crossLineView) {
         _crossLineView = [JT_KLineCrossLineView new];
         _crossLineView.userInteractionEnabled = NO;
+        _crossLineView.timeViewTopMargin = self.klineChartViewHeight;
+        _crossLineView.timeViewHeight = self.timeViewHeight;
         [self addSubview:_crossLineView];
         [_crossLineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,self.rightSelecterWidth));

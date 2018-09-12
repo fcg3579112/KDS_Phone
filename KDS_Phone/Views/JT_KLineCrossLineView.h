@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @class JT_KLineModel;
 @interface JT_KLineCrossLineView : UIView
-
+@property (nonatomic ,assign) CGFloat timeViewTopMargin;
+@property (nonatomic ,assign) CGFloat timeViewHeight;
 - (void)updateCrossLine:(CGPoint)point kLineModel:(JT_KLineModel *)kLineModel;
 @end
