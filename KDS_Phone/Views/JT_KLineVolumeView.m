@@ -122,6 +122,22 @@
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_VR_Positions;
 @property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MAVR_Positions;
 
+/**
+ 能量指数 (CR)
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CR_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CR_MA10_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CR_MA20_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CR_MA40_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_CR_MA62_Positions;
+
+
+/**
+ 能量潮指标 (OBV)
+ */
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_OBV_Positions;
+@property (nonatomic, strong) NSMutableArray <NSValue *>*needDraw_MAOBV_Positions;
+
 
 @property (nonatomic, strong) JT_DrawMALine *drawLineUtil;
 
@@ -192,6 +208,17 @@
         //成交量比率(VR)
         _needDraw_VR_Positions = @[].mutableCopy;
         _needDraw_MAVR_Positions = @[].mutableCopy;
+        
+         //能量指数 (CR)
+        _needDraw_CR_Positions = @[].mutableCopy;
+        _needDraw_CR_MA10_Positions = @[].mutableCopy;
+        _needDraw_CR_MA20_Positions = @[].mutableCopy;
+        _needDraw_CR_MA40_Positions = @[].mutableCopy;
+        _needDraw_CR_MA62_Positions = @[].mutableCopy;
+        
+        //能量潮指标 (OBV)
+        _needDraw_OBV_Positions = @[].mutableCopy;
+        _needDraw_MAOBV_Positions = @[].mutableCopy;
     }
     return self;
 }
@@ -247,6 +274,17 @@
     //成交量比率(VR)
     [_needDraw_VR_Positions removeAllObjects];
     [_needDraw_MAVR_Positions removeAllObjects];
+    
+    //能量指数 (CR)
+    [_needDraw_CR_Positions removeAllObjects];
+    [_needDraw_CR_MA10_Positions removeAllObjects];
+    [_needDraw_CR_MA20_Positions removeAllObjects];
+    [_needDraw_CR_MA40_Positions removeAllObjects];
+    [_needDraw_CR_MA62_Positions removeAllObjects];
+    
+    //能量潮指标 (OBV)
+    [_needDraw_OBV_Positions removeAllObjects];
+    [_needDraw_MAOBV_Positions removeAllObjects];
     
     NSArray *kLineModels = self.needDrawKLineModels;
     JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
@@ -320,12 +358,14 @@
             break;
         case JT_CR:
             {
-                
+                self.screenMaxValue = lastModel.CR;
+                self.screenMinValue = lastModel.CR;
             }
             break;
         case JT_OBV:
             {
-                
+                self.screenMaxValue = lastModel.OBV;
+                self.screenMinValue = lastModel.OBV;
             }
             break;
         default:
@@ -442,12 +482,25 @@
                 break;
             case JT_CR:
             {
-                
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CR);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CR_MA_10);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CR_MA_20);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CR_MA_40);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.CR_MA_62);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CR);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CR_MA_10);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CR_MA_20);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CR_MA_40);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.CR_MA_62);
+    
             }
                 break;
             case JT_OBV:
             {
-                
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.OBV);
+                self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MAOBV);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.OBV);
+                self.screenMinValue = MIN(self.screenMinValue, kLineModel.MAOBV);
             }
                 break;
             default:
@@ -455,7 +508,7 @@
         }
 
     }];
-    
+//    NSLog(@"%d   %d",self.screenMaxValue,self.screenMinValue);
     //计算最小单位
     float unitValue = (self.screenMaxValue - self.screenMinValue) / self.maxY;
     
@@ -556,12 +609,17 @@
                 break;
             case JT_CR:
             {
-                
+                [self.needDraw_CR_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CR - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_CR_MA10_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CR_MA_10 - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_CR_MA20_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CR_MA_20 - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_CR_MA40_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CR_MA_40 - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_CR_MA62_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.CR_MA_62 - self.screenMinValue) / unitValue ))]];
             }
                 break;
             case JT_OBV:
             {
-                
+                [self.needDraw_OBV_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.OBV - self.screenMinValue) / unitValue ))]];
+                [self.needDraw_MAOBV_Positions addObject:[NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(self.maxY - (kLineModel.MAOBV - self.screenMinValue) / unitValue ))]];
             }
                 break;
             default:
@@ -699,12 +757,18 @@
             break;
         case JT_CR:
         {
+            [_drawLineUtil drawLineWithColor:JT_KLineIndexTitleColor positions:self.needDraw_CR_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_CR_MA1_Color positions:self.needDraw_CR_MA10_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_CR_MA2_Color positions:self.needDraw_CR_MA20_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_CR_MA3_Color positions:self.needDraw_CR_MA40_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_CR_MA4_Color positions:self.needDraw_CR_MA62_Positions];
             
         }
             break;
         case JT_OBV:
         {
-            
+            [_drawLineUtil drawLineWithColor:JT_KLine_OBV_OBV_Color positions:self.needDraw_OBV_Positions];
+            [_drawLineUtil drawLineWithColor:JT_KLine_OBV_MAOBV_Color positions:self.needDraw_MAOBV_Positions];
         }
             break;
         default:
@@ -714,7 +778,7 @@
     //画最大值与最小值
     NSString *max = [NSString stringWithFormat:@"%.2f",self.screenMaxValue];
     NSString *min = [NSString stringWithFormat:@"%.2f",self.screenMinValue];
-    if (type == JT_Volume) {
+    if (type == JT_Volume || type == JT_OBV) {
         max = formatVolume(self.screenMaxValue);
         min = @"";
     }

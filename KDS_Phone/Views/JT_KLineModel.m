@@ -678,7 +678,6 @@
             _TP_MA = self.sumOfLastTP / (self.index + 1);
         }
     }
-//    NSLog(@"_TP_MA = %f" ,_TP_MA);
     return _TP_MA;
 }
 - (float)averageAbsoluteTP {
@@ -695,7 +694,6 @@
         NSUInteger count = self.index >= 13 ? 14 : self.index + 1;
         _averageAbsoluteTP = sum / count;
     }
-    NSLog(@"_averageAbsoluteTP = %f" ,_averageAbsoluteTP);
     return _averageAbsoluteTP;
 }
 - (float)CCI {
@@ -706,7 +704,6 @@
             _CCI = (self.TP - self.TP_MA) / (0.015 * self.averageAbsoluteTP);
         }
     }
-    NSLog(@"index = %d _CCI = %f",self.index ,_CCI);
     return _CCI;
 }
 - (float)WR10 {
@@ -787,6 +784,131 @@
     return _MAVR;
 }
 
+- (float)M {
+    if (!_M) {
+        _M = (self.closePrice.floatValue + self.highPrice.floatValue + self.lowPrice.floatValue + self.openPrice.floatValue) / 4;
+    }
+    return _M;
+}
+- (float)H_YM {
+    if (!_H_YM) {
+        if (self.index == 0) {
+            _H_YM = 0;
+        } else {
+            _H_YM = self.highPrice.floatValue - self.preModel.M;
+        }
+    }
+    
+    return _H_YM;
+}
+- (float)YM_L {
+    if (!_YM_L) {
+        if (self.index == 0) {
+            _YM_L = 0;
+        } else {
+            _YM_L = self.preModel.M - self.lowPrice.floatValue;
+        }
+    }
+    return _YM_L;
+}
+- (float)sumOfLastH_YM {
+    if (!_sumOfLastH_YM) {
+        _sumOfLastH_YM = self.preModel.sumOfLastH_YM + self.H_YM;
+    }
+    return _sumOfLastH_YM;
+}
+- (float)sumOfLastYM_L {
+    if (!_sumOfLastYM_L) {
+        _sumOfLastYM_L = self.preModel.sumOfLastYM_L + self.YM_L;
+    }
+    return _sumOfLastYM_L;
+}
+
+- (float)CR {
+    if (!_CR) {
+        float p1 = 0;
+        float p2 = 0;
+        if (self.index >= 26) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 26];
+            p1 = self.sumOfLastH_YM - preDaysModel.sumOfLastH_YM;
+            p2 = self.sumOfLastYM_L - preDaysModel.sumOfLastYM_L;
+        } else {
+            p1 = self.sumOfLastH_YM;
+            p2 = self.sumOfLastYM_L;
+        }
+        if (p2 == 0) {
+            _CR = 100;
+        } else {
+            _CR = p1 / p2 * 100;
+        }
+    }
+    return _CR;
+}
+- (float)sumOfLastCR {
+    if (!_sumOfLastCR) {
+        _sumOfLastCR = self.preModel.sumOfLastCR + self.CR;
+    }
+    return _sumOfLastCR;
+}
+- (float)CR_MA_10 {
+    if (!_CR_MA_10) {
+        _CR_MA_10 = [self calculateCR_MA_Days:10];
+    }
+    return _CR_MA_10;
+}
+- (float)CR_MA_20 {
+    if (!_CR_MA_20) {
+        _CR_MA_20 = [self calculateCR_MA_Days:20];
+    }
+    return _CR_MA_20;
+}
+- (float)CR_MA_40 {
+    if (!_CR_MA_40) {
+        _CR_MA_40 = [self calculateCR_MA_Days:40];
+    }
+    return _CR_MA_40;
+}
+- (float)CR_MA_62 {
+    if (!_CR_MA_62) {
+        _CR_MA_62 = [self calculateCR_MA_Days:62];
+    }
+    return _CR_MA_62;
+}
+- (float)calculateCR_MA_Days:(NSUInteger)days {
+    if (self.index >= days) {
+        JT_KLineModel *preDaysModel = self.allKLineModel[self.index - days];
+        return (self.sumOfLastCR - preDaysModel.sumOfLastCR) / days;
+    }
+    return self.sumOfLastCR / (self.index + 1);
+}
+
+- (NSInteger)OBV {
+    if (!_OBV) {
+        if (self.index == 0) {
+            _OBV = self.tradeVolume;
+        } else {
+            _OBV = self.preModel.OBV + self.tradeVolume * (self.closePrice.floatValue > self.referencePrice.floatValue ? 1 : -1);
+        }
+    }
+    return _OBV;
+}
+- (NSInteger)sumOfLastOBV {
+    if (!_sumOfLastOBV) {
+        _sumOfLastOBV = self.preModel.sumOfLastOBV + self.OBV;
+    }
+    return _sumOfLastOBV;
+}
+- (NSInteger)MAOBV {
+    if (!_MAOBV) {
+        if (self.index >= 30) {
+            JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 30];
+            _MAOBV = (self.sumOfLastOBV - preDaysModel.sumOfLastOBV) / 30;
+        } else {
+            _MAOBV = self.sumOfLastOBV / (self.index + 1);
+        }
+    }
+    return _MAOBV;
+}
 - (void)initData {
     
     [self preModel];
@@ -840,7 +962,7 @@
 //    [self ADX];
 //    [self ADXR];
     //CCI顺势指标指标
-      [self CCI];
+//      [self CCI];
     
     //强弱指标
 //    [self WR6];
@@ -848,5 +970,10 @@
     //成交量比率
 //    [self VR];
 //    [self MAVR];
+    //能量指标 (CR)
+   // [self CR];
+    
+    //能量潮 (OBV)
+    //[self OBV];
 }
 @end

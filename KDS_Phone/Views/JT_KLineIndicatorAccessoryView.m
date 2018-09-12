@@ -256,12 +256,24 @@
             break;
         case JT_CR:
         {
-            
+            ((UILabel *)_items[0]).text = [NSString stringWithFormat:@"CR(26,10,20,62):%.2f",model.CR];
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"MA 1:%.2f",model.CR_MA_10];
+            ((UILabel *)_items[1]).textColor = JT_KLine_CR_MA1_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"2:%.2f",model.CR_MA_20];
+            ((UILabel *)_items[2]).textColor = JT_KLine_CR_MA2_Color;
+            ((UILabel *)_items[3]).text = [NSString stringWithFormat:@"3:%.2f",model.CR_MA_40];
+            ((UILabel *)_items[3]).textColor = JT_KLine_CR_MA3_Color;
+            ((UILabel *)_items[4]).text = [NSString stringWithFormat:@"4:%.2f",model.CR_MA_62];
+            ((UILabel *)_items[4]).textColor = JT_KLine_CR_MA4_Color;
         }
             break;
         case JT_OBV:
         {
-            
+            ((UILabel *)_items[0]).text = @"OBV(30)";
+            ((UILabel *)_items[1]).text = [NSString stringWithFormat:@"OBV:%@",formatVolume(model.OBV)];
+            ((UILabel *)_items[1]).textColor = JT_KLine_OBV_OBV_Color;
+            ((UILabel *)_items[2]).text = [NSString stringWithFormat:@"MAOBV:%@",formatVolume(model.MAOBV)];
+            ((UILabel *)_items[2]).textColor = JT_KLine_OBV_MAOBV_Color;
         }
             break;
         default:

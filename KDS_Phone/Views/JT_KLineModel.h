@@ -300,8 +300,63 @@
  */
 @property (nonatomic, assign) float MAVR;
 
-//上证 k 线model 转 JT_KLineModel
+/**
+ 能量指标
+ 计算方法编辑
+ 由于选用的计算周期不同，CR指标也包括日CR指标、周CR指标、月CR指标,年CR指标以及分钟CR指标等很多种类型。
+ 经常被用于股市研判的是日CR指标和周CR指标。虽然它们计算时取值有所不同，但基本的计算方法一样。以日CR指标为例，其计算公式为：
+ CR（N日）=P1÷P2×100
+ 式中，P1=Σ（H－YM），表示N日以来多方力量的总和；P2=Σ（YM－L），表示N日以来空方力量的总和。
+ H表示今日的最高价，L表示今日的最低价YM表示昨日（上一个交易日）的中间价。CR计算公式中的中间价其实也是一个指标，
+ 它是通过对昨日（YM）交易的最高价、最低价、开盘价和收盘价进行加权平均而得到的，其每个价格的权重可以人为地选定。比较常用地中间价计算方法有四种：
+ 1、M=（2C+H+L）÷4
+ 2、M=（C+H+L+O）÷4
+ 3、M=（C+H+L）÷3
+ 4、M=（H+L）÷2
+ */
 
+/**
+ 中间价
+ */
+@property (nonatomic, assign) float M;
+@property (nonatomic, assign) float CR; // 计算周期 26 日
+@property (nonatomic, assign) float H_YM;
+@property (nonatomic, assign) float YM_L;
+
+@property (nonatomic, assign) float sumOfLastH_YM;
+@property (nonatomic, assign) float sumOfLastYM_L;
+/**
+ CR 10 日均值
+ */
+
+@property (nonatomic, assign) float sumOfLastCR;
+@property (nonatomic, assign) float CR_MA_10;
+@property (nonatomic, assign) float CR_MA_20;
+@property (nonatomic, assign) float CR_MA_40;
+@property (nonatomic, assign) float CR_MA_62;
+
+
+/**
+ 能量潮指标 (OBV)
+ */
+@property (nonatomic, assign) NSInteger OBV;
+@property (nonatomic, assign) NSInteger sumOfLastOBV;
+@property (nonatomic, assign) NSInteger MAOBV;
+
+/**
+ 上证 k 线model 转 JT_KLineModel
+ 实例如下:
+ allKLineModel = @[].mutableCopy;
+ NSArray *items = response.OHLCItems;
+ // 模型转换
+ [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+ JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+ [self.allKLineModel addObject:model];
+ model.allKLineModel = allKLineModel;
+ [model initData];
+ }];
+ kLineView.kLineModels = allKLineModel;
+ */
 - (instancetype)initWithModel:(MOHLCItem *)model;
 
 - (void)initData;
