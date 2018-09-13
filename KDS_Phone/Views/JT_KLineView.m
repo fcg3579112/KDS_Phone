@@ -232,22 +232,34 @@
 }
 #pragma mark 计算十字线 Y 轴的值
 - (NSString *)calculateCrossLineValueY:(CGFloat)y {
-    NSString *valueY;
+    NSString *stringValue;
     y = y < 0 ? 0 : y;
     float yMax = self.frame.size.height - self.bottomMargin - self.MALineHeight;
     y = y > yMax ? yMax : y;
     
+    // ABS(maxKLineY - (kLineModel.MA5.floatValue - self.screenMinValue)/unitValue)
     // 判断 x 轴 是在 上部蜡烛线区间还是 下部指标区间
-    
-    if (y <= self.klineChartViewHeight) {
-        
-    } else if (y > self.scrollView.frame.size.height - self.timeViewHeight - self.indicatorViewHeight && y < yMax) {
-        
-    } else {
-        valueY = @"";
+    if (y >= (self.kLineChartSafeAreaHeight) && y <= (self.klineChartViewHeight - self.kLineChartSafeAreaHeight)) { // k 线区域
+        float maxY = self.klineChartViewHeight - self.kLineChartSafeAreaHeight;
+        float minY = self.kLineChartSafeAreaHeight;
+        float unitValue = (self.klineChart.screenMaxValue - self.klineChart.screenMinValue)/(maxY - minY);
+        float value = (maxY - y) * unitValue + self.klineChart.screenMinValue;
+        stringValue = [NSString stringWithFormat:@"%.2f",value];
+    } else if (y > (self.klineChartViewHeight + self.timeViewHeight + self.indicatorViewHeight ) && y < yMax) { // 指数区域
+        float maxY = self.volumeViewHeight;
+        float minY = 0;
+        float unitValue = (self.klineVolume.screenMaxValue - self.klineVolume.screenMinValue)/(maxY - minY);
+        y = y - self.klineChartViewHeight - self.timeViewHeight - self.indicatorViewHeight;
+        float value = (maxY - y) * unitValue + self.klineVolume.screenMinValue;
+        if ([JT_KLineConfig kLineIndicatorType] == JT_Volume || [JT_KLineConfig kLineIndicatorType] == JT_OBV) {
+            stringValue = formatVolume(value);
+        } else {
+            stringValue = [NSString stringWithFormat:@"%.2f",value];
+        }
+    } else { // 其他区域
+        stringValue = @"";
     }
-    
-    return @"";
+    return stringValue;
 }
 #pragma mark 缩放执行方法
 - (void)pinchGestureEvent:(UIPinchGestureRecognizer *)pinch {
@@ -317,6 +329,23 @@
     if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineViewChange2Horizontal)]) {
         [_delegate JT_KLineViewChange2Horizontal];
     }
+}
+
+/**
+ 切换指标
+ */
+- (void)changeIndex:(UITapGestureRecognizer *)tap {
+    JT_KLineIndicatorType type = [JT_KLineConfig kLineIndicatorType];
+    if (type == JT_OBV) {
+        type = JT_Volume;
+    } else {
+        type ++;
+    }
+    [JT_KLineConfig setkLineIndicatorType:type];
+    [self p_drawIndicatorAccessory];
+    [self p_drawVolume];
+    [self.volumeSegment update];
+    [self hidenCrossLine];
 }
 #pragma mark 重绘
 
@@ -491,21 +520,6 @@
     return _klineVolume;
 }
 
-/**
- 切换指标
- */
-- (void)changeIndex:(UITapGestureRecognizer *)tap {
-    JT_KLineIndicatorType type = [JT_KLineConfig kLineIndicatorType];
-    if (type == JT_OBV) {
-        type = JT_Volume;
-    } else {
-        type ++;
-    }
-    [JT_KLineConfig setkLineIndicatorType:type];
-    [self p_drawIndicatorAccessory];
-    [self p_drawVolume];
-    [self.volumeSegment update];
-}
 - (JT_KLineFQSegment *)FQSegment {
     if (!_FQSegment) {
         _FQSegment = [JT_KLineFQSegment new];

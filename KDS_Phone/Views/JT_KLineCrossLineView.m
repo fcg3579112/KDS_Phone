@@ -34,6 +34,7 @@
 }
 
 - (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value kLineModel:(JT_KLineModel *)kLineModel {
+    _valueY = value;
     _crossLineCenterPoint = point;
     _kLineModel = kLineModel;
     _dateTime = formateDateFromString(kLineModel.datetime);
@@ -73,21 +74,58 @@
     
     CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineColor.CGColor);
     CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
-    //横线坐标,横线的Y的区间
+    UIFont *font = [UIFont systemFontOfSize:JT_KLineCrossLineTextFontSize];
+    
+    
+    float kLineChartMaxY = self.timeViewTopMargin - self.kLineChartSafeAreaHeight;
+    float kLineChartMinY = self.kLineChartSafeAreaHeight;
+    float volumeMaxY = rect.size.height;
+    float volumeMinY = self.timeViewTopMargin + self.timeViewHeight + self.indexAccessoryViewHeight;
+    
+    //只有坐标在 蜡烛线与 成交量区间中才需要画横线
     float centerY = _crossLineCenterPoint.y;
-    if ( (centerY >= self.kLineChartSafeAreaHeight && centerY <= self.timeViewTopMargin - self.kLineChartSafeAreaHeight)
-       || (centerY >= self.timeViewTopMargin + self.timeViewHeight + self.indexAccessoryViewHeight && centerY <= rect.size.height)) {
-        CGPoint horizontalPoints[] = {CGPointMake(0, _crossLineCenterPoint.y), CGPointMake(rect.size.width, _crossLineCenterPoint.y)};
+    if ( (centerY >= kLineChartMinY && centerY <= kLineChartMaxY)
+       || (centerY >= volumeMinY && centerY <= volumeMaxY)) {
+        CGSize valueYSize = [_valueY sizeWithAttributes:@{NSFontAttributeName : font}];
+        CGRect valueYRect;
+        CGPoint horizontalPoints[] = {CGPointMake(valueYSize.width, _crossLineCenterPoint.y), CGPointMake(rect.size.width, _crossLineCenterPoint.y)};
         CGContextStrokeLineSegments(context, horizontalPoints, 2);
+        
+        //画 Y 轴值
+        CGFloat originY = _crossLineCenterPoint.y - valueYSize.height / 2;
+        if (centerY >= kLineChartMinY && centerY <= kLineChartMaxY) { // 画上蜡烛线区间Y值
+            if (originY < kLineChartMinY) {
+                originY = kLineChartMinY;
+            }
+            if (originY >  kLineChartMaxY - valueYSize.height) {
+                originY = kLineChartMaxY - valueYSize.height;
+            }
+        } else { //画成交量区间Y值
+            if (originY < volumeMinY) {
+                originY = volumeMinY;
+            }
+            if (originY >  volumeMaxY - valueYSize.height) {
+                originY = volumeMaxY - valueYSize.height;
+            }
+        }
+        valueYRect = CGRectMake(0, originY, valueYSize.width, valueYSize.height);
+        [_valueY drawInRect:valueYRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor}];
+        //画画 Y 轴值边框
+        CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
+        CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
+        CGContextAddRect(context, valueYRect);
+        CGContextStrokePath(context);
     }
+    
     //竖线上部分
+    CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
     CGPoint verticalLineUpPoints[] = {CGPointMake(_crossLineCenterPoint.x, 0), CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin)};
     CGContextStrokeLineSegments(context, verticalLineUpPoints, 2);
     //竖线下部分
     CGPoint verticalLineDownPoints[] = {CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin + self.timeViewHeight), CGPointMake(_crossLineCenterPoint.x,rect.size.height )};
     CGContextStrokeLineSegments(context, verticalLineDownPoints, 2);
     
-    UIFont *font = [UIFont systemFontOfSize:JT_KLineCrossLineTextFontSize];
+    
     CGSize textSize = [_dateTime sizeWithAttributes:@{NSFontAttributeName : font}];
     textSize = CGSizeMake(textSize.width, textSize.height);
     CGFloat originX = _crossLineCenterPoint.x - textSize.width / 2;
@@ -96,6 +134,7 @@
     originX = originX >= rect.size.width - textSize.width ?  originX = rect.size.width - textSize.width : originX;
     
     CGRect textRect = CGRectMake(originX, self.timeViewTopMargin, textSize.width, textSize.height);
+    //画时间
     [_dateTime drawInRect:textRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor}];
     //画时间边框
     CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
