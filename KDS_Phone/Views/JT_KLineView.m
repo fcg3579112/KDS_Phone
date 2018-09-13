@@ -280,6 +280,13 @@
             [self updateScrollViewWidth];
             [self.scrollView setContentOffset:CGPointMake(contentOffsetX, self.scrollView.contentOffset.y)];
             
+            if (self.needDrawKLineModels.count * ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]) < self.scrollView.frame.size.width
+                && self.kLineModels.count * ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]) > self.scrollView.frame.size.width ) {
+                float kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count - 1) * ([JT_KLineConfig kLineGap]);
+                float offset = kLineViewWidth - self.scrollView.frame.size.width;
+                [self.scrollView setContentOffset:CGPointMake(offset, 0)];
+            }
+            
             //当 self.scrollView contentOffset 变化时，会触发  self.klineChar 里面  KVO监听，监听里会调用 [self.klineChart drawView]，
             // 当 self.scrollView.contentOffset.x == 0 时，不会触发 KVO监听 ，所以直接调用 [self.klineChart drawView];重新绘制
             if (contentOffsetX == 0) {
