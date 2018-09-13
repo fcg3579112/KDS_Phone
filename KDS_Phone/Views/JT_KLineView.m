@@ -20,6 +20,7 @@
 #import "JT_KLineIndicatorAccessoryView.h"
 #import "JT_PriceMarkModel.h"
 #import "JT_KLineCrossLineView.h"
+#import "JT_KLineZDFView.h"
 #import <MApi.h>
 
 #define JT_ScrollViewContentOffset   @"contentOffset"
@@ -38,6 +39,11 @@
 @property (nonatomic ,strong) JT_KLineFQSegment *FQSegment;
 //成交量指标切换 segment
 @property (nonatomic ,strong) JT_KLineIndicatorSegment *volumeSegment;
+
+/**
+ 显示涨跌幅标尺视图
+ */
+@property (nonatomic ,strong) JT_KLineZDFView *rightZDFView;
 
 /**
  画十字线视图
@@ -309,6 +315,7 @@
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
             self.crossLineView.hidden = NO;
+            self.rightZDFView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
             [self.crossLineView updateCrossLine:point valueY:valueY kLineModel:kLineModel];
             break;
@@ -379,6 +386,7 @@
 
 - (void)hidenCrossLine {
     self.crossLineView.hidden = YES;
+    self.rightZDFView.hidden = YES;
     [_delayHidenCrossLineTimer invalidate];
     _delayHidenCrossLineTimer = nil;
 }
@@ -505,9 +513,8 @@
         _crossLineView.indexAccessoryViewHeight = self.indicatorViewHeight;
         [self addSubview:_crossLineView];
         [_crossLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,self.rightSelecterWidth));
+            make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,0));
         }];
-        [self bringSubviewToFront:self.indicatorAccessory];
     }
     return _crossLineView;
 }
@@ -526,7 +533,20 @@
     }
     return _klineVolume;
 }
-
+- (JT_KLineZDFView *)rightZDFView {
+    if (!_rightZDFView) {
+        _rightZDFView = [JT_KLineZDFView new];
+        _rightZDFView.backgroundColor = JT_KLineViewBackgroundColor;
+        [self addSubview:_rightZDFView];
+        [self bringSubviewToFront:self.crossLineView];
+        [self bringSubviewToFront:self.indicatorAccessory];
+        [_rightZDFView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.bottom.equalTo(@0);
+            make.width.equalTo(@(self.rightSelecterWidth));
+        }];
+    }
+    return _rightZDFView;
+}
 - (JT_KLineFQSegment *)FQSegment {
     if (!_FQSegment) {
         _FQSegment = [JT_KLineFQSegment new];
