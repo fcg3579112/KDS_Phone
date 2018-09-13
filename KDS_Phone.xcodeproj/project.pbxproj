@@ -10,7 +10,7 @@
 		48D807B17EB589F164F783C4 /* libPods-KDS_PhoneUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDD3715529AC3ACB755ABEF /* libPods-KDS_PhoneUITests.a */; };
 		6642FF8F632CD8A7B4E1DA84 /* libPods-KDS_PhoneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2BD20D5AC0E0F6493593B6 /* libPods-KDS_PhoneTests.a */; };
 		B20298B42136EB22000CE57B /* JT_KLineCandlePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B20298B32136EB22000CE57B /* JT_KLineCandlePositionModel.m */; };
-		B2114234214A692100BEEB81 /* JT_KLineZDFView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2114233214A692100BEEB81 /* JT_KLineZDFView.m */; };
+		B2114234214A692100BEEB81 /* JT_KLineChangeRateView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2114233214A692100BEEB81 /* JT_KLineChangeRateView.m */; };
 		B21328AB213F662C001901B6 /* JT_PriceMarkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B21328AA213F662C001901B6 /* JT_PriceMarkModel.m */; };
 		B220F976213E138D00DC40DA /* JT_DrawMALine.m in Sources */ = {isa = PBXBuildFile; fileRef = B220F975213E138D00DC40DA /* JT_DrawMALine.m */; };
 		B220F979213E5FF700DC40DA /* JT_KLineFQSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */; };
@@ -77,8 +77,8 @@
 		95A6AEA560BAAEEABBADAF6F /* Pods-KDS_PhoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_PhoneUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_PhoneUITests/Pods-KDS_PhoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B20298B22136EB22000CE57B /* JT_KLineCandlePositionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineCandlePositionModel.h; sourceTree = "<group>"; };
 		B20298B32136EB22000CE57B /* JT_KLineCandlePositionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineCandlePositionModel.m; sourceTree = "<group>"; };
-		B2114232214A692100BEEB81 /* JT_KLineZDFView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineZDFView.h; sourceTree = "<group>"; };
-		B2114233214A692100BEEB81 /* JT_KLineZDFView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineZDFView.m; sourceTree = "<group>"; };
+		B2114232214A692100BEEB81 /* JT_KLineChangeRateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineChangeRateView.h; sourceTree = "<group>"; };
+		B2114233214A692100BEEB81 /* JT_KLineChangeRateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineChangeRateView.m; sourceTree = "<group>"; };
 		B21328A9213F662C001901B6 /* JT_PriceMarkModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_PriceMarkModel.h; sourceTree = "<group>"; };
 		B21328AA213F662C001901B6 /* JT_PriceMarkModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_PriceMarkModel.m; sourceTree = "<group>"; };
 		B220F974213E138D00DC40DA /* JT_DrawMALine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_DrawMALine.h; sourceTree = "<group>"; };
@@ -315,8 +315,8 @@
 				B293712B213D096800DE6974 /* JT_KLineModel.m */,
 				B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */,
 				B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */,
-				B2114232214A692100BEEB81 /* JT_KLineZDFView.h */,
-				B2114233214A692100BEEB81 /* JT_KLineZDFView.m */,
+				B2114232214A692100BEEB81 /* JT_KLineChangeRateView.h */,
+				B2114233214A692100BEEB81 /* JT_KLineChangeRateView.m */,
 				B2676E0F21367C8E002F47A0 /* JT_KLineMAAccessoryView.h */,
 				B2676E1021367C8E002F47A0 /* JT_KLineMAAccessoryView.m */,
 				B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */,
@@ -530,7 +530,7 @@
 				B2A5A99B214910F90090DDEA /* JT_KLineCrossLineView.m in Sources */,
 				B2ACB94921338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m in Sources */,
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
-				B2114234214A692100BEEB81 /* JT_KLineZDFView.m in Sources */,
+				B2114234214A692100BEEB81 /* JT_KLineChangeRateView.m in Sources */,
 				B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */,
 				B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */,
 				B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */,

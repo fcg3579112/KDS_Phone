@@ -14,6 +14,7 @@
 @property (nonatomic ,strong) JT_KLineModel *kLineModel;
 @property (nonatomic ,strong) NSString *dateTime;
 @property (nonatomic ,strong) NSString *valueY;
+@property (nonatomic ,strong) NSString *changeRate;
 @end
 @implementation JT_KLineCrossLineView
 
@@ -32,14 +33,15 @@
     }
     return self;
 }
-
-- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value kLineModel:(JT_KLineModel *)kLineModel {
+- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value changeRate:(NSString *)changeRate kLineModel:(JT_KLineModel *)kLineModel {
     _valueY = value;
+    _changeRate = changeRate;
     _crossLineCenterPoint = point;
     _kLineModel = kLineModel;
     _dateTime = formateDateFromString(kLineModel.datetime);
     [self setNeedsDisplay];
 }
+
 
 /**
  NSString *const NSFontAttributeName;(字体)
@@ -88,9 +90,10 @@
        || (centerY >= volumeMinY && centerY <= volumeMaxY)) {
         CGSize valueYSize = [_valueY sizeWithAttributes:@{NSFontAttributeName : font}];
         CGRect valueYRect;
-        CGPoint horizontalPoints[] = {CGPointMake(valueYSize.width, _crossLineCenterPoint.y), CGPointMake(rect.size.width, _crossLineCenterPoint.y)};
+        CGPoint horizontalPoints[] = {CGPointMake(valueYSize.width, _crossLineCenterPoint.y), CGPointMake(rect.size.width - self.rightMargin, _crossLineCenterPoint.y)};
         CGContextStrokeLineSegments(context, horizontalPoints, 2);
         
+        NSDictionary *attributes = @{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor};
         //画 Y 轴值
         CGFloat originY = _crossLineCenterPoint.y - valueYSize.height / 2;
         if (centerY >= kLineChartMinY && centerY <= kLineChartMaxY) { // 画上蜡烛线区间Y值
@@ -100,6 +103,16 @@
             if (originY >  kLineChartMaxY - valueYSize.height) {
                 originY = kLineChartMaxY - valueYSize.height;
             }
+            // 画右边的涨跌幅
+            CGSize changeRateSize = [_changeRate sizeWithAttributes:@{NSFontAttributeName : font}];
+            CGRect changeRateRect = CGRectMake(rect.size.width  - self.rightMargin, originY, changeRateSize.width, changeRateSize.height);
+            [_changeRate drawInRect:changeRateRect withAttributes:attributes];
+            //画画 Y 轴值边框
+            CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
+            CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
+            CGContextAddRect(context, changeRateRect);
+            CGContextStrokePath(context);
+            
         } else { //画成交量区间Y值
             if (originY < volumeMinY) {
                 originY = volumeMinY;
@@ -109,7 +122,7 @@
             }
         }
         valueYRect = CGRectMake(0, originY, valueYSize.width, valueYSize.height);
-        [_valueY drawInRect:valueYRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor}];
+        [_valueY drawInRect:valueYRect withAttributes:attributes];
         //画画 Y 轴值边框
         CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
         CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);

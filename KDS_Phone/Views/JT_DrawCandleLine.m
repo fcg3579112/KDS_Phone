@@ -54,10 +54,10 @@
     CGContextStrokeLineSegments(context, rightSolidPoints, 2);
 }
 - (void)drawDateTime {
-    UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
+    
     CGPoint drawDatePoint = self.timePostion;
     if (drawDatePoint.x > 0 && drawDatePoint.x < (self.timeViewWidth - self.timeSize.width / 2.f)) {
-        [self.timeString drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize],NSForegroundColorAttributeName : color}];
+        [self.timeString drawAtPoint:drawDatePoint withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineX_AxisTimeFontSize],NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
     }
 }
 

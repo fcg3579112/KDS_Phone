@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JT_KLineZDFView : UIView
+@interface JT_KLineChangeRateView : UIView
 /**
  k线蜡烛线区间高度
  */
 @property (nonatomic ,assign) float kLineChartViewHeight;
 
-/**
- 顶部 均线显示视图高度
- */
 @property (nonatomic ,assign) float kLineMAAccessoryViewHeight;
+
+/**
+ 更新涨跌幅视图最高最低价
+
+ */
+- (void)updateChangeRate:(float)maxValue min:(float)minValue;
 @end

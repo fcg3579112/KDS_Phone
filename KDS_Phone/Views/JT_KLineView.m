@@ -20,7 +20,7 @@
 #import "JT_KLineIndicatorAccessoryView.h"
 #import "JT_PriceMarkModel.h"
 #import "JT_KLineCrossLineView.h"
-#import "JT_KLineZDFView.h"
+#import "JT_KLineChangeRateView.h"
 #import <MApi.h>
 
 #define JT_ScrollViewContentOffset   @"contentOffset"
@@ -43,7 +43,7 @@
 /**
  显示涨跌幅标尺视图
  */
-@property (nonatomic ,strong) JT_KLineZDFView *rightZDFView;
+@property (nonatomic ,strong) JT_KLineChangeRateView *rightChangeRateView;
 
 /**
  画十字线视图
@@ -86,6 +86,7 @@
 @property (nonatomic ,assign) JT_DeviceOrientation orientation;
 
 @property (nonatomic ,strong) NSTimer *delayHidenCrossLineTimer;
+
 
 @end
 
@@ -219,6 +220,15 @@
 }
 
 /**
+ 更新右边涨跌幅
+ */
+- (void)p_updateRightChangeRate {
+    JT_KLineModel *firstObject = self.needDrawKLineModels.firstObject;
+    float max = (self.klineChart.screenMaxValue - firstObject.openPrice.floatValue) / firstObject.openPrice.floatValue * 100;
+    float min  = (self.klineChart.screenMinValue - firstObject.openPrice.floatValue) / firstObject.openPrice.floatValue * 100;
+    [self.rightChangeRateView updateChangeRate:max min:min];
+}
+/**
  *  更新K线视图的宽度
  */
 - (void)updateScrollViewWidth{
@@ -243,8 +253,6 @@
     float yMax = self.frame.size.height - self.bottomMargin - self.MALineHeight;
     y = y > yMax ? yMax : y;
     
-    // ABS(maxKLineY - (kLineModel.MA5.floatValue - self.screenMinValue)/unitValue)
-    // 判断 x 轴 是在 上部蜡烛线区间还是 下部指标区间
     if (y >= (self.kLineChartSafeAreaHeight) && y <= (self.klineChartViewHeight - self.kLineChartSafeAreaHeight)) { // k 线区域
         float maxY = self.klineChartViewHeight - self.kLineChartSafeAreaHeight;
         float minY = self.kLineChartSafeAreaHeight;
@@ -264,6 +272,27 @@
         }
     } else { // 其他区域
         stringValue = @"";
+    }
+    return stringValue;
+}
+
+/**
+ #pragma mark 计算十字线 Y 轴涨跌幅
+ */
+- (NSString *)calculateCrossLineRightChangeRate:(CGFloat)y {
+    NSString *stringValue;
+    y = y < 0 ? 0 : y;
+    float yMax = self.frame.size.height - self.bottomMargin - self.MALineHeight;
+    y = y > yMax ? yMax : y;
+    JT_KLineModel *firstModel = self.needDrawKLineModels.firstObject;
+    float maxChangeRate = (self.klineChart.screenMaxValue - firstModel.openPrice.floatValue) / firstModel.openPrice.floatValue * 100;
+    float minChangeRate = (self.klineChart.screenMinValue - firstModel.openPrice.floatValue) / firstModel.openPrice.floatValue * 100;
+    if (y >= (self.kLineChartSafeAreaHeight) && y <= (self.klineChartViewHeight - self.kLineChartSafeAreaHeight)) { // k 线区域
+        float maxY = self.klineChartViewHeight - self.kLineChartSafeAreaHeight;
+        float minY = self.kLineChartSafeAreaHeight;
+        float unitValue = (maxChangeRate - self.klineChart.screenMinValue)/(maxY - minY);
+        float value = (maxY - y) * unitValue + minChangeRate;
+        stringValue = [NSString stringWithFormat:@"%.2f",value];
     }
     return stringValue;
 }
@@ -305,6 +334,7 @@
 - (void)longPressGestureEvent:(UILongPressGestureRecognizer *)longPress {
     CGPoint point = [longPress locationInView:self];
     NSString *valueY = [self calculateCrossLineValueY:point.y];
+    NSString *changeRate = [self calculateCrossLineRightChangeRate:point.y];
     float itemWidth = ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
     NSInteger index = floorf((point.x - self.startXPosition) / itemWidth);
     index = index >= self.needDrawKLineModels.count ? self.needDrawKLineModels.count - 1 : index;
@@ -315,12 +345,12 @@
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
             self.crossLineView.hidden = NO;
-            self.rightZDFView.hidden = NO;
+            self.rightChangeRateView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
-            [self.crossLineView updateCrossLine:point valueY:valueY kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
-            [self.crossLineView updateCrossLine:point valueY:valueY kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
             [self p_delayHidenCrossLine];
@@ -375,9 +405,12 @@
     [self p_drawTimeView];
     [self p_drawIndicatorAccessory];
     [self p_drawVolume];
-    
     [self FQSegment];
     [self volumeSegment];
+    [self p_updateRightChangeRate];
+    if (self.orientation == JT_DeviceOrientationHorizontal) {
+        
+    }
 }
 #pragma mark 隐藏十字线
 - (void)p_delayHidenCrossLine {
@@ -386,7 +419,7 @@
 
 - (void)hidenCrossLine {
     self.crossLineView.hidden = YES;
-    self.rightZDFView.hidden = YES;
+    self.rightChangeRateView.hidden = YES;
     [_delayHidenCrossLineTimer invalidate];
     _delayHidenCrossLineTimer = nil;
 }
@@ -511,6 +544,7 @@
         _crossLineView.timeViewHeight = self.timeViewHeight;
         _crossLineView.kLineChartSafeAreaHeight = self.kLineChartSafeAreaHeight;
         _crossLineView.indexAccessoryViewHeight = self.indicatorViewHeight;
+        _crossLineView.rightMargin = self.rightSelecterWidth;
         [self addSubview:_crossLineView];
         [_crossLineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,0));
@@ -533,19 +567,22 @@
     }
     return _klineVolume;
 }
-- (JT_KLineZDFView *)rightZDFView {
-    if (!_rightZDFView) {
-        _rightZDFView = [JT_KLineZDFView new];
-        _rightZDFView.backgroundColor = JT_KLineViewBackgroundColor;
-        [self addSubview:_rightZDFView];
+- (JT_KLineChangeRateView *)rightChangeRateView {
+    if (!_rightChangeRateView) {
+        _rightChangeRateView = [JT_KLineChangeRateView new];
+        _rightChangeRateView.kLineMAAccessoryViewHeight = self.MALineHeight;
+        _rightChangeRateView.kLineChartViewHeight  = self.klineChartViewHeight;
+        _rightChangeRateView.backgroundColor = JT_KLineViewBackgroundColor;
+        _rightChangeRateView.hidden = YES;
+        [self addSubview:_rightChangeRateView];
         [self bringSubviewToFront:self.crossLineView];
         [self bringSubviewToFront:self.indicatorAccessory];
-        [_rightZDFView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_rightChangeRateView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.right.bottom.equalTo(@0);
             make.width.equalTo(@(self.rightSelecterWidth));
         }];
     }
-    return _rightZDFView;
+    return _rightChangeRateView;
 }
 - (JT_KLineFQSegment *)FQSegment {
     if (!_FQSegment) {

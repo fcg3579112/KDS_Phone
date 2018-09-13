@@ -93,6 +93,6 @@
 /**
  隐藏十字线
  */
-- (void)hidenKLineViewCrossLine;
+- (void)hidenCrossLine;
 @end
 

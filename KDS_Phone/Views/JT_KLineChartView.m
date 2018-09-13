@@ -339,20 +339,20 @@
 
  */
 - (void)drawHigtestAndLowestPriceInRect:(CGRect)rect context:(CGContextRef)context {
-    UIColor *markLineColor = JT_ColorDayOrNight(@"A1A1A1", @"878788");
-    CGContextSetStrokeColorWithColor(context, markLineColor.CGColor);
+    
+    CGContextSetStrokeColorWithColor(context, JT_KLineY_AxisPriceColor.CGColor);
     CGContextSetLineWidth(context, 1);
     if (self.lowestItem.index > 0 && self.lowestItem.index < self.needDrawKLineModels.count - 1) {
         CGPoint lowPoints[2] = {((NSValue *)self.lowestItem.points[0]).CGPointValue , ((NSValue *)self.lowestItem.points[1]).CGPointValue};
         CGContextStrokeLineSegments(context, lowPoints, 2);
         //画最低点价格
-        [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
+        [self.lowestItem.kLineModel.lowPrice drawAtPoint:self.lowestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
     }
     if (self.highestItem.index > 0 && self.highestItem.index < self.needDrawKLineModels.count - 1) {
         CGPoint hightPoints[2] = {((NSValue *)self.highestItem.points[0]).CGPointValue, ((NSValue *)self.highestItem.points[1]).CGPointValue};
         CGContextStrokeLineSegments(context, hightPoints, 2);
         //画最高点价格
-        [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : markLineColor}];
+        [self.highestItem.kLineModel.highPrice drawAtPoint:self.highestItem.priceRect.origin withAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:JT_KLineHighestPriceFontSize],NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
     }
 }
 
@@ -366,19 +366,19 @@
     NSString *highPrice = [NSString stringWithFormat:@"%.2f",self.highestPriceY];
     NSString *lowPrice = [NSString stringWithFormat:@"%.2f",self.lowestPriceY];
     NSString *middlePrice = [NSString stringWithFormat:@"%.2f",(self.highestPriceY + self.lowestPriceY) / 2.f];
-    UIColor *color = JT_ColorDayOrNight(@"A1A1A1", @"878788");
+    
     UIFont *font = [UIFont systemFontOfSize:JT_KLineY_AxisPriceFontSize];
     
     CGSize highPriceSize = [highPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
     CGRect highPriceRect = CGRectMake(rect.origin.x, rect.origin.y + 2, highPriceSize.width, highPriceSize.height);
-    [highPrice drawInRect:highPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    [highPrice drawInRect:highPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
     
     CGSize lowPriceSize = [lowPrice sizeWithAttributes:@{ NSFontAttributeName : font}];
     CGRect lowPriceRect = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - lowPriceSize.height - 2, lowPriceSize.width, lowPriceSize.height);
-    [lowPrice drawInRect:lowPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    [lowPrice drawInRect:lowPriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
     
     CGSize middlePriceSize = [middlePrice sizeWithAttributes:@{ NSFontAttributeName : font}];
     CGRect middlePriceRect = CGRectMake(rect.origin.x, rect.size.height / 2.f - middlePriceSize.height / 2, middlePriceSize.width, middlePriceSize.height);
-    [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : color}];
+    [middlePrice drawInRect:middlePriceRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineY_AxisPriceColor}];
 }
 @end

@@ -67,6 +67,13 @@
 #pragma mark 颜色相关
 
 
+
+/**
+ Y 轴价格颜色
+ */
+#define JT_KLineY_AxisPriceColor             JT_ColorDayOrNight(@"A1A1A1", @"878788")
+
+
 /**
  十字线相关颜色
  */
