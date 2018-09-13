@@ -16,8 +16,6 @@
 
 @interface JT_KLineVolumeView ()
 
-@property (nonatomic ,assign) float screenMaxValue;
-@property (nonatomic ,assign) float screenMinValue;
 
 /**
  *  需要绘制的model位置数组

@@ -11,5 +11,15 @@
 @interface JT_KLineCrossLineView : UIView
 @property (nonatomic ,assign) CGFloat timeViewTopMargin;
 @property (nonatomic ,assign) CGFloat timeViewHeight;
-- (void)updateCrossLine:(CGPoint)point kLineModel:(JT_KLineModel *)kLineModel;
+
+/**
+ 指标信息显示视图
+ */
+@property (nonatomic ,assign) CGFloat indexAccessoryViewHeight;
+
+/**
+ k 线视图下部安全区的高度
+ */
+@property (nonatomic ,assign) CGFloat kLineChartSafeAreaHeight;
+- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value kLineModel:(JT_KLineModel *)kLineModel;
 @end

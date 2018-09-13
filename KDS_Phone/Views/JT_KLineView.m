@@ -182,7 +182,7 @@
     
     self.klineChart.startXPosition = self.startXPosition;
     
-    self.klineChart.KlineChartTopMargin = self.KlineChartTopMargin;
+    self.klineChart.kLineChartSafeAreaHeight = self.kLineChartSafeAreaHeight;
     
     self.klineChart.needDrawKLineModels = self.needDrawKLineModels;
     
@@ -230,7 +230,25 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
 }
-
+#pragma mark 计算十字线 Y 轴的值
+- (NSString *)calculateCrossLineValueY:(CGFloat)y {
+    NSString *valueY;
+    y = y < 0 ? 0 : y;
+    float yMax = self.frame.size.height - self.bottomMargin - self.MALineHeight;
+    y = y > yMax ? yMax : y;
+    
+    // 判断 x 轴 是在 上部蜡烛线区间还是 下部指标区间
+    
+    if (y <= self.klineChartViewHeight) {
+        
+    } else if (y > self.scrollView.frame.size.height - self.timeViewHeight - self.indicatorViewHeight && y < yMax) {
+        
+    } else {
+        valueY = @"";
+    }
+    
+    return @"";
+}
 #pragma mark 缩放执行方法
 - (void)pinchGestureEvent:(UIPinchGestureRecognizer *)pinch {
     static float oldScale = 1.0f;
@@ -261,6 +279,7 @@
 #pragma mark 长按手势执行方法
 - (void)longPressGestureEvent:(UILongPressGestureRecognizer *)longPress {
     CGPoint point = [longPress locationInView:self];
+    NSString *valueY = [self calculateCrossLineValueY:point.y];
     float itemWidth = ([JT_KLineConfig kLineGap] + [JT_KLineConfig kLineWidth]);
     NSInteger index = floorf((point.x - self.startXPosition) / itemWidth);
     index = index >= self.needDrawKLineModels.count ? self.needDrawKLineModels.count - 1 : index;
@@ -272,10 +291,10 @@
         case UIGestureRecognizerStateBegan:
             self.crossLineView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
-            [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
-            [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
             [self p_delayHidenCrossLine];
@@ -446,6 +465,8 @@
         _crossLineView.userInteractionEnabled = NO;
         _crossLineView.timeViewTopMargin = self.klineChartViewHeight;
         _crossLineView.timeViewHeight = self.timeViewHeight;
+        _crossLineView.kLineChartSafeAreaHeight = self.kLineChartSafeAreaHeight;
+        _crossLineView.indexAccessoryViewHeight = self.indicatorViewHeight;
         [self addSubview:_crossLineView];
         [_crossLineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsMake(self.MALineHeight, 0, self.bottomMargin,self.rightSelecterWidth));
@@ -523,13 +544,13 @@
     return _MALineHeight ? _MALineHeight : 15;
 }
 - (float)timeViewHeight {
-    return _timeViewHeight ? _timeViewHeight : 10;
+    return _timeViewHeight ? _timeViewHeight : 13;
 }
 - (float)indicatorViewHeight {
     return _indicatorViewHeight ? _indicatorViewHeight : 15;
 }
-- (float)KlineChartTopMargin {
-    return _KlineChartTopMargin ? _KlineChartTopMargin : 12;
+- (float)kLineChartSafeAreaHeight {
+    return _kLineChartSafeAreaHeight ? _kLineChartSafeAreaHeight : 12;
 }
 - (float)startXPosition{
     NSInteger leftArrCount = self.needDrawStartIndex;

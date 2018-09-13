@@ -32,6 +32,8 @@
 
 #define JT_KLineVolumeButtonFontSize         10
 
+#define JT_KLineCrossLineTextFontSize        ([UIScreen mainScreen].bounds.size.width >= 375 ? 10 : 9)
+
 #pragma mark k 线缩放
 // k 线缩放手势最小边界
 #define JT_KLineChartScaleBound              0.03
@@ -50,13 +52,31 @@
 //复权 item 的高度
 #define JT_KLineFQSegmentItemHight           40
 
+
+/**
+ 背景方格线线宽
+ */
 #define JT_KLineViewGridLineWidth            1.0
+
+#define JT_KLineCrossLineWidth               0.5
 
 //画MA均线画笔宽度
 #define JT_KLineMALineWith                   1.0
 
 
 #pragma mark 颜色相关
+
+
+/**
+ 十字线相关颜色
+ */
+#define JT_KLineCrossLineColor               JT_ColorDayOrNight(@"333333", @"EEEEEE")
+
+#define JT_KLineCrossLineTextColor           JT_ColorDayOrNight(@"444444", @"DDDDDD")
+
+#define JT_KLineCrossLineTextBackgroundColor JT_ColorDayOrNight(@"FFDDCB", @"3F2214")
+
+#define JT_KLineCrossLineTextBordeColor      JT_ColorDayOrNight(@"FFAD7F", @"70300E")
 
 /**
  涨的颜色
@@ -76,13 +96,13 @@
 /**
  均线的颜色
 
- @param @"" 白模的色值
- @param @"" 夜模色值
- @return UIColor
  */
 
 #define JT_KLineMATitleColor                  JT_ColorDayOrNight(@"5E6678",@"858C9E")
 
+/**
+ 指标相关颜色
+ */
 #define JT_KLineIndexTitleColor               JT_KLineMATitleColor
 
 
@@ -275,5 +295,14 @@
  1.00亿
  */
 NSString *formatVolume(NSUInteger volume);
+
+
+/**
+ 把时间 ‘’ 转成 ‘MM-dd HH:mm’ 或 ‘yyyy-MM-dd ’
+ 
+ @param dateString 需要格式的日期，只能是 ‘2018 0831 1315 23’ 格式
+ @return 格式后的日期
+ */
+NSString *formateDateFromString(NSString *dateString);
 
 @end

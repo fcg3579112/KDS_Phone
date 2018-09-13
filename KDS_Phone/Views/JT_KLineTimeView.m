@@ -82,33 +82,9 @@
             kLine.timePostion = obj.CGPointValue;
             kLine.timeSize = dateStringSize;
             JT_KLineModel *model = self.needDrawKLineModels[idx];
-            kLine.timeString = [self formateDateFrom:model.datetime];
+            kLine.timeString = formateDateFromString(model.datetime);
             [kLine drawDateTime];
         }
     }];
-}
-
-
-/**
- 把时间 ‘’ 转成 ‘yyyy-MM-dd HH:mm’ 或 ‘yyyy-MM-dd ’
-
- @param dateString 需要格式的日期，只能是 ‘2018 0831 1315 23’ 格式
- @return 格式后的日期
- */
-- (NSString *)formateDateFrom:(NSString *)dateString {
-    if (dateString.length < 12) {
-        return @"";
-    }
-    JT_TimelineAndKlineItemType kLineType = [JT_KLineConfig kLineType];
-    NSString *resultString = [NSString stringWithFormat:@"%@-%@-%@",[dateString substringWithRange:NSMakeRange(0, 4)],[dateString substringWithRange:NSMakeRange(4, 2)],[dateString substringWithRange:NSMakeRange(6, 2)]];
-    
-    //如果是分钟 k，需要在后面添加上时间
-    if ( kLineType == JT_SegmentItemTypeKline5Min ||
-        kLineType == JT_SegmentItemTypeKline15Min ||
-        kLineType == JT_SegmentItemTypeKline30Min ||
-        kLineType == JT_SegmentItemTypeKline60Min ) {
-        resultString = [NSString stringWithFormat:@"%@ %@:%@",resultString,[dateString substringWithRange:NSMakeRange(8, 2)],[dateString substringWithRange:NSMakeRange(10, 2)]];
-    }
-    return resultString;
 }
 @end

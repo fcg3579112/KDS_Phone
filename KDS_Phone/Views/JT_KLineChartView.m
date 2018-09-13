@@ -75,12 +75,12 @@
     JT_KLineModel *firstModel = kLineModels.firstObject;
     
     //屏幕上Y轴的最大价格最小价格，包括 5、10 日均线等的价格
-    __block float minAssert = firstModel.lowPrice.floatValue;
-    __block float maxAssert = firstModel.highPrice.floatValue;
+    self.screenMinValue = firstModel.lowPrice.floatValue;
+    self.screenMaxValue = firstModel.highPrice.floatValue;
     
     //屏幕上最高点最低点价格,不包含 5、10 日均线的价格
-    __block float maxPrice = minAssert;
-    __block float minPrice = maxAssert;
+    __block float maxPrice = self.screenMinValue;
+    __block float minPrice = self.screenMaxValue;
     
     //最高点最低点价格对应的索引
     __block NSInteger minIndex = 0;
@@ -100,34 +100,34 @@
         
         //计算屏幕上Y轴的最大价格最小价格，包括 5、10 日均线的价格
         
-        maxAssert = MAX(maxAssert, kLineModel.highPrice.floatValue);
-        minAssert = MIN(minAssert, kLineModel.lowPrice.floatValue);
+        self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.highPrice.floatValue);
+        self.screenMinValue = MIN(self.screenMinValue, kLineModel.lowPrice.floatValue);
         
         if ([JT_KLineConfig MA5]) {
             
-            maxAssert = MAX(maxAssert, kLineModel.MA5.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MA5.floatValue);
             
-            minAssert = MIN(minAssert, kLineModel.MA5.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.MA5.floatValue);
         }
         if ([JT_KLineConfig MA10]) {
             
-            maxAssert = MAX(maxAssert, kLineModel.MA10.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MA10.floatValue);
             
-            minAssert = MIN(minAssert, kLineModel.MA10.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.MA10.floatValue);
         }
         if ([JT_KLineConfig MA20]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA20.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MA20.floatValue);
             
-            minAssert = MIN(minAssert, kLineModel.MA20.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.MA20.floatValue);
         }
         if ([JT_KLineConfig MA30]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA30.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MA30.floatValue);
             
-            minAssert = MIN(minAssert, kLineModel.MA30.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.MA30.floatValue);
         }
         if ([JT_KLineConfig MA60]) {
-            maxAssert = MAX(maxAssert, kLineModel.MA60.floatValue);
-            minAssert = MIN(minAssert, kLineModel.MA60.floatValue);
+            self.screenMaxValue = MAX(self.screenMaxValue, kLineModel.MA60.floatValue);
+            self.screenMinValue = MIN(self.screenMinValue, kLineModel.MA60.floatValue);
         }
         
     }];
@@ -141,13 +141,13 @@
     //    maxAssert *= 1.0001;
     //    minAssert *= 0.9991;
     
-    self.highestPriceY = maxAssert;
-    self.lowestPriceY = minAssert;
+    self.highestPriceY = self.screenMaxValue;
+    self.lowestPriceY = self.screenMinValue;
     
     // 蜡烛线视图，最大与最小 Y 值
-    float minKLineY = self.KlineChartTopMargin;
-    float maxKLineY = self.frame.size.height - self.KlineChartTopMargin;
-    float unitValue = (maxAssert - minAssert)/(maxKLineY - minKLineY);
+    float minKLineY = self.kLineChartSafeAreaHeight;
+    float maxKLineY = self.frame.size.height - self.kLineChartSafeAreaHeight;
+    float unitValue = (self.screenMaxValue - self.screenMinValue)/(maxKLineY - minKLineY);
     
     [self.needDrawKLinePositionModels removeAllObjects];
     [self.needDraw_MA5_Positions removeAllObjects];
@@ -159,8 +159,8 @@
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         float xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
-        CGPoint openPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.openPrice.floatValue - minAssert)/unitValue));
-        float closePointY = ABS(maxKLineY - (kLineModel.closePrice.floatValue - minAssert)/unitValue);
+        CGPoint openPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.openPrice.floatValue - self.screenMinValue)/unitValue));
+        float closePointY = ABS(maxKLineY - (kLineModel.closePrice.floatValue - self.screenMinValue)/unitValue);
         
         //如果开盘价与收盘价很接近，蜡烛线的高度就无法看清，所以做下处理，让蜡烛线的高度有一个最小值  JT_KLineMinHeight
         if (ABS(closePointY - openPoint.y) < JT_KLineMinHeight) {
@@ -194,8 +194,8 @@
             }
         }
         CGPoint closePoint = CGPointMake(xPosition, closePointY);
-        CGPoint highPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.highPrice.floatValue - minAssert)/unitValue));
-        CGPoint lowPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.lowPrice.floatValue - minAssert)/unitValue));
+        CGPoint highPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.highPrice.floatValue - self.screenMinValue)/unitValue));
+        CGPoint lowPoint = CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.lowPrice.floatValue - self.screenMinValue)/unitValue));
         JT_KLineCandlePositionModel *positionModel = [JT_KLineCandlePositionModel new];
         positionModel.closePoint = closePoint;
         positionModel.openPoint = openPoint;
@@ -204,23 +204,23 @@
         [self.needDrawKLinePositionModels addObject:positionModel];
         
         if ([JT_KLineConfig MA5]) {
-            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA5.floatValue - minAssert)/unitValue))];
+            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA5.floatValue - self.screenMinValue)/unitValue))];
             [self.needDraw_MA5_Positions addObject:position];
         }
         if ([JT_KLineConfig MA10]) {
-            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA10.floatValue - minAssert)/unitValue))];
+            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA10.floatValue - self.screenMinValue)/unitValue))];
             [self.needDraw_MA10_Positions addObject:position];
         }
         if ([JT_KLineConfig MA20]) {
-            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA20.floatValue - minAssert)/unitValue))];
+            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA20.floatValue - self.screenMinValue)/unitValue))];
             [self.needDraw_MA20_Positions addObject:position];
         }
         if ([JT_KLineConfig MA30]) {
-            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA30.floatValue - minAssert)/unitValue))];
+            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA30.floatValue - self.screenMinValue)/unitValue))];
             [self.needDraw_MA30_Positions addObject:position];
         }
         if ([JT_KLineConfig MA60]) {
-            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA60.floatValue - minAssert)/unitValue))];
+            NSValue *position = [NSValue valueWithCGPoint:CGPointMake(xPosition, ABS(maxKLineY - (kLineModel.MA60.floatValue - self.screenMinValue)/unitValue))];
             [self.needDraw_MA60_Positions addObject:position];
         }
     }];

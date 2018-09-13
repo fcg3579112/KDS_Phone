@@ -18,4 +18,10 @@
 @property (nonatomic, assign) float maxY;
 @property (nonatomic, assign) float startXPosition;
 
+
+/**
+ 屏幕上最大最小值
+ */
+@property (nonatomic ,assign) float screenMaxValue;
+@property (nonatomic ,assign) float screenMinValue;
 @end

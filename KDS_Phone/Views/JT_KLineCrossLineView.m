@@ -12,6 +12,8 @@
 @interface JT_KLineCrossLineView ()
 @property (nonatomic ,assign) CGPoint crossLineCenterPoint;
 @property (nonatomic ,strong) JT_KLineModel *kLineModel;
+@property (nonatomic ,strong) NSString *dateTime;
+@property (nonatomic ,strong) NSString *valueY;
 @end
 @implementation JT_KLineCrossLineView
 
@@ -31,9 +33,10 @@
     return self;
 }
 
-- (void)updateCrossLine:(CGPoint)point kLineModel:(JT_KLineModel *)kLineModel {
+- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value kLineModel:(JT_KLineModel *)kLineModel {
     _crossLineCenterPoint = point;
     _kLineModel = kLineModel;
+    _dateTime = formateDateFromString(kLineModel.datetime);
     [self setNeedsDisplay];
 }
 
@@ -65,13 +68,18 @@
  */
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-    CGContextSetLineWidth(context,1);
-    //横线坐标
-    CGPoint horizontalPoints[] = {CGPointMake(0, _crossLineCenterPoint.y), CGPointMake(rect.size.width, _crossLineCenterPoint.y)};
-    CGContextStrokeLineSegments(context, horizontalPoints, 2);
+    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineColor.CGColor);
+    CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
+    //横线坐标,横线的Y的区间
+    float centerY = _crossLineCenterPoint.y;
+    if ( (centerY >= self.kLineChartSafeAreaHeight && centerY <= self.timeViewTopMargin - self.kLineChartSafeAreaHeight)
+       || (centerY >= self.timeViewTopMargin + self.timeViewHeight + self.indexAccessoryViewHeight && centerY <= rect.size.height)) {
+        CGPoint horizontalPoints[] = {CGPointMake(0, _crossLineCenterPoint.y), CGPointMake(rect.size.width, _crossLineCenterPoint.y)};
+        CGContextStrokeLineSegments(context, horizontalPoints, 2);
+    }
     //竖线上部分
     CGPoint verticalLineUpPoints[] = {CGPointMake(_crossLineCenterPoint.x, 0), CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin)};
     CGContextStrokeLineSegments(context, verticalLineUpPoints, 2);
@@ -79,18 +87,20 @@
     CGPoint verticalLineDownPoints[] = {CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin + self.timeViewHeight), CGPointMake(_crossLineCenterPoint.x,rect.size.height )};
     CGContextStrokeLineSegments(context, verticalLineDownPoints, 2);
     
-    NSString *time = [_kLineModel.datetime substringToIndex:8];
-    UIFont *font = [UIFont systemFontOfSize:JT_KLineMAFontSize - 1];
-    CGFloat textWidth = [time sizeWithAttributes:@{NSFontAttributeName : font}].width;
-    CGFloat originX = _crossLineCenterPoint.x - textWidth / 2;
-    if (originX < 0) {
-        originX = 0;
-    }
-    if (originX > rect.size.width - textWidth) {
-        originX = rect.size.width - textWidth;
-    }
-    [time drawAtPoint:CGPointMake(originX, self.timeViewTopMargin) withAttributes:@{NSFontAttributeName : font,NSBackgroundColorAttributeName : [UIColor  orangeColor] ,NSStrokeWidthAttributeName : @(2) ,NSStrokeColorAttributeName : [UIColor blackColor] }];
+    UIFont *font = [UIFont systemFontOfSize:JT_KLineCrossLineTextFontSize];
+    CGSize textSize = [_dateTime sizeWithAttributes:@{NSFontAttributeName : font}];
+    textSize = CGSizeMake(textSize.width, textSize.height);
+    CGFloat originX = _crossLineCenterPoint.x - textSize.width / 2;
     
-    //画时间
+    originX = originX < 0 ? 0 : originX;
+    originX = originX >= rect.size.width - textSize.width ?  originX = rect.size.width - textSize.width : originX;
+    
+    CGRect textRect = CGRectMake(originX, self.timeViewTopMargin, textSize.width, textSize.height);
+    [_dateTime drawInRect:textRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor}];
+    //画时间边框
+    CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
+    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
+    CGContextAddRect(context, textRect);
+    CGContextStrokePath(context);
 }
 @end

@@ -81,8 +81,8 @@
 @property(nonatomic, copy) NSArray<JT_KLineModel *> *kLineModels;
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
-//可以设置蜡烛线区域top And Bottom Margin
-@property (nonatomic ,assign ) float KlineChartTopMargin;
+//可以设置蜡烛线区域安全区
+@property (nonatomic ,assign ) float kLineChartSafeAreaHeight;
 - (void)reDrawAllView;
 
 /**

@@ -13,15 +13,19 @@
 @class JT_KLineModel,JT_PriceMarkModel;
 @interface JT_KLineChartView : UIView
 
-@property (nonatomic, assign) CGFloat topAndBottomMargin;
-
 /**
  *  需要绘制的model数组
  */
 @property (nonatomic, strong) NSMutableArray <JT_KLineModel *> *needDrawKLineModels;
 
-@property (nonatomic, assign) float KlineChartTopMargin;
+@property (nonatomic, assign) float kLineChartSafeAreaHeight;
 
 @property (nonatomic, assign) float startXPosition;
+
+/**
+ 屏幕上最大最小值
+ */
+@property (nonatomic ,assign) float screenMaxValue;
+@property (nonatomic ,assign) float screenMinValue;
 
 @end
