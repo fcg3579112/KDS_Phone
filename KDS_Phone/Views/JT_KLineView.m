@@ -290,9 +290,9 @@
     if (y >= (self.kLineChartSafeAreaHeight) && y <= (self.klineChartViewHeight - self.kLineChartSafeAreaHeight)) { // k 线区域
         float maxY = self.klineChartViewHeight - self.kLineChartSafeAreaHeight;
         float minY = self.kLineChartSafeAreaHeight;
-        float unitValue = (maxChangeRate - self.klineChart.screenMinValue)/(maxY - minY);
+        float unitValue = (maxChangeRate - minChangeRate)/(maxY - minY);
         float value = (maxY - y) * unitValue + minChangeRate;
-        stringValue = [NSString stringWithFormat:@"%.2f",value];
+        stringValue = [NSString stringWithFormat:@"%.2f%%",value];
     }
     return stringValue;
 }
@@ -344,6 +344,8 @@
     JT_KLineModel *kLineModel = self.needDrawKLineModels[index];
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
+            //显示十字线时，禁止页面滑动、显示十字线、显示右边涨跌幅标尺视图、关闭定时器
+            self.scrollView.scrollEnabled = NO;
             self.crossLineView.hidden = NO;
             self.rightChangeRateView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
@@ -418,6 +420,7 @@
 }
 
 - (void)hidenCrossLine {
+    self.scrollView.scrollEnabled = YES;
     self.crossLineView.hidden = YES;
     self.rightChangeRateView.hidden = YES;
     [_delayHidenCrossLineTimer invalidate];
