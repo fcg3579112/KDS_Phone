@@ -76,7 +76,10 @@
 @property (nonatomic, assign) float oldContentOffsetX;
 
 @property (nonatomic ,weak) id <JT_KLineViewDelegate> delegate;
+
 @property (nonatomic ,assign) JT_DeviceOrientation orientation;
+
+@property (nonatomic ,strong) NSTimer *delayHidenCrossLineTimer;
 
 @end
 
@@ -108,10 +111,12 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(JT_KLineFQSegmentClick:)]) {
         [self.delegate JT_KLineFQSegmentClick:type];
     }
+    [self hidenCrossLine];
 }
 #pragma mark JT_KLineIndicatorSegmentDelegate
 
 - (void)JT_KLineIndicatorSegmentSelectedType:(JT_KLineIndicatorType)type {
+    [self hidenCrossLine];
     [JT_KLineConfig setkLineIndicatorType:type];
     [self p_drawIndicatorAccessory];
     [self p_drawVolume];
@@ -266,16 +271,17 @@
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
             self.crossLineView.hidden = NO;
+            [_delayHidenCrossLineTimer invalidate];
             [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
             [self.crossLineView updateCrossLine:point kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
-            self.crossLineView.hidden = YES;
+            [self p_delayHidenCrossLine];
             break;
         case UIGestureRecognizerStateCancelled:
-            self.crossLineView.hidden = YES;
+            [self p_delayHidenCrossLine];
             break;
         default:
             break;
@@ -311,7 +317,16 @@
     [self FQSegment];
     [self volumeSegment];
 }
+#pragma mark 隐藏十字线
+- (void)p_delayHidenCrossLine {
+    _delayHidenCrossLineTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(hidenCrossLine) userInfo:nil repeats:NO];
+}
 
+- (void)hidenCrossLine {
+    self.crossLineView.hidden = YES;
+    [_delayHidenCrossLineTimer invalidate];
+    _delayHidenCrossLineTimer = nil;
+}
 #pragma mark Setter
 - (void)setKLineModels:(NSArray<JT_KLineModel *> *)kLineModels {
     if (!kLineModels.count) {
@@ -331,7 +346,6 @@
         self.scrollView.contentOffset = CGPointMake(0, 0);
     }
 }
-#pragma mark Getter
 
 - (UIScrollView *)scrollView
 {

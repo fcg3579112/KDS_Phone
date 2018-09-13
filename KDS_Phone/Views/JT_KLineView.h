@@ -89,5 +89,10 @@
  @param orientation k 线的方向，横屏或者竖屏
  */
 - (instancetype)initWithDelegate:(id <JT_KLineViewDelegate>) delegate orientation:(JT_DeviceOrientation)orientation;
+
+/**
+ 隐藏十字线
+ */
+- (void)hidenKLineViewCrossLine;
 @end
 
