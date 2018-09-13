@@ -612,7 +612,11 @@
         if (self.index == 0) {
             _DX = 0;
         } else {
-            _DX = fabsf(self.PDI_14 - self.MDI_14) / (self.PDI_14 + self.MDI_14) * 100;
+            if (self.PDI_14 + self.MDI_14 == 0) {
+                _DX = 0;
+            } else {
+                _DX = fabsf(self.PDI_14 - self.MDI_14) / (self.PDI_14 + self.MDI_14) * 100;
+            }
         }
     }
     return _DX;
@@ -641,10 +645,11 @@
  ADXR:=(ADX+REF(ADX,M))/2;其中 M = 6 ,
  函数REF(X,N)用于引用N周期前的X值，X是一个变量，N是一个常量，REF(close（）,1)表示计算上一周期的收盘价。REF(c,3) 前三日的收盘价。
  
+ REF(ADX,6)，6天前的ADX
  */
 - (float)ADXR {
     if (!_ADXR) {
-        if (self.index >= 6) { // 当天价与 前6天之前的总价 就是 REF(ADX,6) 的值
+        if (self.index >= 6) {
             JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 6];
             _ADXR = (self.ADX + preDaysModel.ADX) / 2.f;
         } else {
@@ -948,6 +953,8 @@
     //初始化 DMA
 //    [self DMA];
 //    [self AMA];
+    
+//    [self ADX];
     
     //初始化BIAS
 //    [self BIAS6];
