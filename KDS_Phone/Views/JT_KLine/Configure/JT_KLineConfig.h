@@ -239,19 +239,6 @@
 
 
 /**
- 涨的颜色
-
- */
-+ (UIColor *)kLineIncreaseColor;
-
-/**
- 
- 跌的颜色
- */
-+ (UIColor *)kLineDecreaseColor;
-
-
-/**
  设置 k 线的类型
 
  */

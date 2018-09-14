@@ -11,10 +11,6 @@
 
 @class JT_KLineModel;
 @interface JT_DrawCandleLine : NSObject
-/**
- *  K线的位置model
- */
-@property (nonatomic ,strong) JT_KLineModel *kLineModel;
 
 @property (nonatomic, assign) CGPoint timePostion;
 

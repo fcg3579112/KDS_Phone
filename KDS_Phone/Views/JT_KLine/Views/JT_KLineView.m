@@ -349,9 +349,13 @@
             self.crossLineView.hidden = NO;
             self.rightChangeRateView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
+            [self.indicatorAccessory updateWith:kLineModel];
+            [self.klineMA updateMAWith:kLineModel];
             [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
+            [self.indicatorAccessory updateWith:kLineModel];
+            [self.klineMA updateMAWith:kLineModel];
             [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
@@ -423,6 +427,9 @@
     self.scrollView.scrollEnabled = YES;
     self.crossLineView.hidden = YES;
     self.rightChangeRateView.hidden = YES;
+    JT_KLineModel *lastModel = self.needDrawKLineModels.lastObject;
+    [self.klineMA updateMAWith:lastModel];
+    [self.indicatorAccessory updateWith:lastModel];
     [_delayHidenCrossLineTimer invalidate];
     _delayHidenCrossLineTimer = nil;
 }
@@ -458,6 +465,7 @@
         _scrollView.delegate = self;
         _scrollView.bounces = NO;
         _scrollView.scrollEnabled = NO;
+        _scrollView.decelerationRate = 0.2;
         [self addSubview:_scrollView];
         [_scrollView addObserver:self forKeyPath:JT_ScrollViewContentOffset options:NSKeyValueObservingOptionNew context:nil];
         if (self.needZoomAndScroll) {

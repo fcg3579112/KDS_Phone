@@ -54,7 +54,7 @@
 - (void)requestKLineData {
     MOHLCRequest *r = [[MOHLCRequest alloc] init];
     r.code = @"000001.sh";
-    r.period = MOHLCPeriodMin5;
+    r.period = MOHLCPeriodDay;
     r.subtype = @"1400";
     r.priceAdjustedMode = MOHLCPriceAdjustedModeForward;
     [MApi sendRequest:r completionHandler:^(MResponse *resp) {
@@ -71,6 +71,27 @@
             self.kLineView.kLineModels = self.allKLineModel;
         }
     }];
+    
+//    MOHLCRequestV2 *request = [[MOHLCRequestV2 alloc]init];
+//    request.code = @"600000.sh";
+//    request.subtype = @"1001";
+//    request.date = @"20180914";
+//    request.requestType = MRequestTypeNewer;
+//    request.priceAdjustedMode = MOHLCPriceAdjustedModeNone;
+//    [MApi sendRequest:request completionHandler:^(MResponse *resp) {
+//        MOHLCResponse *response = (MOHLCResponse *)resp;
+//        if (response.status == MResponseStatusSuccess) {
+//            NSArray *items = response.OHLCItems;
+//            // 模型转换
+//            [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+//                [self.allKLineModel addObject:model];
+//                model.allKLineModel = self.allKLineModel;
+//                [model initData];
+//            }];
+//            self.kLineView.kLineModels = self.allKLineModel;
+//        }
+//    }];
 }
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType{
     

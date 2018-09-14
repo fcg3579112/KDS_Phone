@@ -24,8 +24,8 @@
 		B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2676E1621369CE9002F47A0 /* UIView+KDS_FrameHelper.m */; };
 		B27F7DC3213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */; };
 		B293712C213D096800DE6974 /* JT_KLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712B213D096800DE6974 /* JT_KLineModel.m */; };
-		B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */ = {isa = PBXBuildFile; fileRef = B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */; };
 		B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2937131213D1F3400DE6974 /* TabOneViewController.m */; };
+		B2A341F2214B904400A9D357 /* JT_QuotationDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */; };
 		B2A5A99B214910F90090DDEA /* JT_KLineCrossLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
@@ -106,10 +106,10 @@
 		B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineIndicatorAccessoryView.m; sourceTree = "<group>"; };
 		B293712A213D096800DE6974 /* JT_KLineModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineModel.h; sourceTree = "<group>"; };
 		B293712B213D096800DE6974 /* JT_KLineModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineModel.m; sourceTree = "<group>"; };
-		B293712D213D0C7C00DE6974 /* JT_KLineGlobalVar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineGlobalVar.h; sourceTree = "<group>"; };
-		B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineGlobalVar.m; sourceTree = "<group>"; };
 		B2937130213D1F3400DE6974 /* TabOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabOneViewController.h; sourceTree = "<group>"; };
 		B2937131213D1F3400DE6974 /* TabOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabOneViewController.m; sourceTree = "<group>"; };
+		B2A341F0214B904400A9D357 /* JT_QuotationDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_QuotationDataManager.h; sourceTree = "<group>"; };
+		B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_QuotationDataManager.m; sourceTree = "<group>"; };
 		B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineCrossLineView.h; sourceTree = "<group>"; };
 		B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineCrossLineView.m; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,6 +202,80 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B2A341EA214B8CE000A9D357 /* JT_KLine */ = {
+			isa = PBXGroup;
+			children = (
+				B2A341EF214B8E7100A9D357 /* DrawUtils */,
+				B2A341EE214B8D5A00A9D357 /* Configure */,
+				B2A341ED214B8D2F00A9D357 /* Models */,
+				B2A341EB214B8D0500A9D357 /* Views */,
+			);
+			path = JT_KLine;
+			sourceTree = "<group>";
+		};
+		B2A341EB214B8D0500A9D357 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2BEDF472138DF0500974491 /* JT_KLineTimeView.h */,
+				B2BEDF482138DF0500974491 /* JT_KLineTimeView.m */,
+				B220F977213E5FF700DC40DA /* JT_KLineFQSegment.h */,
+				B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */,
+				B220F97A213E603400DC40DA /* JT_KLineIndicatorSegment.h */,
+				B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */,
+				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
+				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
+				B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */,
+				B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */,
+				B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */,
+				B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */,
+				B2114232214A692100BEEB81 /* JT_KLineChangeRateView.h */,
+				B2114233214A692100BEEB81 /* JT_KLineChangeRateView.m */,
+				B2676E0F21367C8E002F47A0 /* JT_KLineMAAccessoryView.h */,
+				B2676E1021367C8E002F47A0 /* JT_KLineMAAccessoryView.m */,
+				B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */,
+				B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */,
+				B27F7DC1213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.h */,
+				B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B2A341ED214B8D2F00A9D357 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B2F68FCC21425D500064F2B5 /* JT_KLineBarPositionModel.h */,
+				B2F68FCD21425D500064F2B5 /* JT_KLineBarPositionModel.m */,
+				B20298B22136EB22000CE57B /* JT_KLineCandlePositionModel.h */,
+				B20298B32136EB22000CE57B /* JT_KLineCandlePositionModel.m */,
+				B21328A9213F662C001901B6 /* JT_PriceMarkModel.h */,
+				B21328AA213F662C001901B6 /* JT_PriceMarkModel.m */,
+				B293712A213D096800DE6974 /* JT_KLineModel.h */,
+				B293712B213D096800DE6974 /* JT_KLineModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B2A341EE214B8D5A00A9D357 /* Configure */ = {
+			isa = PBXGroup;
+			children = (
+				B220F97D213E74E800DC40DA /* JT_KLineEnum.h */,
+				B23E683C2137C71D00E9EF3B /* JT_KLineConfig.h */,
+				B23E683D2137C71D00E9EF3B /* JT_KLineConfig.m */,
+			);
+			path = Configure;
+			sourceTree = "<group>";
+		};
+		B2A341EF214B8E7100A9D357 /* DrawUtils */ = {
+			isa = PBXGroup;
+			children = (
+				B23E68392137C25D00E9EF3B /* JT_DrawCandleLine.h */,
+				B23E683A2137C25D00E9EF3B /* JT_DrawCandleLine.m */,
+				B220F974213E138D00DC40DA /* JT_DrawMALine.h */,
+				B220F975213E138D00DC40DA /* JT_DrawMALine.m */,
+			);
+			path = DrawUtils;
+			sourceTree = "<group>";
+		};
 		B2ACB8FE213384A200CA2EB6 = {
 			isa = PBXGroup;
 			children = (
@@ -285,48 +359,14 @@
 		B2ACB94621338A3B00CA2EB6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B293712D213D0C7C00DE6974 /* JT_KLineGlobalVar.h */,
-				B293712E213D0C7C00DE6974 /* JT_KLineGlobalVar.m */,
+				B2A341EA214B8CE000A9D357 /* JT_KLine */,
 				B2ACB94A21338AA400CA2EB6 /* JT_ColorManager.h */,
 				B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */,
 				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
 				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
+				B2A341F0214B904400A9D357 /* JT_QuotationDataManager.h */,
+				B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */,
 				B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */,
-				B220F97D213E74E800DC40DA /* JT_KLineEnum.h */,
-				B23E683C2137C71D00E9EF3B /* JT_KLineConfig.h */,
-				B23E683D2137C71D00E9EF3B /* JT_KLineConfig.m */,
-				B23E68392137C25D00E9EF3B /* JT_DrawCandleLine.h */,
-				B23E683A2137C25D00E9EF3B /* JT_DrawCandleLine.m */,
-				B220F974213E138D00DC40DA /* JT_DrawMALine.h */,
-				B220F975213E138D00DC40DA /* JT_DrawMALine.m */,
-				B2BEDF472138DF0500974491 /* JT_KLineTimeView.h */,
-				B2BEDF482138DF0500974491 /* JT_KLineTimeView.m */,
-				B220F977213E5FF700DC40DA /* JT_KLineFQSegment.h */,
-				B220F978213E5FF700DC40DA /* JT_KLineFQSegment.m */,
-				B220F97A213E603400DC40DA /* JT_KLineIndicatorSegment.h */,
-				B220F97B213E603400DC40DA /* JT_KLineIndicatorSegment.m */,
-				B2676E09213672B3002F47A0 /* JT_KLineView.h */,
-				B2676E0A213672B3002F47A0 /* JT_KLineView.m */,
-				B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */,
-				B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */,
-				B21328A9213F662C001901B6 /* JT_PriceMarkModel.h */,
-				B21328AA213F662C001901B6 /* JT_PriceMarkModel.m */,
-				B293712A213D096800DE6974 /* JT_KLineModel.h */,
-				B293712B213D096800DE6974 /* JT_KLineModel.m */,
-				B2676E0C2136797D002F47A0 /* JT_KLineChartView.h */,
-				B2676E0D2136797D002F47A0 /* JT_KLineChartView.m */,
-				B2114232214A692100BEEB81 /* JT_KLineChangeRateView.h */,
-				B2114233214A692100BEEB81 /* JT_KLineChangeRateView.m */,
-				B2676E0F21367C8E002F47A0 /* JT_KLineMAAccessoryView.h */,
-				B2676E1021367C8E002F47A0 /* JT_KLineMAAccessoryView.m */,
-				B2676E12213680C0002F47A0 /* JT_KLineVolumeView.h */,
-				B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */,
-				B27F7DC1213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.h */,
-				B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */,
-				B20298B22136EB22000CE57B /* JT_KLineCandlePositionModel.h */,
-				B20298B32136EB22000CE57B /* JT_KLineCandlePositionModel.m */,
-				B2F68FCC21425D500064F2B5 /* JT_KLineBarPositionModel.h */,
-				B2F68FCD21425D500064F2B5 /* JT_KLineBarPositionModel.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -532,7 +572,6 @@
 				B2ACB94C21338AA400CA2EB6 /* JT_ColorManager.m in Sources */,
 				B2114234214A692100BEEB81 /* JT_KLineChangeRateView.m in Sources */,
 				B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */,
-				B293712F213D0C7C00DE6974 /* JT_KLineGlobalVar.m in Sources */,
 				B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */,
 				B2BEDF492138DF0500974491 /* JT_KLineTimeView.m in Sources */,
 				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
@@ -551,6 +590,7 @@
 				B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */,
 				B2ACB93F213384E500CA2EB6 /* DetailViewController.m in Sources */,
 				B220F976213E138D00DC40DA /* JT_DrawMALine.m in Sources */,
+				B2A341F2214B904400A9D357 /* JT_QuotationDataManager.m in Sources */,
 				B23E683B2137C25D00E9EF3B /* JT_DrawCandleLine.m in Sources */,
 				B293712C213D096800DE6974 /* JT_KLineModel.m in Sources */,
 			);
