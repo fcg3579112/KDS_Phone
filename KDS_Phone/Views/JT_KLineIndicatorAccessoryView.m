@@ -71,6 +71,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = JT_KLineMABackgroundColor;
+        self.clipsToBounds = YES;
         _offset = 4;
     }
     return self;

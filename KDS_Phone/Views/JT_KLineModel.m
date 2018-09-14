@@ -57,7 +57,11 @@
 }
 - (NSInteger)sumOfLastVolume {
     if (!_sumOfLastVolume) {
-        _sumOfLastVolume = self.preModel.sumOfLastVolume + self.tradeVolume;
+        if (self.tradeVolume == 0) {
+            _sumOfLastVolume = 0;
+        } else {
+            _sumOfLastVolume = self.preModel.sumOfLastVolume + self.tradeVolume;
+        }  
     }
     return _sumOfLastVolume;
 }
@@ -143,12 +147,20 @@
 
 - (NSUInteger)volumeMA5 {
     if (!_volumeMA5) {
+        if (self.tradeVolume == 0) {
+            _volumeMA5 = 0;
+            return _volumeMA5;
+        }
         _volumeMA5 = [self calculateVolumeMAValue:5];
     }
     return _volumeMA5;
 }
 - (NSUInteger)volumeMA10 {
     if (!_volumeMA10) {
+        if (self.tradeVolume == 0) {
+            _volumeMA10 = 0;
+            return _volumeMA10;
+        }
         _volumeMA10 = [self calculateVolumeMAValue:10];
     }
     return _volumeMA10;
@@ -749,6 +761,10 @@
         float avs = 0;
         float bvs = 0;
         float cvs = 0;
+        if (self.tradeVolume == 0) {
+            _VR = 0;
+            return _VR;
+        }
         NSUInteger index = self.index;
         for (NSInteger i = index; i >= 0; i --) {
             JT_KLineModel *model = self.allKLineModel[i];
@@ -887,12 +903,21 @@
     return self.sumOfLastCR / (self.index + 1);
 }
 
+
+/**
+ 判断 成交量是否为 0 是为了兼容 港股指数，港股指数没有成交量数据
+
+ */
 - (NSInteger)OBV {
     if (!_OBV) {
         if (self.index == 0) {
             _OBV = self.tradeVolume;
         } else {
-            _OBV = self.preModel.OBV + self.tradeVolume * (self.closePrice.floatValue > self.referencePrice.floatValue ? 1 : -1);
+            if (self.tradeVolume == 0) {
+                _OBV = 0;
+            } else {
+               _OBV = self.preModel.OBV + self.tradeVolume * (self.closePrice.floatValue > self.referencePrice.floatValue ? 1 : -1);
+            }
         }
     }
     return _OBV;
@@ -907,7 +932,11 @@
     if (!_MAOBV) {
         if (self.index >= 30) {
             JT_KLineModel *preDaysModel = self.allKLineModel[self.index - 30];
-            _MAOBV = (self.sumOfLastOBV - preDaysModel.sumOfLastOBV) / 30;
+            if (self.tradeVolume == 0) {
+                _MAOBV = 0;
+            } else {
+                _MAOBV = (self.sumOfLastOBV - preDaysModel.sumOfLastOBV) / 30;
+            }
         } else {
             _MAOBV = self.sumOfLastOBV / (self.index + 1);
         }

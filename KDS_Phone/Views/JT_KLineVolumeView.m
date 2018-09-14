@@ -506,9 +506,13 @@
         }
 
     }];
+
 //    NSLog(@"%d   %d",self.screenMaxValue,self.screenMinValue);
     //计算最小单位
     float unitValue = (self.screenMaxValue - self.screenMinValue) / self.maxY;
+    if (unitValue == 0) {
+        return;
+    }
     
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         

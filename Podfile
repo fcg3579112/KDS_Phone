@@ -9,7 +9,7 @@ target 'KDS_Phone' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
 
-    pod 'YT_SZYLevel2SDK', :git => 'git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git', :tag => '1.0.4'
+    pod 'YT_SZYLevel2SDK', :git => 'git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git', :tag => '1.0.6'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'YYKit', '~> 1.0.9'
     pod 'Masonry', '~> 1.1.0'

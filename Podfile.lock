@@ -9,7 +9,7 @@ PODS:
 DEPENDENCIES:
   - Masonry (~> 1.1.0)
   - MBProgressHUD (~> 1.1.0)
-  - "YT_SZYLevel2SDK (from `git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git`, tag `1.0.4`)"
+  - "YT_SZYLevel2SDK (from `git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git`, tag `1.0.6`)"
   - YYKit (~> 1.0.9)
 
 SPEC REPOS:
@@ -21,12 +21,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   YT_SZYLevel2SDK:
     :git: "git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git"
-    :tag: 1.0.4
+    :tag: 1.0.6
 
 CHECKOUT OPTIONS:
   YT_SZYLevel2SDK:
     :git: "git@60.205.184.174:mobile-stock-libs/YT_SZYLevel2SDK.git"
-    :tag: 1.0.4
+    :tag: 1.0.6
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   YT_SZYLevel2SDK: ea9df35975235e9fa9f3ae8f3982da323f57a0c8
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 0a189618d1d21f14413cf039743a3489cefcd06b
+PODFILE CHECKSUM: c14dc2c11c067d42ff2b1abc9e9c1d8d72cfb4f6
 
 COCOAPODS: 1.5.3
