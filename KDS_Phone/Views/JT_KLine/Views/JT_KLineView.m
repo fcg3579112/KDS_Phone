@@ -88,6 +88,8 @@
 @property (nonatomic ,strong) NSTimer *delayHidenCrossLineTimer;
 
 
+@property(nonatomic, strong) NSMutableArray<JT_KLineModel *> *kLineModels;
+
 @end
 
 
@@ -112,6 +114,117 @@
     }
     return self;
 }
+#pragma mark 加载数据
+/**
+ 更新所有的 K 线数据,用于第一次加载 k 线页面、 k 线类型变化、及前后复权的切换。
+ 效果是： k 线页面刷新后，k 偏移到最右端，显示最新的数据
+ */
+- (void)updateKLineWithModels:(NSArray <MOHLCItem *>*)models {
+    if (models.count == 0) {
+        return;
+    }
+    [models enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+        [self.kLineModels addObject:model];
+        model.allKLineModel = self.kLineModels;
+        [model initData];
+    }];
+    
+    [self updateScrollViewWidth];
+    
+    //设置contentOffset,会触发 observeValueForKeyPath 方法里面 reDrawAllView 方法，进行计算绘图
+    float kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count - 1) * ([JT_KLineConfig kLineGap]);
+    float offset = kLineViewWidth - self.scrollView.frame.size.width;
+    if (offset > 0)
+    {
+        self.scrollView.contentOffset = CGPointMake(offset, 0);
+    } else {
+        self.scrollView.contentOffset = CGPointMake(0, 0);
+    }
+}
+/**
+ 加载 k 线历史数据，效果是：视图保持现在的状态，可以向右拖动，显示历史数据
+ 
+ */
+- (void)loadWithHistoryModels:(NSArray <MOHLCItem *>*)models {
+    if (models.count == 0) {
+        return;
+    }
+    //存储历史数据，历史数据
+    NSMutableArray *historyArray = @[].mutableCopy;
+    [models enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+        [historyArray addObject:model];
+    }];
+    NSArray <JT_KLineModel *>*oldDataArray = self.kLineModels.copy;
+    NSMutableArray <JT_KLineModel *>*oldDataArrayM = @[].mutableCopy;
+    [oldDataArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        JT_KLineModel *model = [JT_KLineModel new];
+        model.openPrice = obj.openPrice;
+        model.closePrice = obj.closePrice;
+        model.highPrice = obj.highPrice;
+        model.lowPrice = obj.lowPrice;
+        model.tradeVolume = obj.tradeVolume;
+        model.referencePrice = obj.referencePrice;
+        model.datetime = obj.datetime;
+        [oldDataArrayM addObject:model];
+    }];
+    
+    [self.kLineModels removeAllObjects];
+    [self.kLineModels addObjectsFromArray:historyArray];
+    [self.kLineModels addObjectsFromArray:oldDataArrayM];
+
+    [self.kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.allKLineModel = self.kLineModels;
+    }];
+    
+    CGPoint offset = self.scrollView.contentOffset;
+
+    [self updateScrollViewWidth];
+    
+    self.scrollView.contentOffset = CGPointMake(offset.x + models.count * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]), 0);
+}
+
+/**
+ 加载最新的几条数据。
+ 
+ */
+- (void)reloadWithNewestModels:(NSArray <MOHLCItem *>*)models {
+    if (models.count == 0) {
+        return;
+    }
+    
+    if (self.kLineModels.count) {
+        MOHLCItem *firstModel = models.firstObject;
+        //找出需要更新的Model对应的索引
+        NSInteger beginUpdaeIndex = -1;
+        for (NSInteger i = self.kLineModels.count - 1; i >= 0; i --) {
+            JT_KLineModel *model = self.kLineModels[i];
+            if ([model.datetime isEqualToString:firstModel.datetime]) {
+                beginUpdaeIndex = i;
+            }
+        }
+        //未找到需要更新的Model对应的索引时，走刷新逻辑
+        if (beginUpdaeIndex == -1) {
+            [self updateKLineWithModels:models];
+        } else {
+            
+            // 移除索引处及其后面的数据,然后加入最新的数据
+            [self.kLineModels removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(beginUpdaeIndex, self.kLineModels.count - beginUpdaeIndex)]];
+            [models enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
+                [self.kLineModels addObject:model];
+                model.allKLineModel = self.kLineModels;
+            }];
+            [self updateScrollViewWidth];
+            [self reDrawAllView];
+        }
+        
+    } else { //如果之前没有数据，就走刷新页面逻辑
+        [self updateKLineWithModels:models];
+    }
+}
+
 #pragma mark JT_KLineFQSegmentDelegate
 
 - (void)JT_KLineFQSegmentSelectedType:(JT_KLineFQType)type {
@@ -433,24 +546,14 @@
     [_delayHidenCrossLineTimer invalidate];
     _delayHidenCrossLineTimer = nil;
 }
-#pragma mark Setter
-- (void)setKLineModels:(NSArray<JT_KLineModel *> *)kLineModels {
-    if (!kLineModels.count) {
-        return;
+
+
+#pragma mark Getter
+- (NSMutableArray <JT_KLineModel *>*)kLineModels {
+    if (!_kLineModels) {
+        _kLineModels = @[].mutableCopy;
     }
-    _kLineModels = kLineModels;
-    
-    [self updateScrollViewWidth];
-    
-    //设置contentOffset,会触发 observeValueForKeyPath 方法里面 reDrawAllView 方法，进行计算绘图
-    float kLineViewWidth = self.kLineModels.count * ([JT_KLineConfig kLineWidth]) + (self.kLineModels.count - 1) * ([JT_KLineConfig kLineGap]);
-    float offset = kLineViewWidth - self.scrollView.frame.size.width;
-    if (offset > 0)
-    {
-        self.scrollView.contentOffset = CGPointMake(offset, 0);
-    } else {
-        self.scrollView.contentOffset = CGPointMake(0, 0);
-    }
+    return _kLineModels;
 }
 
 - (UIScrollView *)scrollView

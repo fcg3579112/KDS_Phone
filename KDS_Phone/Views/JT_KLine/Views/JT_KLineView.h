@@ -39,6 +39,8 @@
 - (void)JT_KLineViewCrossLineShow:(BOOL)show kLineModel:(JT_KLineModel *)kLineModel;
 
 @end
+
+@class MOHLCItem;
 @interface JT_KLineView : UIView
 /**
  顶部5日均线、10日均线显示区域的高度
@@ -78,7 +80,7 @@
  */
 @property (nonatomic ,assign) float indicatorViewHeight;
 
-@property(nonatomic, copy) NSArray<JT_KLineModel *> *kLineModels;
+
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
 //可以设置蜡烛线区域安全区
@@ -94,5 +96,24 @@
  隐藏十字线
  */
 - (void)hidenCrossLine;
+
+/**
+ 更新所有的 K 线数据,用于第一次加载 k 线页面、 k 线类型变化、及前后复权的切换。
+ 效果是： k 线页面刷新后，k 偏移到最右端，显示最新的数据
+ */
+- (void)updateKLineWithModels:(NSArray <MOHLCItem *>*)models;
+
+/**
+ 加载 k 线历史数据，效果是：视图保持现在的状态，可以向右拖动，显示历史数据
+
+ */
+- (void)loadWithHistoryModels:(NSArray <MOHLCItem *>*)models;
+
+/**
+ 加载最新的几条数据。
+
+ */
+- (void)reloadWithNewestModels:(NSArray <MOHLCItem *>*)models;
+
 @end
 

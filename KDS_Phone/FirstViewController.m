@@ -62,13 +62,7 @@
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
             // 模型转换
-            [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
-                [self.allKLineModel addObject:model];
-                model.allKLineModel = self.allKLineModel;
-                [model initData];
-            }];
-            self.kLineView.kLineModels = self.allKLineModel;
+            [self.kLineView updateKLineWithModels:items];
         }
     }];
     

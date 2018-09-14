@@ -23,14 +23,16 @@
         _lowPrice = model.lowPrice;
         _closePrice = model.closePrice;
         _tradeVolume = [model.tradeVolume integerValue];
-        _averagePrice = model.averagePrice;
         _referencePrice = model.referencePrice;
         _amount = model.amount;
     }
     return self;
 }
 - (NSUInteger) index {
-    return [self.allKLineModel indexOfObject:self];
+    if (!_index) {
+        _index = [self.allKLineModel indexOfObject:self];
+    }
+    return _index;
 }
 - (NSMutableArray <JT_KLineModel *>*)allKLineModel {
 #if DEBUG
@@ -1011,5 +1013,8 @@
     
     //能量潮 (OBV)
     //[self OBV];
+}
+- (void)reset {
+    
 }
 @end
