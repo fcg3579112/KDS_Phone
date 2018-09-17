@@ -81,6 +81,10 @@
 @property (nonatomic ,assign) float indicatorViewHeight;
 
 
+/**
+ k 线页面数据
+ */
+@property(nonatomic, strong) NSMutableArray<JT_KLineModel *> *kLineModels;
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
 //可以设置蜡烛线区域安全区

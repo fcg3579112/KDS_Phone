@@ -87,9 +87,6 @@
 
 @property (nonatomic ,strong) NSTimer *delayHidenCrossLineTimer;
 
-
-@property(nonatomic, strong) NSMutableArray<JT_KLineModel *> *kLineModels;
-
 @end
 
 
@@ -193,7 +190,7 @@
     if (models.count == 0) {
         return;
     }
-    
+    //如果之前有数据,只需要找到对应日期，把数据更新成最新的
     if (self.kLineModels.count) {
         MOHLCItem *firstModel = models.firstObject;
         //找出需要更新的Model对应的索引

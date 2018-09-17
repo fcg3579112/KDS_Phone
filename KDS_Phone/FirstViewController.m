@@ -16,6 +16,7 @@
 @interface FirstViewController () <JT_TimelineAndKlineSegmentDelegate,JT_KLineViewDelegate>
 @property (nonatomic, strong)JT_KLineView *kLineView;
 @property (nonatomic ,strong) NSMutableArray <JT_KLineModel *>*allKLineModel;
+@property (nonatomic ,strong) NSTimer *timer;
 @end
 
 @implementation FirstViewController
@@ -43,7 +44,19 @@
         make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
         make.height.mas_equalTo(kScreen_Width * 0.9);
     }];
-    [self requestKLineData];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (!_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(requestKLineData) userInfo:nil repeats:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_timer invalidate];
+    _timer = nil;
 }
 - (NSMutableArray *)allKLineModel {
     if (!_allKLineModel) {
@@ -62,7 +75,8 @@
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
             // 模型转换
-            [self.kLineView updateKLineWithModels:items];
+            [self.kLineView reloadWithNewestModels:items];
+//            [self.kLineView updateKLineWithModels:items];
         }
     }];
     
