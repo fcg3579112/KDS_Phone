@@ -24,15 +24,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationHorizontal delegte:self];
+    JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
 
     sg.seletedItemType = JT_SegmentItemTypeKlineDay;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
     [sg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(@44);
-        make.right.equalTo(@-44);
-        make.top.equalTo(@34);
+        make.left.equalTo(@0);
+        make.right.equalTo(@0);
+        make.top.equalTo(@88);
         make.height.mas_equalTo(33);
     }];
 //    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationHorizontal];

@@ -42,10 +42,11 @@
     self.backgroundColor = JT_ColorDayOrNight(@"FFFFFF", @"202125");
     CGFloat itemHeight = self.segmentHeight / self.titles.count;
     _itemButtons = @[].mutableCopy;
+    CGFloat fontSize = kScreen_Width >= 375 ? 15 : 14;
     [_titles enumerateObjectsUsingBlock:^(NSString * _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(0, itemHeight * idx, self.segmentWidth, itemHeight);
-        btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:15];
+        btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:fontSize];
         [btn setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateDisabled];
         [btn setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
         [btn setTitle:title forState:UIControlStateNormal];
@@ -93,7 +94,7 @@
     }];
 }
 - (CGFloat)segmentWidth {
-    return kScreen_Width / 6.f;
+    return kScreen_Width / 7.f;
 }
 - (CGFloat)segmentHeight {
     return 44 * self.titles.count;
@@ -154,10 +155,10 @@
         }];
     }
     //按钮的宽度
-
+    CGFloat fontSize = kScreen_Width >= 375 ? 15 : 14;
     [titles enumerateObjectsUsingBlock:^(NSString * _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:15];
+        btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:fontSize];
         [btn setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateDisabled];
         [btn setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
         [btn setTitle:title forState:UIControlStateNormal];
