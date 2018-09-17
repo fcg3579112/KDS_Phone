@@ -24,30 +24,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
+    JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationHorizontal delegte:self];
 
     sg.seletedItemType = JT_SegmentItemTypeKlineDay;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
     [sg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(@0);
-        make.top.equalTo(@88);
+        make.left.equalTo(@44);
+        make.right.equalTo(@-44);
+        make.top.equalTo(@34);
         make.height.mas_equalTo(33);
     }];
-    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationVertical];
-    _kLineView.rightSelecterWidth = 55;
-    _kLineView.needZoomAndScroll = YES;
-
-    _kLineView.bottomMargin = 10;
-    _kLineView.volumeButtonEnable = YES;
-    
-    
-    [self.view addSubview:_kLineView];
-    [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.mas_equalTo(0);
-        make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
-        make.height.mas_equalTo(kScreen_Width * 0.9);
-    }];
+//    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationHorizontal];
+//    _kLineView.rightSelecterWidth = 55;
+//    _kLineView.needZoomAndScroll = YES;
+//
+//    _kLineView.bottomMargin = 10;
+//    _kLineView.volumeButtonEnable = YES;
+//
+//
+//    [self.view addSubview:_kLineView];
+//    [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.mas_equalTo(0);
+//        make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
+//        make.height.mas_equalTo(kScreen_Width * 0.9);
+//    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

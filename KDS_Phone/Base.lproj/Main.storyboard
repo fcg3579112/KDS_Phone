@@ -54,8 +54,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fIK-0w-95s">
-                                <rect key="frame" x="78" y="231" width="219" height="135"/>
+                                <rect key="frame" x="145.5" y="301" width="83" height="65"/>
                                 <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="65" id="GBu-Un-Aiu"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="进入 K 线">
                                     <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
@@ -67,10 +70,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="fIK-0w-95s" firstAttribute="centerX" secondItem="3UP-Za-6uV" secondAttribute="centerX" id="WhE-4m-khX"/>
-                            <constraint firstItem="fIK-0w-95s" firstAttribute="top" secondItem="RRq-nr-Y9F" secondAttribute="top" constant="167" id="g6s-TH-zEe"/>
-                            <constraint firstItem="fIK-0w-95s" firstAttribute="leading" secondItem="RRq-nr-Y9F" secondAttribute="leading" constant="78" id="med-in-JQK"/>
-                            <constraint firstItem="RRq-nr-Y9F" firstAttribute="bottom" secondItem="fIK-0w-95s" secondAttribute="bottom" constant="252" id="x1c-xA-HPl"/>
+                            <constraint firstItem="fIK-0w-95s" firstAttribute="centerY" secondItem="3UP-Za-6uV" secondAttribute="centerY" id="fxE-qO-taJ"/>
+                            <constraint firstItem="fIK-0w-95s" firstAttribute="centerX" secondItem="3UP-Za-6uV" secondAttribute="centerX" id="xHS-Vj-395"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RRq-nr-Y9F"/>
                     </view>

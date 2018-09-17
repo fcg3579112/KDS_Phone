@@ -273,17 +273,13 @@
 }
 //滑动到选中的 item 下面
 - (void)slideToSeletedItem:(UIButton *)button{
-    
-    [UIView animateWithDuration:0.15 animations:^{
-        [self.sliderCentreXConstraint uninstall];
-        CGFloat width = [button.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName : button.titleLabel.font}].width;
-        @weakify(self)
-        [self.slider mas_updateConstraints:^(MASConstraintMaker *make) {
-            @strongify(self)
-            make.width.mas_equalTo(width + 15);
-            self.sliderCentreXConstraint = make.centerX.equalTo(button);
-        }];
-        [self.slider layoutIfNeeded];
+    [self.sliderCentreXConstraint uninstall];
+    CGFloat width = [button.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName : button.titleLabel.font}].width;
+    @weakify(self)
+    [self.slider mas_updateConstraints:^(MASConstraintMaker *make) {
+        @strongify(self)
+        make.width.mas_equalTo(width + 15);
+        self.sliderCentreXConstraint = make.centerX.equalTo(button);
     }];
 }
 #pragma mark Setter
