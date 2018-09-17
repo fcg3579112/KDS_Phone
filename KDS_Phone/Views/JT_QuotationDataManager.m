@@ -18,12 +18,12 @@
  @param completed 返回结果
  */
 + (void)requestKLineDataWithCode:(NSString *)code completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed {
-    MOHLCRequest *r = [[MOHLCRequest alloc] init];
-    r.code = code;
-    r.period = MOHLCPeriodDay;
-    r.subtype = @"1400";
-    r.priceAdjustedMode = [JT_KLineConfig kLineFQType];
-    [MApi sendRequest:r completionHandler:^(MResponse *resp) {
+    MOHLCRequest *request = [[MOHLCRequest alloc] init];
+    request.code = code;
+    request.period = [self getMOHLCPeriod];
+    request.subtype = @"1400";
+    request.priceAdjustedMode = [JT_KLineConfig kLineFQType];
+    [MApi sendRequest:request completionHandler:^(MResponse *resp) {
         MOHLCResponse *response = (MOHLCResponse *)resp;
         if (response.status == MResponseStatusSuccess) {
             completed(YES ,response.OHLCItems);
@@ -44,6 +44,7 @@
     MOHLCRequestV2 *request = [[MOHLCRequestV2 alloc]init];
     request.code = code;
     request.subtype = @"1001";
+    request.period = [self getMOHLCPeriod];
     request.date = datetime;
     request.requestType = MRequestTypeOlder;
     request.priceAdjustedMode = [JT_KLineConfig kLineFQType];
@@ -68,6 +69,7 @@
     MOHLCRequestV2 *request = [[MOHLCRequestV2 alloc]init];
     request.code = code;
     request.subtype = @"1001";
+    request.period = [self getMOHLCPeriod];
     request.date = datetime;
     request.requestType = MRequestTypeNewer;
     request.priceAdjustedMode = [JT_KLineConfig kLineFQType];
@@ -79,5 +81,36 @@
             completed(NO,nil);
         }
     }];
+}
+
+/**
+ 获取 k 线的周期
+
+ */
++ (MOHLCPeriod)getMOHLCPeriod {
+    MOHLCPeriod kLineType = (MOHLCPeriod)([JT_KLineConfig kLineType] - 2);
+    return kLineType;
+}
+
+// sh,sz,hk,hh,hz,bj 分别是沪股，深股，港股，沪港通，深港通，新三板市场
++ (NSString *)getSubtype:(NSString *)code {
+    
+    NSString *subType =@"";
+    if ([code hasSuffix:@"sh"]) {
+        subType = @"";
+    } else if ([code hasSuffix:@"sz"]) {
+        
+    } else if ([code hasSuffix:@"sz"]) {
+        
+    } else if ([code hasSuffix:@"hk"]) {
+        
+    } else if ([code hasSuffix:@"hh"]) {
+        
+    } else if ([code hasSuffix:@"hz"]) {
+        
+    } else if ([code hasSuffix:@"bj"]) {
+        
+    }
+    return subType;
 }
 @end
