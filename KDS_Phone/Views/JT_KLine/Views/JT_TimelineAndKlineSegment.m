@@ -13,6 +13,7 @@
 #import <Masonry.h>
 // iPhoneX  safeAreaInsets  0, 44, 21, 44
 #define itemButtonTagOffset           5
+#define KLineTypeButtonTag            100
 
 @protocol JT_KlineVerticalSegmentDelegate <NSObject>
 - (void)JT_KlineVerticalSegmentItemClick:(JT_TimelineAndKlineItemType)itemType;
@@ -101,8 +102,6 @@
 @interface JT_TimelineAndKlineSegment () <JT_KlineVerticalSegmentDelegate>
 @property (nonatomic ,assign) JT_DeviceOrientation deviceOrientation;
 @property (nonatomic ,strong) UIView *slider;//滑动横线
-@property (nonatomic ,assign ,readonly) CGFloat segmentWidth;
-@property (nonatomic ,assign ,readonly) CGFloat segmentHeight;
 @property (nonatomic ,assign ,readonly) CGFloat similarKlineWidth;
 @property (nonatomic ,assign ,readonly) CGFloat verticalLineHeight;
 @property (nonatomic ,assign ,readonly) CGFloat sliderWidth;
@@ -135,7 +134,6 @@
 }
 - (void)newSubviews {
      _timelineAndKlineButtons = @[].mutableCopy;
-    self.frame = CGRectMake(0, 0, self.segmentWidth, self.segmentHeight);
     self.backgroundColor = JT_ColorDayOrNight(@"F2F4F8", @"1B1C20");
     CGFloat rightMargin = 0;
     NSArray *titles;
@@ -156,7 +154,7 @@
         }];
     }
     //按钮的宽度
-    CGFloat itemButtonWidth = (self.segmentWidth - rightMargin) / titles.count;
+
     [titles enumerateObjectsUsingBlock:^(NSString * _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:15];
@@ -164,12 +162,23 @@
         [btn setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
         [btn setTitle:title forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(itemButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        btn.tag = idx;
+        btn.tag = idx + KLineTypeButtonTag;
         [self addSubview:btn];
+        UIButton *preBtn;
+        if (idx > 0) {
+            preBtn = (UIButton *)[self viewWithTag:KLineTypeButtonTag + idx - 1];
+        }
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.mas_equalTo(0);
-            make.width.mas_equalTo(itemButtonWidth);
-            make.left.mas_equalTo(itemButtonWidth * idx);
+            if (idx == 0) {
+                make.left.mas_equalTo(0);
+            }else {
+                make.left.equalTo(preBtn.mas_right);
+                make.width.equalTo(preBtn);
+            }
+            if (idx == titles.count - 1) {
+                make.right.mas_equalTo(-rightMargin);
+            }
         }];
         if (idx == 0) {
             btn.enabled = NO;
@@ -229,7 +238,7 @@
     } else if (sender == self.minButon) { //展示竖屏分钟 k 线切换按钮
         [self showKlineVerticalSegmentBelowView:self.minButon];
     } else {
-        [self setSeletedItemType:sender.tag];
+        [self setSeletedItemType:sender.tag - KLineTypeButtonTag];
     }
 }
 - (void)showKlineVerticalSegmentBelowView:(UIView *)view {
@@ -340,16 +349,6 @@
         _verticalSegment = [JT_KlineVerticalSegment klineSegmentWithTitles:@[@"5分",@"15分",@"30分",@"60分",] delegate:self];
     }
     return _verticalSegment;
-}
-
-- (CGFloat)segmentWidth {
-    if (self.deviceOrientation == JT_DeviceOrientationVertical) {
-        return kScreen_Width;
-    }
-    return kScreen_Width == 812 ? (kScreen_Width - 44 * 2) : kScreen_Width;
-}
-- (CGFloat)segmentHeight {
-    return self.deviceOrientation == JT_DeviceOrientationVertical ? 33 : 30;
 }
 - (CGFloat)similarKlineWidth {
     return 60;

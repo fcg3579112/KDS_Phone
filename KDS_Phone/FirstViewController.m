@@ -25,11 +25,15 @@
     [super viewDidLoad];
 
     JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
-    sg.frame = CGRectMake(0, kStatusBarHeight + kNavigationBarHeight, kScreen_Width, 33);
+
     sg.seletedItemType = JT_SegmentItemTypeKlineDay;
     sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
-   
+    [sg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(@0);
+        make.top.equalTo(@88);
+        make.height.mas_equalTo(33);
+    }];
     _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationVertical];
     _kLineView.rightSelecterWidth = 55;
     _kLineView.needZoomAndScroll = YES;
