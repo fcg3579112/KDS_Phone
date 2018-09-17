@@ -202,19 +202,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B2630221214F4FC7005A62EA /* Contrillers */ = {
+		B2630221214F4FC7005A62EA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				B2A341F0214B904400A9D357 /* JT_QuotationDataManager.h */,
 				B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */,
 			);
-			path = Contrillers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		B2A341EA214B8CE000A9D357 /* JT_KLine */ = {
 			isa = PBXGroup;
 			children = (
-				B2630221214F4FC7005A62EA /* Contrillers */,
+				B2630221214F4FC7005A62EA /* Controllers */,
 				B2A341EF214B8E7100A9D357 /* DrawUtils */,
 				B2A341EE214B8D5A00A9D357 /* Configure */,
 				B2A341ED214B8D2F00A9D357 /* Models */,
