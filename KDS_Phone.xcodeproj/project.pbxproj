@@ -202,9 +202,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B2630221214F4FC7005A62EA /* Contrillers */ = {
+			isa = PBXGroup;
+			children = (
+				B2A341F0214B904400A9D357 /* JT_QuotationDataManager.h */,
+				B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */,
+			);
+			path = Contrillers;
+			sourceTree = "<group>";
+		};
 		B2A341EA214B8CE000A9D357 /* JT_KLine */ = {
 			isa = PBXGroup;
 			children = (
+				B2630221214F4FC7005A62EA /* Contrillers */,
 				B2A341EF214B8E7100A9D357 /* DrawUtils */,
 				B2A341EE214B8D5A00A9D357 /* Configure */,
 				B2A341ED214B8D2F00A9D357 /* Models */,
@@ -236,6 +246,8 @@
 				B2676E13213680C0002F47A0 /* JT_KLineVolumeView.m */,
 				B27F7DC1213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.h */,
 				B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */,
+				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
+				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,10 +374,6 @@
 				B2A341EA214B8CE000A9D357 /* JT_KLine */,
 				B2ACB94A21338AA400CA2EB6 /* JT_ColorManager.h */,
 				B2ACB94B21338AA400CA2EB6 /* JT_ColorManager.m */,
-				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
-				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
-				B2A341F0214B904400A9D357 /* JT_QuotationDataManager.h */,
-				B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */,
 				B2ACB9512133A27A00CA2EB6 /* KDS_UtilsMacro.h */,
 			);
 			path = Views;
