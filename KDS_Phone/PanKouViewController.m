@@ -12,6 +12,7 @@
 #import "JT_HorPanKouInfoView.h"
 #import "JT_KLineAccessoryView.h"
 #import "JT_TimelineAccessoryView.h"
+#import "JT_KLineModel.h"
 #import "JT_TimelineAndKlineSegment.h"
 @interface PanKouViewController () <JT_TimelineAndKlineSegmentDelegate>
 @property (nonatomic ,strong) UIView *contentView;
@@ -37,6 +38,7 @@
     [self timelineAndKlineSegment];
     
     [self requestTimeline];
+    [self requestKLineData];
 }
 - (void)requestTimeline {
     MSnapQuoteRequest *request = [[MSnapQuoteRequest alloc] init];
@@ -58,6 +60,8 @@
         MOHLCResponse *response = (MOHLCResponse *)resp;
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
+            JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:items.firstObject];
+            [self.kLineAccessoryView updateWithModel:model];
         }
     }];
 }
@@ -88,7 +92,7 @@
 - (JT_KLineAccessoryView *)kLineAccessoryView {
     if (!_kLineAccessoryView) {
         _kLineAccessoryView = [JT_KLineAccessoryView new];
-        _kLineAccessoryView.hidden = YES;
+//        _kLineAccessoryView.hidden = YES;
         [_contentView addSubview:_kLineAccessoryView];
         [_kLineAccessoryView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.timelineAndKlineSegment);

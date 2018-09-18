@@ -37,6 +37,8 @@
 
 @property (nonatomic ,assign) NSUInteger index;
 
+@property (nonatomic ,strong) UIColor *priceColor;
+
 //指该Model前面一个Model
 @property (nonatomic ,weak) JT_KLineModel *preModel;
 

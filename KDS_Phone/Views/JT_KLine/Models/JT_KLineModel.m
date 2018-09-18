@@ -34,6 +34,21 @@
     }
     return _index;
 }
+//#define OpenPrice_GrayColor                 JT_ColorDayOrNight(@"858C9E", @"858C9E")
+//#define OpenPrice_RedColor                  JT_ColorDayOrNight(@"FF3D00", @"FF3D00")
+//#define OpenPrice_GreenColor                JT_ColorDayOrNight(@"333333", @"666666")
+- (UIColor *)priceColor {
+    if (!_priceColor) {
+        if (self.closePrice.floatValue > self.referencePrice.floatValue) {
+            _priceColor = JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
+        } else if (self.closePrice.floatValue < self.referencePrice.floatValue) {
+            _priceColor = JT_ColorDayOrNight(@"0DB14B", @"0DB14B");
+        } else {
+            _priceColor = JT_ColorDayOrNight(@"333333", @"666666");
+        }
+    }
+    return _priceColor;
+}
 - (NSMutableArray <JT_KLineModel *>*)allKLineModel {
 #if DEBUG
     NSAssert(_allKLineModel != nil, @"JT_KLineModel 未设置 allKLineModel 属性");
