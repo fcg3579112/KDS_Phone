@@ -27,6 +27,9 @@
 		B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2937131213D1F3400DE6974 /* TabOneViewController.m */; };
 		B2A341F2214B904400A9D357 /* JT_QuotationDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */; };
 		B2A5A99B214910F90090DDEA /* JT_KLineCrossLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */; };
+		B2AAF32321508090009218C7 /* JT_TimelineAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF32221508090009218C7 /* JT_TimelineAccessoryView.m */; };
+		B2AAF3262150809A009218C7 /* JT_KLineAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */; };
+		B2AAF329215080B3009218C7 /* JT_HorPanKouInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
 		B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB910213384A200CA2EB6 /* Main.storyboard */; };
@@ -112,6 +115,12 @@
 		B2A341F1214B904400A9D357 /* JT_QuotationDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_QuotationDataManager.m; sourceTree = "<group>"; };
 		B2A5A999214910F90090DDEA /* JT_KLineCrossLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineCrossLineView.h; sourceTree = "<group>"; };
 		B2A5A99A214910F90090DDEA /* JT_KLineCrossLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineCrossLineView.m; sourceTree = "<group>"; };
+		B2AAF32121508090009218C7 /* JT_TimelineAccessoryView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_TimelineAccessoryView.h; sourceTree = "<group>"; };
+		B2AAF32221508090009218C7 /* JT_TimelineAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_TimelineAccessoryView.m; sourceTree = "<group>"; };
+		B2AAF3242150809A009218C7 /* JT_KLineAccessoryView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineAccessoryView.h; sourceTree = "<group>"; };
+		B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineAccessoryView.m; sourceTree = "<group>"; };
+		B2AAF327215080B3009218C7 /* JT_HorPanKouInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_HorPanKouInfoView.h; sourceTree = "<group>"; };
+		B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_HorPanKouInfoView.m; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB90A213384A200CA2EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2ACB90B213384A200CA2EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -248,6 +257,12 @@
 				B27F7DC2213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m */,
 				B2ACB9582133DD9800CA2EB6 /* JT_TimelineAndKlineSegment.h */,
 				B2ACB94821338A7200CA2EB6 /* JT_TimelineAndKlineSegment.m */,
+				B2AAF32121508090009218C7 /* JT_TimelineAccessoryView.h */,
+				B2AAF32221508090009218C7 /* JT_TimelineAccessoryView.m */,
+				B2AAF3242150809A009218C7 /* JT_KLineAccessoryView.h */,
+				B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */,
+				B2AAF327215080B3009218C7 /* JT_HorPanKouInfoView.h */,
+				B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -582,7 +597,9 @@
 				B220F97C213E603400DC40DA /* JT_KLineIndicatorSegment.m in Sources */,
 				B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */,
 				B2BEDF492138DF0500974491 /* JT_KLineTimeView.m in Sources */,
+				B2AAF3262150809A009218C7 /* JT_KLineAccessoryView.m in Sources */,
 				B2ACB9542133C5F000CA2EB6 /* FirstViewController.m in Sources */,
+				B2AAF329215080B3009218C7 /* JT_HorPanKouInfoView.m in Sources */,
 				B20298B42136EB22000CE57B /* JT_KLineCandlePositionModel.m in Sources */,
 				B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */,
 				B2ACB91A213384A400CA2EB6 /* main.m in Sources */,
@@ -600,6 +617,7 @@
 				B220F976213E138D00DC40DA /* JT_DrawMALine.m in Sources */,
 				B2A341F2214B904400A9D357 /* JT_QuotationDataManager.m in Sources */,
 				B23E683B2137C25D00E9EF3B /* JT_DrawCandleLine.m in Sources */,
+				B2AAF32321508090009218C7 /* JT_TimelineAccessoryView.m in Sources */,
 				B293712C213D096800DE6974 /* JT_KLineModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
