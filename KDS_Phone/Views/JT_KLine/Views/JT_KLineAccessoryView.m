@@ -27,6 +27,7 @@
 @property (nonatomic ,strong) UILabel *closePrice;
 @property (nonatomic ,strong) UILabel *volume; //成交量
 @property (nonatomic ,strong) UILabel *changeRate; //涨跌幅
+@property (nonatomic ,strong) JT_KLineModel *kLineModel;
 @end
 @implementation JT_KLineAccessoryView
 
@@ -113,6 +114,7 @@
     }];
 }
 - (void)updateWithModel:(JT_KLineModel *)model {
+    _kLineModel = model;
     if (model.datetime.length >= 8) {
         _dateTime.text = [model.datetime substringToIndex:8];
     }
@@ -122,9 +124,23 @@
     _closePrice.text = model.closePrice;
     _volume.text = formatVolume(model.tradeVolume);
     _changeRate.text = [NSString stringWithFormat:@"%.2f%%",model.changeRate * 100];
-//    _highPrice.textColor = model.priceColor;
-//    _openPrice.textColor = model.priceColor;
     _changeRate.textColor = model.priceColor;
+    _highPrice.textColor = [self getColorWithPrice:model.highPrice];
+    _openPrice.textColor = [self getColorWithPrice:model.openPrice];
+    _lowPrice.textColor = [self getColorWithPrice:model.lowPrice];
+    _closePrice.textColor = [self getColorWithPrice:model.closePrice];
     
+}
+//#define OpenPrice_GrayColor                 JT_ColorDayOrNight(@"858C9E", @"858C9E")
+//#define OpenPrice_RedColor                  JT_ColorDayOrNight(@"FF3D00", @"FF3D00")
+//#define OpenPrice_GreenColor                JT_ColorDayOrNight(@"333333", @"666666")
+- (UIColor *)getColorWithPrice:(NSString *)price {
+    if (price.floatValue > _kLineModel.referencePrice.floatValue) {
+        return JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
+    } else if (price.floatValue < _kLineModel.referencePrice.floatValue) {
+        return JT_ColorDayOrNight(@"333333", @"666666");
+    } else {
+        return JT_ColorDayOrNight(@"858C9E", @"858C9E");
+    }
 }
 @end
