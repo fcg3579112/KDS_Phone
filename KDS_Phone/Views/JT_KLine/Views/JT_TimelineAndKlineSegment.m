@@ -15,6 +15,8 @@
 #define itemButtonTagOffset           5
 #define KLineTypeButtonTag            100
 
+#define TitleColor                    JT_ColorDayOrNight(@"5E6678", @"B1B6C0")
+#define TitleSeletedColor             JT_ColorDayOrNight(@"FF3D00", @"FF3D00")
 @protocol JT_KlineVerticalSegmentDelegate <NSObject>
 - (void)JT_KlineVerticalSegmentItemClick:(JT_TimelineAndKlineItemType)itemType;
 @end
@@ -47,8 +49,8 @@
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(0, itemHeight * idx, self.segmentWidth, itemHeight);
         btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:fontSize];
-        [btn setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateDisabled];
-        [btn setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
+        [btn setTitleColor:TitleSeletedColor forState:UIControlStateDisabled];
+        [btn setTitleColor:TitleColor forState:UIControlStateNormal];
         [btn setTitle:title forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(itemButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         btn.tag = idx;
@@ -159,8 +161,8 @@
     [titles enumerateObjectsUsingBlock:^(NSString * _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:fontSize];
-        [btn setTitleColor:JT_ColorDayOrNight(@"FC6435", @"FE3D00") forState:UIControlStateDisabled];
-        [btn setTitleColor:JT_ColorDayOrNight(@"7B8291", @"878F95") forState:UIControlStateNormal];
+        [btn setTitleColor:TitleSeletedColor forState:UIControlStateDisabled];
+        [btn setTitleColor:TitleColor forState:UIControlStateNormal];
         [btn setTitle:title forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(itemButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         btn.tag = idx + KLineTypeButtonTag;
@@ -184,7 +186,7 @@
         if (idx == 0) {
             btn.enabled = NO;
             self.slider = [[UIView alloc] init];
-            self.slider.backgroundColor = JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
+            self.slider.backgroundColor = TitleSeletedColor;
             [self addSubview:self.slider];
             @weakify(self)
             [self.slider mas_makeConstraints:^(MASConstraintMaker *make) {

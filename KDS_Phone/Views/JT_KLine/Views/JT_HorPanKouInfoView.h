@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class MStockItem;
 @interface JT_HorPanKouInfoView : UIView
 
+- (void)updateWithModel:(MStockItem *)model;
 @end
