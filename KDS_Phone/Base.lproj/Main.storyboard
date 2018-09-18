@@ -20,8 +20,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Va3-ma-3KB" kind="relationship" relationship="viewControllers" id="Z8a-jR-1An"/>
-                        <segue destination="cpm-r3-EaV" kind="relationship" relationship="viewControllers" id="jIT-eU-8wK"/>
+                        <segue destination="Qb0-bn-wmh" kind="relationship" relationship="viewControllers" id="W1f-dT-YLh"/>
+                        <segue destination="Va3-ma-3KB" kind="relationship" relationship="viewControllers" id="0bG-kS-j9d"/>
+                        <segue destination="cpm-r3-EaV" kind="relationship" relationship="viewControllers" id="Nio-rp-imD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mKx-1J-x8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -159,6 +160,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-922" y="191"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="0ta-gc-LbM">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PLB-2M-mjH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="Qb0-bn-wmh" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="GGJ-OJ-vtk"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b32-5c-hBp">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rbT-VI-gfz" kind="relationship" relationship="rootViewController" id="0N7-or-Tc8"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="-2418" y="756"/>
+        </scene>
+        <!--Pan Kou View Controller-->
+        <scene sceneID="gtk-KP-DYV">
+            <objects>
+                <viewController id="rbT-VI-gfz" customClass="PanKouViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pVg-kY-v2f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="dfi-yC-k1w"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="giz-hk-Ro2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jWL-SY-j1e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1513" y="841"/>
         </scene>
     </scenes>
 </document>

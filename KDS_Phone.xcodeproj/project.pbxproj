@@ -30,6 +30,7 @@
 		B2AAF32321508090009218C7 /* JT_TimelineAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF32221508090009218C7 /* JT_TimelineAccessoryView.m */; };
 		B2AAF3262150809A009218C7 /* JT_KLineAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */; };
 		B2AAF329215080B3009218C7 /* JT_HorPanKouInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */; };
+		B2AAF32C2150867D009218C7 /* PanKouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AAF32B2150867D009218C7 /* PanKouViewController.m */; };
 		B2ACB90C213384A200CA2EB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90B213384A200CA2EB6 /* AppDelegate.m */; };
 		B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2ACB90E213384A200CA2EB6 /* ViewController.m */; };
 		B2ACB912213384A200CA2EB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2ACB910213384A200CA2EB6 /* Main.storyboard */; };
@@ -121,6 +122,8 @@
 		B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineAccessoryView.m; sourceTree = "<group>"; };
 		B2AAF327215080B3009218C7 /* JT_HorPanKouInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_HorPanKouInfoView.h; sourceTree = "<group>"; };
 		B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_HorPanKouInfoView.m; sourceTree = "<group>"; };
+		B2AAF32A2150867D009218C7 /* PanKouViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PanKouViewController.h; sourceTree = "<group>"; };
+		B2AAF32B2150867D009218C7 /* PanKouViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PanKouViewController.m; sourceTree = "<group>"; };
 		B2ACB907213384A200CA2EB6 /* KDS_Phone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KDS_Phone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACB90A213384A200CA2EB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B2ACB90B213384A200CA2EB6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -336,6 +339,8 @@
 				B2937131213D1F3400DE6974 /* TabOneViewController.m */,
 				B2ACB9522133C5F000CA2EB6 /* FirstViewController.h */,
 				B2ACB9532133C5F000CA2EB6 /* FirstViewController.m */,
+				B2AAF32A2150867D009218C7 /* PanKouViewController.h */,
+				B2AAF32B2150867D009218C7 /* PanKouViewController.m */,
 				B2ACB90D213384A200CA2EB6 /* ViewController.h */,
 				B2ACB90E213384A200CA2EB6 /* ViewController.m */,
 				B2ACB93D213384E500CA2EB6 /* DetailViewController.h */,
@@ -611,6 +616,7 @@
 				B27F7DC3213EAB4B00FE71FF /* JT_KLineIndicatorAccessoryView.m in Sources */,
 				B21328AB213F662C001901B6 /* JT_PriceMarkModel.m in Sources */,
 				B2676E1721369CEA002F47A0 /* UIView+KDS_FrameHelper.m in Sources */,
+				B2AAF32C2150867D009218C7 /* PanKouViewController.m in Sources */,
 				B2676E0E2136797D002F47A0 /* JT_KLineChartView.m in Sources */,
 				B2ACB9572133CC5A00CA2EB6 /* UIFont+KDS_FontHandle.m in Sources */,
 				B2ACB93F213384E500CA2EB6 /* DetailViewController.m in Sources */,
