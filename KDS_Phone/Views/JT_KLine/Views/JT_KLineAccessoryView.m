@@ -28,6 +28,7 @@
 @property (nonatomic ,strong) UILabel *volume; //成交量
 @property (nonatomic ,strong) UILabel *changeRate; //涨跌幅
 @property (nonatomic ,strong) JT_KLineModel *kLineModel;
+@property (nonatomic ,strong) NSMutableArray <UILabel *>*items;
 @end
 @implementation JT_KLineAccessoryView
 
@@ -42,6 +43,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _items = @[].mutableCopy;
         self.backgroundColor = JT_ColorDayOrNight(@"F2F4F8", @"1B1C20");
         [self newSubviews];
     }
@@ -61,28 +63,17 @@
     for (int i = 0; i < 12; i ++) {
         UILabel *label = [UILabel new];
         [self addSubview:label];
+        [_items addObject:label];
+        
         if (i % 2 == 0) {
             label.font = font13;
             label.textColor = KLineAccessory_LightBlackColor;
             label.text = titles[i / 2];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(self);
-                if (i / 2 == 5) {
-                    make.left.mas_equalTo( kScreen_Width / 8 * (i / 2 ) + 100);
-                } else {
-                    make.left.mas_equalTo( kScreen_Width / 8 * (i / 2 ) + 80);
-                }
-            }];
-            preLabel = label;
         } else {
             label.font = boldFont13;
             label.textColor = KLineAccessory_BlackColor;
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(self);
-                make.left.equalTo(preLabel.mas_right).offset(2);
-            }];
         }
-    
+        
         switch (i) {
             case 1:
                 _highPrice = label;
@@ -112,6 +103,31 @@
         make.left.equalTo(@10);
         make.centerY.equalTo(self);
     }];
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    //更新布局
+    __block UILabel *preLabel;
+    [_items enumerateObjectsUsingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx % 2 == 0) {
+            [label mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self);
+                if (idx / 2 == 5) {
+                    make.left.mas_equalTo( self.frame.size.width / 8 * (idx / 2 ) + 100);
+                } else {
+                    make.left.mas_equalTo( self.frame.size.width / 8 * (idx / 2 ) + 80);
+                }
+            }];
+            preLabel = label;
+        } else {
+            
+            [label mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self);
+                make.left.equalTo(preLabel.mas_right).offset(2);
+            }];
+        }
+    }];
+
 }
 - (void)updateWithModel:(JT_KLineModel *)model {
     _kLineModel = model;
