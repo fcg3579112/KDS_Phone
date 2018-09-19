@@ -59,7 +59,6 @@
     _dateTime.font = boldFont13;
     [self addSubview:_dateTime];
     NSArray *titles = @[@"高",@"开",@"低",@"收",@"成交量",@"涨幅",];
-    UILabel *preLabel;
     for (int i = 0; i < 12; i ++) {
         UILabel *label = [UILabel new];
         [self addSubview:label];
@@ -147,9 +146,7 @@
     _closePrice.textColor = [self getColorWithPrice:model.closePrice];
     
 }
-//#define OpenPrice_GrayColor                 JT_ColorDayOrNight(@"858C9E", @"858C9E")
-//#define OpenPrice_RedColor                  JT_ColorDayOrNight(@"FF3D00", @"FF3D00")
-//#define OpenPrice_GreenColor                JT_ColorDayOrNight(@"333333", @"666666")
+
 - (UIColor *)getColorWithPrice:(NSString *)price {
     if (price.floatValue > _kLineModel.referencePrice.floatValue) {
         return JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
