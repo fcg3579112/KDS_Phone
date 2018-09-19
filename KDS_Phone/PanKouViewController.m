@@ -1,4 +1,4 @@
-//
+
 //  PanKouViewController.m
 //  KDS_Phone
 //
@@ -37,17 +37,34 @@
     [self panKouView];
     [self timelineAndKlineSegment];
     
+    [self timelineAccessoryView];
+    
     [self requestTimeline];
     [self requestKLineData];
+    
+    [self requestFS];
+    
 }
 - (void)requestTimeline {
     MSnapQuoteRequest *request = [[MSnapQuoteRequest alloc] init];
-    request.code = @"399001.sz";
+    request.code = @"000001.sh";
     [MApi sendRequest:request completionHandler:^(MResponse *resp) {
         MSnapQuoteResponse *response = (MSnapQuoteResponse *)resp;
         //增值指标数据
         response.stockItem.addValueItem;
         [self.panKouView updateWithModel:response.stockItem];
+        
+    }];
+}
+- (void)requestFS {
+    MChartRequest *r = [[MChartRequest alloc] init];
+    r.code = @"000001.sh";
+    r.subtype = @"1400";
+    r.chartType = MChartTypeOneDay;
+    [MApi sendRequest:r completionHandler:^(MResponse *resp) {
+        MChartResponse *response = (MChartResponse *)resp;
+        self.timelineAccessoryView.hidden = NO;
+        [self.timelineAccessoryView updateWithModel:response.OHLCItems.firstObject];
     }];
 }
 - (void)requestKLineData {
@@ -92,7 +109,7 @@
 - (JT_KLineAccessoryView *)kLineAccessoryView {
     if (!_kLineAccessoryView) {
         _kLineAccessoryView = [JT_KLineAccessoryView new];
-//        _kLineAccessoryView.hidden = YES;
+        _kLineAccessoryView.hidden = YES;
         [_contentView addSubview:_kLineAccessoryView];
         [_kLineAccessoryView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.timelineAndKlineSegment);
@@ -102,10 +119,10 @@
 }
 - (JT_TimelineAccessoryView *)timelineAccessoryView {
     if (!_timelineAccessoryView) {
-        _timelineAccessoryView = [JT_TimelineAccessoryView new];
+        _timelineAccessoryView = [[JT_TimelineAccessoryView alloc] initWithType:JT_DeviceOrientationHorizontal];
         _timelineAccessoryView.hidden = YES;
         [_contentView addSubview:_timelineAccessoryView];
-        [_timelineAndKlineSegment mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_timelineAccessoryView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.timelineAndKlineSegment);
         }];
     }

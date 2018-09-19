@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "JT_KLineEnum.h"
-@class MStockItem;
+@class MOHLCItem;
 @interface JT_TimelineAccessoryView : UIView
 - (instancetype)initWithType:(JT_DeviceOrientation)orientation;
-- (void)updateWithModel:(MStockItem *)model;
+- (void)updateWithModel:(MOHLCItem *)model;
 @end

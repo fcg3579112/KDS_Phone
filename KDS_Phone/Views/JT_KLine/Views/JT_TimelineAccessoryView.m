@@ -9,6 +9,7 @@
 #import "JT_TimelineAccessoryView.h"
 #import "UIFont+KDS_FontHandle.h"
 #import "JT_ColorManager.h"
+#import "JT_KLineConfig.h"
 #import <MApi.h>
 #import <Masonry.h>
 @interface JT_TimelineAccessoryView ()
@@ -17,7 +18,7 @@
 @property (nonatomic ,strong) UILabel *changeRate;//涨幅
 @property (nonatomic ,strong) UILabel *tradeVolume;//成交量
 @property (nonatomic ,strong) UILabel *averagePrice;//均价
-@property (nonatomic ,strong) MStockItem *stockModel;
+@property (nonatomic ,strong) MOHLCItem *stockModel;
 @property (nonatomic ,assign)JT_DeviceOrientation orientation;
 @property (nonatomic ,strong) NSMutableArray <UILabel *>*items;
 @end
@@ -33,6 +34,7 @@
 - (instancetype)initWithType:(JT_DeviceOrientation)orientation {
     self = [super init];
     if (self) {
+        self.backgroundColor = JT_ColorDayOrNight(@"F2F4F8", @"1B1C20");
         _items = @[].mutableCopy;
         _orientation = orientation;
         [self newSubviews];
@@ -64,19 +66,19 @@
             label.textColor = blackColor;
             
             switch (i / 2) {
-                case 1:
+                case 0:
                     _datetime = label;
                     break;
-                case 2:
+                case 1:
                     _lastPrice = label;
                     break;
-                case 3:
+                case 2:
                     _changeRate = label;
                     break;
-                case 4:
+                case 3:
                     _tradeVolume = label;
                     break;
-                case 5:
+                case 4:
                     _averagePrice = label;
                     break;
                     
@@ -98,33 +100,53 @@
         offset = 2;
         originX = 10;
     } else { // 横屏布局
-        offset = 4;
-        originX = 25;
+        offset = 6;
+        originX = 20;
     }
     [_items enumerateObjectsUsingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
 
         if (idx % 2 == 0) {
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            [label mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self);
-                make.left.mas_equalTo(self.frame.size.width / 6.5 * idx + originX);
+                make.left.mas_equalTo(self.frame.size.width / 5.5 * (idx / 2) + originX);
             }];
             preLabel = label;
         } else {
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            [label mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(self);
                 make.left.equalTo(preLabel.mas_right).offset(offset);
             }];
         }
     }];
 }
-- (void)updateWithModel:(MStockItem *)model {
+- (void)updateWithModel:(MOHLCItem *)model {
     _stockModel = model;
+    if (model.datetime.length >= 12) {
+        _datetime.text = [NSString stringWithFormat:@"%@:%@",[model.datetime substringWithRange:NSMakeRange(8, 2)],[model.datetime substringWithRange:NSMakeRange(10, 2)]];
+    }
+    _lastPrice.text = model.closePrice;
+    _tradeVolume.text = formatVolume(model.tradeVolume.integerValue);
+    _averagePrice.text = [NSString stringWithFormat:@"%.2f",model.averagePrice.floatValue];
+    _changeRate.text = [self changeRateString];
+
+}
+- (NSString *)changeRateString{
+    NSString *chanageRate;
+    CGFloat rate = (_stockModel.closePrice.floatValue - _stockModel.referencePrice.floatValue) / _stockModel.referencePrice.floatValue * 100;
+    if (rate > 0) {
+        chanageRate = [NSString stringWithFormat:@"+%.2f%%",rate];
+    }else if (rate < 0) {
+        chanageRate = [NSString stringWithFormat:@"%.2f%%",rate];
+    } else {
+        chanageRate = @"0.00%";
+    }
+    return chanageRate;
 }
 - (UIColor *)getColorWithPrice:(NSString *)price {
     
-    if (price.floatValue > _stockModel.preClosePrice.floatValue) {
+    if (price.floatValue > _stockModel.referencePrice.floatValue) {
         return JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
-    } else if (price.floatValue < _stockModel.preClosePrice.floatValue) {
+    } else if (price.floatValue < _stockModel.referencePrice.floatValue) {
         return JT_ColorDayOrNight(@"333333", @"666666");
     } else {
         return JT_ColorDayOrNight(@"858C9E", @"858C9E");
