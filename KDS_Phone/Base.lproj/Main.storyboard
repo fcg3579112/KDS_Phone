@@ -20,7 +20,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Qb0-bn-wmh" kind="relationship" relationship="viewControllers" id="W1f-dT-YLh"/>
                         <segue destination="Va3-ma-3KB" kind="relationship" relationship="viewControllers" id="0bG-kS-j9d"/>
                         <segue destination="cpm-r3-EaV" kind="relationship" relationship="viewControllers" id="Nio-rp-imD"/>
                     </connections>
@@ -164,7 +163,6 @@
         <!--Item-->
         <scene sceneID="0ta-gc-LbM">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PLB-2M-mjH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="Qb0-bn-wmh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="GGJ-OJ-vtk"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b32-5c-hBp">
@@ -175,6 +173,7 @@
                         <segue destination="rbT-VI-gfz" kind="relationship" relationship="rootViewController" id="0N7-or-Tc8"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PLB-2M-mjH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2418" y="756"/>
         </scene>

@@ -35,20 +35,21 @@
         make.top.equalTo(@88);
         make.height.mas_equalTo(33);
     }];
-//    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationHorizontal];
-//    _kLineView.rightSelecterWidth = 55;
-//    _kLineView.needZoomAndScroll = YES;
-//
-//    _kLineView.bottomMargin = 10;
-//    _kLineView.volumeButtonEnable = YES;
-//
-//
-//    [self.view addSubview:_kLineView];
-//    [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.right.mas_equalTo(0);
-//        make.top.mas_equalTo(sg.frame.origin.y + sg.frame.size.height);
-//        make.height.mas_equalTo(kScreen_Width * 0.9);
-//    }];
+    _kLineView = [[JT_KLineView alloc] initWithDelegate:self orientation:JT_DeviceOrientationVertical];
+    _kLineView.rightSelecterWidth = 55;
+    _kLineView.needZoomAndScroll = YES;
+
+    _kLineView.bottomMargin = 10;
+    _kLineView.volumeButtonEnable = YES;
+
+    [self.view addSubview:_kLineView];
+    [_kLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.top.mas_equalTo(sg.mas_bottom);
+        make.height.mas_equalTo(kScreen_Width * 0.9);
+    }];
+    
+    [self requestKLineData];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -56,7 +57,6 @@
         [_timer invalidate];
         _timer = nil;
     }
-    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(requestKLineData) userInfo:nil repeats:YES];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -81,30 +81,9 @@
             NSArray *items = response.OHLCItems;
             // 模型转换
             [self.kLineView reloadWithNewestModels:items];
-//            [self.kLineView updateKLineWithModels:items];
         }
     }];
     
-//    MOHLCRequestV2 *request = [[MOHLCRequestV2 alloc]init];
-//    request.code = @"600000.sh";
-//    request.subtype = @"1001";
-//    request.date = @"20180914";
-//    request.requestType = MRequestTypeNewer;
-//    request.priceAdjustedMode = MOHLCPriceAdjustedModeNone;
-//    [MApi sendRequest:request completionHandler:^(MResponse *resp) {
-//        MOHLCResponse *response = (MOHLCResponse *)resp;
-//        if (response.status == MResponseStatusSuccess) {
-//            NSArray *items = response.OHLCItems;
-//            // 模型转换
-//            [items enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
-//                [self.allKLineModel addObject:model];
-//                model.allKLineModel = self.allKLineModel;
-//                [model initData];
-//            }];
-//            self.kLineView.kLineModels = self.allKLineModel;
-//        }
-//    }];
 }
 - (void)JT_TimelineAndKlineSegmentItemClick:(JT_TimelineAndKlineItemType)itemType{
     
