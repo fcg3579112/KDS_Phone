@@ -12,6 +12,8 @@
 @property (nonatomic ,assign) CGFloat timeViewTopMargin;
 @property (nonatomic ,assign) CGFloat timeViewHeight;
 @property (nonatomic ,assign) CGFloat rightMargin;
+@property (nonatomic ,strong) NSString *costLinePrice;
+
 
 /**
  指标信息显示视图
@@ -22,5 +24,5 @@
  k 线视图下部安全区的高度
  */
 @property (nonatomic ,assign) CGFloat kLineChartSafeAreaHeight;
-- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value changeRate:(NSString *)changeRate kLineModel:(JT_KLineModel *)kLineModel;
+- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value costLineY:(float)costLineY changeRate:(NSString *)changeRate kLineModel:(JT_KLineModel *)kLineModel;
 @end

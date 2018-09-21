@@ -158,10 +158,9 @@
     [self.needDraw_MA60_Positions removeAllObjects];
     
     //计算成本线坐标，
-    if (_costLinePrice < self.screenMaxValue && _costLinePrice > self.screenMinValue) {
+    if (self.showCostLinePrice) {
         self.costLineY = ABS(maxKLineY - (_costLinePrice - self.screenMinValue)/unitValue);
     }
-    
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
         float xPosition = self.startXPosition + idx * ([JT_KLineConfig kLineWidth] + [JT_KLineConfig kLineGap]);
@@ -285,7 +284,13 @@
     }
     [self setNeedsDisplay];
 }
-
+#pragma mark Getter
+- (BOOL)showCostLinePrice {
+    if (self.costLinePrice > self.screenMinValue && self.costLinePrice < self.screenMaxValue) {
+        return YES;
+    }
+    return NO;
+}
 #pragma mark drawRect方法
 - (void)drawRect:(CGRect)rect{
     [super drawRect:rect];
@@ -306,8 +311,8 @@
     }
     CGContextStrokePath(context);
     
-    //画成本线,登录并且有成本线
-    if (_costLinePrice > self.screenMinValue && _costLinePrice < self.screenMaxValue) {
+    //画成本线
+    if (self.showCostLinePrice) {
         UIColor *color = JT_ColorDayOrNight(@"FF6E33 ", @"FF6E33 ");
         CGContextSetStrokeColorWithColor(context, color.CGColor);
         //设置虚线宽度

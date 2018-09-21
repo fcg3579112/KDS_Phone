@@ -9,12 +9,25 @@
 #import "JT_KLineCrossLineView.h"
 #import "JT_KLineModel.h"
 #import "JT_KLineConfig.h"
+#import <Masonry.h>
 @interface JT_KLineCrossLineView ()
 @property (nonatomic ,assign) CGPoint crossLineCenterPoint;
 @property (nonatomic ,strong) JT_KLineModel *kLineModel;
 @property (nonatomic ,strong) NSString *dateTime;
 @property (nonatomic ,strong) NSString *valueY;
 @property (nonatomic ,strong) NSString *changeRate;
+@property (nonatomic ,assign) float costLineY;
+
+
+@property (nonatomic ,strong) UIView *horizontalLine;
+@property (nonatomic ,strong) UIView *verticalLineUp;
+@property (nonatomic ,strong) UIView *verticalLineDown;
+
+@property (nonatomic ,strong) UILabel *costLineLabel;//成本线标记
+@property (nonatomic ,strong) UILabel *datetimeLabel;//时间
+@property (nonatomic ,strong) UILabel *priceLabel;//时间
+@property (nonatomic ,strong) UILabel *changeRateLabel;//时间
+@property (nonatomic ,strong) UIFont *font;
 @end
 @implementation JT_KLineCrossLineView
 
@@ -30,130 +43,219 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        self.font = [UIFont systemFontOfSize:JT_KLineCrossLineTextFontSize];
     }
     return self;
 }
-- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value changeRate:(NSString *)changeRate kLineModel:(JT_KLineModel *)kLineModel {
+- (void)updateCrossLine:(CGPoint)point valueY:(NSString *)value costLineY:(float)costLineY changeRate:(NSString *)changeRate kLineModel:(JT_KLineModel *)kLineModel {
     _valueY = value;
     _changeRate = changeRate;
     _crossLineCenterPoint = point;
     _kLineModel = kLineModel;
+    _costLineY = costLineY;
     _dateTime = formateDateFromString(kLineModel.datetime);
-    [self setNeedsDisplay];
+    
+    [self updateSubviews];
 }
 
-
-/**
- NSString *const NSFontAttributeName;(字体)
- 
- NSString *const NSParagraphStyleAttributeName;(段落)
- 
- NSString *const NSForegroundColorAttributeName;(字体颜色)
- 
- NSString *const NSBackgroundColorAttributeName;(字体背景色)
- 
- NSString *const NSLigatureAttributeName;(连字符)
- 
- NSString *const NSKernAttributeName;(字间距)
- 
- NSString *const NSStrikethroughStyleAttributeName;(删除线)
- 
- NSString *const NSUnderlineStyleAttributeName;(下划线)
- 
- NSString *const NSStrokeColorAttributeName;(边线颜色)
- 
- NSString *const NSStrokeWidthAttributeName;(边线宽度)
- 
- NSString *const NSShadowAttributeName;(阴影)(横竖排版)
- 
- NSString *const NSVerticalGlyphFormAttributeName;
- 
- */
-- (void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
+- (void)updateSubviews {
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    if (_costLineY == 0) {
+        self.costLineLabel.hidden = YES;
+    } else {
+        NSString *text = [NSString stringWithFormat:@"成本\n%@",self.costLinePrice];
+        self.costLineLabel.text = text;
+        CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName : self.font}];
+        self.costLineLabel.hidden = NO;
+        [self.costLineLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.costLineY - textSize.height / 2);
+        }];
+    }
     
-    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineColor.CGColor);
-    CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
-    UIFont *font = [UIFont systemFontOfSize:JT_KLineCrossLineTextFontSize];
+    self.datetimeLabel.text = self.dateTime;
+    self.changeRateLabel.text = self.changeRate;
+    self.priceLabel.text = self.valueY;
     
     
     float kLineChartMaxY = self.timeViewTopMargin - self.kLineChartSafeAreaHeight;
     float kLineChartMinY = self.kLineChartSafeAreaHeight;
-    float volumeMaxY = rect.size.height;
+    float volumeMaxY = self.frame.size.height;
     float volumeMinY = self.timeViewTopMargin + self.timeViewHeight + self.indexAccessoryViewHeight;
     
-    //只有坐标在 蜡烛线与 成交量区间中才需要画横线
+    [self.verticalLineUp mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.crossLineCenterPoint.x);
+    }];
+    [self.verticalLineDown mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.crossLineCenterPoint.x);
+    }];
+
+    CGSize datetimeSize = [self.dateTime sizeWithAttributes:@{NSFontAttributeName : self.font}];
+    CGFloat originX = _crossLineCenterPoint.x - datetimeSize.width / 2;
+    originX = originX < 0 ? 0 : originX;
+    originX = originX + datetimeSize.width > self.frame.size.width - self.rightMargin ? self.frame.size.width - datetimeSize.width - self.rightMargin : originX;
+    [self.datetimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(originX);
+    }];
+
     float centerY = _crossLineCenterPoint.y;
-    if ( (centerY >= kLineChartMinY && centerY <= kLineChartMaxY)
-       || (centerY >= volumeMinY && centerY <= volumeMaxY)) {
-        CGSize valueYSize = [_valueY sizeWithAttributes:@{NSFontAttributeName : font}];
-        CGRect valueYRect;
-        CGPoint horizontalPoints[] = {CGPointMake(valueYSize.width, _crossLineCenterPoint.y), CGPointMake(rect.size.width - self.rightMargin, _crossLineCenterPoint.y)};
-        CGContextStrokeLineSegments(context, horizontalPoints, 2);
-        
-        NSDictionary *attributes = @{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor};
-        //画 Y 轴值
-        CGFloat originY = _crossLineCenterPoint.y - valueYSize.height / 2;
-        if (centerY >= kLineChartMinY && centerY <= kLineChartMaxY) { // 画上蜡烛线区间Y值
-            if (originY < kLineChartMinY) {
-                originY = kLineChartMinY;
-            }
-            if (originY >  kLineChartMaxY - valueYSize.height) {
-                originY = kLineChartMaxY - valueYSize.height;
-            }
-            // 画右边的涨跌幅
-            CGSize changeRateSize = [_changeRate sizeWithAttributes:@{NSFontAttributeName : font}];
-            CGRect changeRateRect = CGRectMake(rect.size.width  - self.rightMargin, originY, changeRateSize.width, changeRateSize.height);
-            [_changeRate drawInRect:changeRateRect withAttributes:attributes];
-            //画画 Y 轴值边框
-            CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
-            CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
-            CGContextAddRect(context, changeRateRect);
-            CGContextStrokePath(context);
-            
-        } else { //画成交量区间Y值
-            if (originY < volumeMinY) {
-                originY = volumeMinY;
-            }
-            if (originY >  volumeMaxY - valueYSize.height) {
-                originY = volumeMaxY - valueYSize.height;
-            }
+    CGSize valueYSize = [self.valueY sizeWithAttributes:@{NSFontAttributeName : self.font}];
+    CGFloat originY = _crossLineCenterPoint.y - valueYSize.height / 2.f;
+    
+    if (centerY >= kLineChartMinY && centerY <= kLineChartMaxY) {// k线蜡烛线区间
+        self.priceLabel.hidden = NO;
+        self.changeRateLabel.hidden = NO;
+        self.horizontalLine.hidden = NO;
+        if (originY < kLineChartMinY) {
+            originY = kLineChartMinY;
+        } else if (originY >  kLineChartMaxY - valueYSize.height) {
+            originY = kLineChartMaxY - valueYSize.height;
         }
-        valueYRect = CGRectMake(0, originY, valueYSize.width, valueYSize.height);
-        [_valueY drawInRect:valueYRect withAttributes:attributes];
-        //画画 Y 轴值边框
-        CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
-        CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
-        CGContextAddRect(context, valueYRect);
-        CGContextStrokePath(context);
+    } else if (centerY >= volumeMinY && centerY <= volumeMaxY) {// 成交量区间
+        self.priceLabel.hidden = NO;
+        self.changeRateLabel.hidden = YES;
+        self.horizontalLine.hidden = NO;
+        if (originY < volumeMinY) {
+            originY = volumeMinY;
+        } else if (originY >  volumeMaxY - valueYSize.height) {
+            originY = volumeMaxY - valueYSize.height;
+        }
+    } else {
+        self.priceLabel.hidden = YES;
+        self.changeRateLabel.hidden = YES;
+        self.horizontalLine.hidden = YES;
     }
     
-    //竖线上部分
-    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineColor.CGColor);
-    CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
-    CGPoint verticalLineUpPoints[] = {CGPointMake(_crossLineCenterPoint.x, 0), CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin)};
-    CGContextStrokeLineSegments(context, verticalLineUpPoints, 2);
-    //竖线下部分
-    CGPoint verticalLineDownPoints[] = {CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin + self.timeViewHeight), CGPointMake(_crossLineCenterPoint.x,rect.size.height )};
-    CGContextStrokeLineSegments(context, verticalLineDownPoints, 2);
-    CGContextStrokePath(context);
+    [self.priceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(originY);
+    }];
     
-    CGSize textSize = [_dateTime sizeWithAttributes:@{NSFontAttributeName : font}];
-    textSize = CGSizeMake(textSize.width, textSize.height);
-    CGFloat originX = _crossLineCenterPoint.x - textSize.width / 2;
+    [self.changeRateLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(originY);
+    }];
     
-    originX = originX < 0 ? 0 : originX;
-    originX = originX >= rect.size.width - textSize.width - self.rightMargin ?  originX = rect.size.width - textSize.width - self.rightMargin : originX;
-    
-    CGRect textRect = CGRectMake(originX, self.timeViewTopMargin, textSize.width, textSize.height);
-    //画时间
-    [_dateTime drawInRect:textRect withAttributes:@{NSFontAttributeName : font,NSForegroundColorAttributeName : JT_KLineCrossLineTextColor,NSBackgroundColorAttributeName : JT_KLineCrossLineTextBackgroundColor}];
-    //画时间边框
-    CGContextSetLineWidth(context,JT_KLineCrossLineWidth * 2);
-    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineTextBordeColor.CGColor);
-    CGContextAddRect(context, textRect);
-    CGContextStrokePath(context);
+    [self.horizontalLine mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.crossLineCenterPoint.y);
+    }];
+}
+
+#pragma mark Getter
+//竖线上部分
+
+- (UIView *)horizontalLine {
+    if (!_horizontalLine) {
+        _horizontalLine = [UIView new];
+        [self addSubview:_horizontalLine];
+        _horizontalLine.backgroundColor = JT_KLineCrossLineColor;
+        [_horizontalLine mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(- self.rightMargin);
+            make.height.mas_equalTo(JT_KLineCrossLineWidth);
+            make.top.mas_equalTo(self.crossLineCenterPoint.y);
+            make.left.equalTo(self.priceLabel.mas_right);
+        }];
+    }
+    return _horizontalLine;
+}
+
+- (UIView *)verticalLineUp {
+    if (!_verticalLineUp) {
+        _verticalLineUp = [UIView new];
+        [self addSubview:_verticalLineUp];
+        _verticalLineUp.backgroundColor = JT_KLineCrossLineColor;
+        [_verticalLineUp mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(0);
+            make.width.mas_equalTo(JT_KLineCrossLineWidth);
+            make.left.mas_equalTo(0);
+            make.height.mas_equalTo(self.timeViewTopMargin);
+        }];
+    }
+    return _verticalLineUp;
+}
+
+- (UIView *)verticalLineDown {
+    if (!_verticalLineDown) {
+        _verticalLineDown = [UIView new];
+        [self addSubview:_verticalLineDown];
+        _verticalLineDown.backgroundColor = JT_KLineCrossLineColor;
+        [_verticalLineDown mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(0);
+            make.width.mas_equalTo(JT_KLineCrossLineWidth);
+            make.top.mas_equalTo(self.timeViewTopMargin + self.timeViewHeight);
+            make.bottom.mas_equalTo(0);
+        }];
+    }
+    return _verticalLineDown;
+}
+
+- (UILabel *)datetimeLabel {
+    if (!_datetimeLabel) {
+        _datetimeLabel = [UILabel new];
+        _datetimeLabel.font = self.font;
+        _datetimeLabel.textColor = JT_KLineCrossLineTextColor;
+        _datetimeLabel.backgroundColor = JT_KLineCrossLineTextBackgroundColor;
+        _datetimeLabel.layer.borderColor = JT_KLineCrossLineTextBordeColor.CGColor;
+        _datetimeLabel.layer.borderWidth = 1;
+        _datetimeLabel.numberOfLines = 1;
+        [self addSubview:_datetimeLabel];
+        [_datetimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.verticalLineUp.mas_bottom);
+            make.bottom.equalTo(self.verticalLineDown.mas_top);
+            make.left.equalTo(@0);
+        }];
+    }
+    return _datetimeLabel;
+}
+
+- (UILabel *)priceLabel {
+    if (!_priceLabel) {
+        _priceLabel = [UILabel new];
+        _priceLabel.font = self.font;
+        _priceLabel.textColor = JT_KLineCrossLineTextColor;
+        _priceLabel.backgroundColor = JT_KLineCrossLineTextBackgroundColor;
+        _priceLabel.layer.borderColor = JT_KLineCrossLineTextBordeColor.CGColor;
+        _priceLabel.layer.borderWidth = 1;
+        _priceLabel.numberOfLines = 1;
+        [self addSubview:_priceLabel];
+        [_priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@0);
+            make.top.equalTo(@0);
+        }];
+    }
+    return _priceLabel;
+}
+
+- (UILabel *)changeRateLabel {
+    if (!_changeRateLabel) {
+        _changeRateLabel = [UILabel new];
+        _changeRateLabel.font = self.font;
+        _changeRateLabel.textColor = JT_KLineCrossLineTextColor;
+        _changeRateLabel.backgroundColor = JT_KLineCrossLineTextBackgroundColor;
+        _changeRateLabel.layer.borderColor = JT_KLineCrossLineTextBordeColor.CGColor;
+        _changeRateLabel.layer.borderWidth = 1;
+        _changeRateLabel.numberOfLines = 1;
+        [self addSubview:_changeRateLabel];
+        [_changeRateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_right).offset( -self.rightMargin);
+            make.top.equalTo(@0);
+        }];
+    }
+    return _changeRateLabel;
+}
+
+- (UILabel *)costLineLabel {
+    if (!_costLineLabel) {
+        _costLineLabel = [UILabel new];
+        _costLineLabel.numberOfLines = 2;
+        _costLineLabel.textColor = [UIColor whiteColor];
+        _costLineLabel.font = self.font;
+        _costLineLabel.backgroundColor = JT_ColorDayOrNight(@"FF6E33", @"8D4429");
+        [self addSubview:_costLineLabel];
+        _costLineLabel.textAlignment = NSTextAlignmentCenter;
+        [_costLineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@0);
+            make.top.equalTo(@0);
+        }];
+        _costLineLabel.hidden = YES;
+    }
+    return _costLineLabel;
 }
 @end

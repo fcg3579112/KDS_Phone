@@ -32,4 +32,5 @@
 
 @property (nonatomic ,assign) CGFloat costLineY; //成本线 Y 坐标
 
+@property (nonatomic ,assign) BOOL showCostLinePrice;
 @end

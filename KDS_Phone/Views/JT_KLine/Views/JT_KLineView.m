@@ -474,6 +474,8 @@
     
     point.x = self.startXPosition + index * itemWidth;
     JT_KLineModel *kLineModel = self.needDrawKLineModels[index];
+    //成本线坐标
+    float costLineY = self.klineChart.showCostLinePrice ? self.klineChart.costLineY : 0;
     switch (longPress.state) {
         case UIGestureRecognizerStateBegan:
             //显示十字线时，禁止页面滑动、显示十字线、显示右边涨跌幅标尺视图、关闭定时器
@@ -485,12 +487,12 @@
             [_delayHidenCrossLineTimer invalidate];
             [self.indicatorAccessory updateWith:kLineModel];
             [self.klineMA updateMAWith:kLineModel];
-            [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY costLineY:costLineY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateChanged:
             [self.indicatorAccessory updateWith:kLineModel];
             [self.klineMA updateMAWith:kLineModel];
-            [self.crossLineView updateCrossLine:point valueY:valueY changeRate:changeRate kLineModel:kLineModel];
+            [self.crossLineView updateCrossLine:point valueY:valueY costLineY:costLineY changeRate:changeRate kLineModel:kLineModel];
             break;
         case UIGestureRecognizerStateEnded:
             [self p_delayHidenCrossLine];
@@ -579,6 +581,7 @@
 
 - (void)setKLineCostLinePrice:(float)kLineCostLinePrice {
     self.klineChart.costLinePrice = kLineCostLinePrice;
+    self.crossLineView.costLinePrice = [NSString stringWithFormat:@"%.2f",kLineCostLinePrice];
     [self p_drawKLineView];
 }
 #pragma mark Getter
