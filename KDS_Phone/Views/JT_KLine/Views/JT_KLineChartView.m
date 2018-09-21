@@ -208,8 +208,11 @@
         positionModel.lowPoint = lowPoint;
         
         if (kLineModel.buySellItems.count) {
-            positionModel.buySellPoint = CGPointMake(xPosition, maxKLineY - 5);
+            
         }
+        float radius = [JT_KLineConfig kLineWidth] * 2 / 6.f;
+        positionModel.buySellPoint = CGPointMake(xPosition, self.frame.size.height - radius - 1);
+        
         [self.needDrawKLinePositionModels addObject:positionModel];
         
         if ([JT_KLineConfig MA5]) {
@@ -339,7 +342,7 @@
         UIColor *color = kLineModel.closePrice.floatValue > kLineModel.openPrice.floatValue ? JT_KLineIncreaseColor : JT_KLineDecreaseColor;
         [kLineDrawUtil drawBarWithColor:color width:[JT_KLineConfig kLineWidth] begin:obj.openPoint end:obj.closePoint];
         [kLineDrawUtil drawBarWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] begin:obj.lowPoint end:obj.highPoint];
-        
+        [kLineDrawUtil drawRoundPoint:obj.buySellPoint];
     }];
     
     JT_DrawMALine *drawLine = [[JT_DrawMALine alloc] initWithContext:context];

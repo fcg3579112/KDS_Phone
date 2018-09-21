@@ -62,8 +62,13 @@
 }
 
 - (void)drawRoundPoint:(CGPoint)point {
+    UIColor *color =  JT_ColorDayOrNight(@"FF6E33", @"FF6E33");
     CGContextRef context = self.context;
-    CGContextAddArc(context, point.x, point.y, 2, 0, M_PI * 2, 0);
+    CGContextSetStrokeColorWithColor(context,color.CGColor);
+    float radius = [JT_KLineConfig kLineWidth] * 2 / 6.f;
+    CGContextAddArc(context, point.x, point.y, radius, 0, M_PI * 2, 0);
+    CGContextSetFillColorWithColor(context, color.CGColor);//填充色
+    CGContextDrawPath(context, kCGPathFillStroke);//根据坐标绘制路径并填充
 }
 
 @end
