@@ -52,6 +52,7 @@
 		B2BEDF4C2139162700974491 /* NSDate+KDS_Manage.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BEDF4A2139162700974491 /* NSDate+KDS_Manage.m */; };
 		B2F68FCE21425D500064F2B5 /* JT_KLineBarPositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F68FCD21425D500064F2B5 /* JT_KLineBarPositionModel.m */; };
 		B2F790F42154D6CC0023D789 /* JT_KLineBuySellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F790F32154D6CC0023D789 /* JT_KLineBuySellModel.m */; };
+		B2F790F72154ECFB0023D789 /* JT_BuySellAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F790F62154ECFB0023D789 /* JT_BuySellAccessoryView.m */; };
 		FC211CBFDEC7482D80CB5A66 /* libPods-KDS_Phone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0459D4619A8B309F2A92774C /* libPods-KDS_Phone.a */; };
 /* End PBXBuildFile section */
 
@@ -166,6 +167,8 @@
 		B2F68FCD21425D500064F2B5 /* JT_KLineBarPositionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineBarPositionModel.m; sourceTree = "<group>"; };
 		B2F790F22154D6CC0023D789 /* JT_KLineBuySellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_KLineBuySellModel.h; sourceTree = "<group>"; };
 		B2F790F32154D6CC0023D789 /* JT_KLineBuySellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_KLineBuySellModel.m; sourceTree = "<group>"; };
+		B2F790F52154ECFB0023D789 /* JT_BuySellAccessoryView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JT_BuySellAccessoryView.h; sourceTree = "<group>"; };
+		B2F790F62154ECFB0023D789 /* JT_BuySellAccessoryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JT_BuySellAccessoryView.m; sourceTree = "<group>"; };
 		BF231DA9237BE2B9C60F32EF /* Pods-KDS_Phone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KDS_Phone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KDS_Phone/Pods-KDS_Phone.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -272,6 +275,8 @@
 				B2AAF3252150809A009218C7 /* JT_KLineAccessoryView.m */,
 				B2AAF327215080B3009218C7 /* JT_HorPanKouInfoView.h */,
 				B2AAF328215080B3009218C7 /* JT_HorPanKouInfoView.m */,
+				B2F790F52154ECFB0023D789 /* JT_BuySellAccessoryView.h */,
+				B2F790F62154ECFB0023D789 /* JT_BuySellAccessoryView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -618,6 +623,7 @@
 				B20298B42136EB22000CE57B /* JT_KLineCandlePositionModel.m in Sources */,
 				B2ACB90F213384A200CA2EB6 /* ViewController.m in Sources */,
 				B2ACB91A213384A400CA2EB6 /* main.m in Sources */,
+				B2F790F72154ECFB0023D789 /* JT_BuySellAccessoryView.m in Sources */,
 				B2676E14213680C0002F47A0 /* JT_KLineVolumeView.m in Sources */,
 				B2937132213D1F3400DE6974 /* TabOneViewController.m in Sources */,
 				B2F790F42154D6CC0023D789 /* JT_KLineBuySellModel.m in Sources */,
