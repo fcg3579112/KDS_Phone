@@ -105,7 +105,6 @@
 @interface JT_TimelineAndKlineSegment () <JT_KlineVerticalSegmentDelegate>
 @property (nonatomic ,assign) JT_DeviceOrientation deviceOrientation;
 @property (nonatomic ,strong) UIView *slider;//滑动横线
-@property (nonatomic ,assign ,readonly) CGFloat similarKlineWidth;
 @property (nonatomic ,assign ,readonly) CGFloat verticalLineHeight;
 @property (nonatomic ,assign ,readonly) CGFloat sliderWidth;
 @property (nonatomic ,assign ,readonly) CGFloat sliderHeight;
@@ -143,18 +142,7 @@
     if (self.deviceOrientation == JT_DeviceOrientationVertical) {
         titles = @[@"分时",@"5日",@"日K",@"周K",@"月K",@"分钟",@"设置"];
     } else {
-        rightMargin = self.similarKlineWidth; //留出一部分用来放置相似 k 线按钮
         titles = @[@"分时",@"5日",@"日K",@"周K",@"月K",@"5分",@"15分",@"30分",@"60分",@"设置",];
-        //添加相似 k 线 按钮
-        _similarKlineButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_similarKlineButton addTarget:self action:@selector(similarKlineButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        _similarKlineButton.titleLabel.font = [UIFont kds_fontWithName:@"FontName_Two" size:13];
-        [_similarKlineButton setTitle:@"相似k线" forState:UIControlStateNormal];
-        [self addSubview:_similarKlineButton];
-        [_similarKlineButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.right.mas_equalTo(0);
-            make.width.mas_equalTo(self.similarKlineWidth);
-        }];
     }
     //按钮的宽度
     CGFloat fontSize = kScreen_Width >= 375 ? 15 : 14;
@@ -225,13 +213,6 @@
 - (void)JT_KlineVerticalSegmentItemClick:(JT_TimelineAndKlineItemType)itemType {
     [self setSeletedItemType:itemType];
     [self disMissKlineSegment];
-}
-#pragma mark ButtonClick
-
-- (void)similarKlineButtonClick:(UIButton *)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JT_TimelineAndKlineSegmentSimilarKlineClick)]) {
-        [self.delegate JT_TimelineAndKlineSegmentSimilarKlineClick];
-    }
 }
 - (void)itemButtonClick:(UIButton *)sender {
     if (sender == self.settingButon) {
@@ -332,15 +313,6 @@
     }
     [self setNeedsDisplay];
 }
-- (void)setSupportedSimilarKline:(BOOL)supportedSimilarKline {
-    _supportedSimilarKline = supportedSimilarKline;
-    if (_supportedSimilarKline) {
-        [_similarKlineButton setTitleColor:JT_ColorDayOrNight(@"FF6C1D", @"E46129") forState:UIControlStateNormal];
-    } else {
-        [_similarKlineButton setTitleColor:JT_ColorDayOrNight(@"A7ABB4", @"5E6575") forState:UIControlStateNormal];
-    }
-    [self setNeedsDisplay];
-}
 #pragma mark Getter
 
 - (JT_KlineVerticalSegment *)verticalSegment{
@@ -348,9 +320,6 @@
         _verticalSegment = [JT_KlineVerticalSegment klineSegmentWithTitles:@[@"5分",@"15分",@"30分",@"60分",] delegate:self];
     }
     return _verticalSegment;
-}
-- (CGFloat)similarKlineWidth {
-    return 60;
 }
 - (CGFloat)sliderWidth {
     return 45;
@@ -399,20 +368,6 @@
         CGContextClosePath(context);//封闭路径
         CGContextSetFillColorWithColor(context, self.triangleColor.CGColor);//填充色
         CGContextDrawPath(context, kCGPathFillStroke);//根据坐标绘制路径并填充
-    } else {
-        //画相似 k 线 背景
-        UIColor *bgColor;
-        if (self.supportedSimilarKline) {
-            bgColor = JT_ColorDayOrNight(@"FFDDCB", @"542F0C");
-        } else {
-            bgColor = JT_ColorDayOrNight(@"E5E7EC", @"212226");
-        }
-        CGContextSetStrokeColorWithColor(context,bgColor.CGColor);
-        CGContextSetLineWidth(context, 19);
-        CGContextSetLineCap(context, kCGLineCapRound);
-        CGContextMoveToPoint(context, self.frame.size.width - self.similarKlineWidth + 19 / 2.f, self.frame.size.height / 2.f);
-        CGContextAddLineToPoint(context, self.frame.size.width, self.frame.size.height / 2.f);
-        CGContextStrokePath(context);
     }
 }
 @end

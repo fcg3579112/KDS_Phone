@@ -27,7 +27,6 @@
     JT_TimelineAndKlineSegment *sg = [JT_TimelineAndKlineSegment segmentWithType:JT_DeviceOrientationVertical delegte:self];
 
     sg.seletedItemType = JT_SegmentItemTypeKlineDay;
-    sg.supportedSimilarKline = YES;
     [self.view addSubview:sg];
     [sg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(@0);

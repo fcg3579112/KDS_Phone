@@ -14,4 +14,5 @@
 @property (nonatomic ,assign) CGPoint lowPoint;
 @property (nonatomic ,assign) CGPoint highPoint;
 
+@property (nonatomic ,assign) CGPoint buySellPoint;
 @end

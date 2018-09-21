@@ -9,8 +9,8 @@
 #import "JT_KLineModel.h"
 #import <MApi.h>
 #import "JT_KLineConfig.h"
+#import "JT_KLineBuySellModel.h"
 @implementation JT_KLineModel
-
 
 
 - (instancetype)initWithModel:(MOHLCItem *)model;
@@ -34,9 +34,6 @@
     }
     return _index;
 }
-//#define OpenPrice_GrayColor                 JT_ColorDayOrNight(@"858C9E", @"858C9E")
-//#define OpenPrice_RedColor                  JT_ColorDayOrNight(@"FF3D00", @"FF3D00")
-//#define OpenPrice_GreenColor                JT_ColorDayOrNight(@"333333", @"666666")
 - (UIColor *)priceColor {
     if (!_priceColor) {
         if (self.closePrice.floatValue > self.referencePrice.floatValue) {

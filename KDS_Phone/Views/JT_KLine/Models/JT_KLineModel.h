@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@class MOHLCItem;
+@class MOHLCItem,JT_KLineBuySellModel;
 @interface JT_KLineModel : NSObject
 /** 时间 */
 @property (nonatomic, copy) NSString *datetime;
@@ -38,6 +38,12 @@
 @property (nonatomic ,assign) NSUInteger index;
 
 @property (nonatomic ,strong) UIColor *priceColor;
+
+
+/**
+ 买卖点的数据
+ */
+@property (nonatomic ,strong) NSArray <JT_KLineBuySellModel *>*buySellItems;
 
 //指该Model前面一个Model
 @property (nonatomic ,weak) JT_KLineModel *preModel;

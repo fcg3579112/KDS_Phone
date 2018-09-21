@@ -59,4 +59,11 @@
  */
 - (void)drawAMLineWithColor:(UIColor *)color width:(float)width left:(CGPoint)openPoint right:(CGPoint)closePoint;
 
+
+/**
+ 画买卖点的圆
+
+ */
+- (void)drawRoundPoint:(CGPoint)point;
+
 @end

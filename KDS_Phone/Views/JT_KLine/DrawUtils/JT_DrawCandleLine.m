@@ -61,4 +61,9 @@
     }
 }
 
+- (void)drawRoundPoint:(CGPoint)point {
+    CGContextRef context = self.context;
+    CGContextAddArc(context, point.x, point.y, 2, 0, M_PI * 2, 0);
+}
+
 @end

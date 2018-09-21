@@ -26,11 +26,6 @@
  */
 + (instancetype)segmentWithType:(JT_DeviceOrientation)orientation delegte:(id <JT_TimelineAndKlineSegmentDelegate>)delegate;
 
-/**
- 是否支持相似 k 线
- */
-@property (nonatomic ,assign) BOOL supportedSimilarKline;
-
 
 /**
  设置 item 默认选中项，第一次显示页面时调用。

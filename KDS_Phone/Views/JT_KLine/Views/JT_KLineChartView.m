@@ -206,6 +206,10 @@
         positionModel.openPoint = openPoint;
         positionModel.highPoint = highPoint;
         positionModel.lowPoint = lowPoint;
+        
+        if (kLineModel.buySellItems.count) {
+            positionModel.buySellPoint = CGPointMake(xPosition, maxKLineY - 5);
+        }
         [self.needDrawKLinePositionModels addObject:positionModel];
         
         if ([JT_KLineConfig MA5]) {
@@ -335,6 +339,7 @@
         UIColor *color = kLineModel.closePrice.floatValue > kLineModel.openPrice.floatValue ? JT_KLineIncreaseColor : JT_KLineDecreaseColor;
         [kLineDrawUtil drawBarWithColor:color width:[JT_KLineConfig kLineWidth] begin:obj.openPoint end:obj.closePoint];
         [kLineDrawUtil drawBarWithColor:color width:[JT_KLineConfig kLineShadeLineWidth] begin:obj.lowPoint end:obj.highPoint];
+        
     }];
     
     JT_DrawMALine *drawLine = [[JT_DrawMALine alloc] initWithContext:context];
@@ -362,6 +367,9 @@
     if ([JT_KLineConfig showHighAndLowPrice]) {
         [self drawHigtestAndLowestPriceInRect:(CGRect)rect context:context];
     }
+    
+    //画买卖点
+
 }
 /**
  画最高点及最低点价格标示
