@@ -34,9 +34,7 @@ static NSUInteger JT_MA30 = 0;
 
 static NSUInteger JT_MA60 = 0;
 
-
-
-static BOOL JT_ShowHighAndLowPrice = YES;
+static NSInteger JT_ShowHighAndLowPrice = -1;
 
 
 @implementation JT_KLineConfig
@@ -82,6 +80,11 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 + (void)setkLineShadeLineWidth:(float)width{
     JT_KLineShadeLineWidth = width;
 }
+
++ (BOOL)login {
+    return YES;
+}
+
 /**
  获取系统复权类型
  
@@ -164,11 +167,19 @@ static BOOL JT_ShowHighAndLowPrice = YES;
  
  */
 + (BOOL)showHighAndLowPrice {
-    return JT_ShowHighAndLowPrice;
+    if (JT_ShowHighAndLowPrice == -1) {
+        JT_ShowHighAndLowPrice = [[NSUserDefaults standardUserDefaults] integerForKey:@"JT_KLine_Show_highAndLowPrice"];
+    }
+    return JT_ShowHighAndLowPrice == 0 ? YES : NO;
 }
 
 + (void)setShowHighAndLowPrice:(BOOL)show {
-    JT_ShowHighAndLowPrice = show;
+    if (show) {
+        JT_ShowHighAndLowPrice = 0;
+    } else {
+        JT_ShowHighAndLowPrice = 1;
+    }
+    [[NSUserDefaults standardUserDefaults] setInteger:JT_ShowHighAndLowPrice forKey:@"JT_KLine_Show_highAndLowPrice"];
 }
 
 //当前显示的指数的类别名称

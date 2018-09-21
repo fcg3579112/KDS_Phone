@@ -131,6 +131,7 @@
         }
         
     }];
+    
     self.highestItem = [JT_PriceMarkModel new];
     self.lowestItem = [JT_PriceMarkModel new];
     self.highestItem.kLineModel = kLineModels[maxIndex];
@@ -155,6 +156,11 @@
     [self.needDraw_MA20_Positions removeAllObjects];
     [self.needDraw_MA30_Positions removeAllObjects];
     [self.needDraw_MA60_Positions removeAllObjects];
+    
+    //计算成本线坐标，
+    if (_costLinePrice < self.screenMaxValue && _costLinePrice > self.screenMinValue) {
+        self.costLineY = ABS(maxKLineY - (_costLinePrice - self.screenMinValue)/unitValue);
+    }
     
     [kLineModels enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull kLineModel, NSUInteger idx, BOOL * _Nonnull stop) {
         
@@ -298,7 +304,25 @@
         CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + i * gap);
         CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + i * gap);
     }
-    CGContextStrokePath(context);    
+    CGContextStrokePath(context);
+    
+    //画成本线,登录并且有成本线
+    if (_costLinePrice > self.screenMinValue && _costLinePrice < self.screenMaxValue) {
+        UIColor *color = JT_ColorDayOrNight(@"FF6E33 ", @"FF6E33 ");
+        CGContextSetStrokeColorWithColor(context, color.CGColor);
+        //设置虚线宽度
+        CGContextSetLineWidth(context, 1);
+        //设置虚线绘制起点
+        CGContextMoveToPoint(context, 0, _costLineY);
+        //设置虚线绘制终点
+        CGContextAddLineToPoint(context,rect.size.width, _costLineY);
+        //设置虚线排列的宽度间隔:下面的arr中的数字表示先绘制3个点再绘制1个点
+        CGFloat arr[] = {5,5};
+        //下面最后一个参数“2”代表排列的个数。
+        CGContextSetLineDash(context, 5, arr, 2);
+        CGContextDrawPath(context, kCGPathStroke);
+    }
+    CGContextSetLineDash(context, 0, NULL, 0);
     //画蜡烛线
     JT_DrawCandleLine *kLineDrawUtil = [[JT_DrawCandleLine alloc]initWithContext:context];
     [self.needDrawKLinePositionModels enumerateObjectsUsingBlock:^(JT_KLineCandlePositionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

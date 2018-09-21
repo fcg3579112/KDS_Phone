@@ -28,4 +28,8 @@
 @property (nonatomic ,assign) float screenMaxValue;
 @property (nonatomic ,assign) float screenMinValue;
 
+@property (nonatomic ,assign) float costLinePrice;//成本线
+
+@property (nonatomic ,assign) CGFloat costLineY; //成本线 Y 坐标
+
 @end

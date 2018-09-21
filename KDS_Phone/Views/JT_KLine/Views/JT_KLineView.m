@@ -575,8 +575,12 @@
     [_delayHidenCrossLineTimer invalidate];
     _delayHidenCrossLineTimer = nil;
 }
+#pragma mark Setter
 
-
+- (void)setKLineCostLinePrice:(float)kLineCostLinePrice {
+    self.klineChart.costLinePrice = kLineCostLinePrice;
+    [self p_drawKLineView];
+}
 #pragma mark Getter
 - (NSMutableArray <JT_KLineModel *>*)kLineModels {
     if (!_kLineModels) {

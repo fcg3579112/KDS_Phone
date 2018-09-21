@@ -257,6 +257,10 @@
 + (void)setShowHighAndLowPrice:(BOOL)show;
 
 
++ (BOOL)login;
+
+
+
 //设置均线，这个是全局的，当设置为0时，不需要显示对应均线，设置为大于 0 的数时需要计算
 
 + (NSUInteger)MA5;

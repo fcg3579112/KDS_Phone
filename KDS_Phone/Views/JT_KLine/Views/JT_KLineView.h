@@ -95,7 +95,13 @@
 // k 线是否需要拖动和缩放
 @property (nonatomic ,assign) BOOL needZoomAndScroll;
 //可以设置蜡烛线区域安全区
-@property (nonatomic ,assign ) float kLineChartSafeAreaHeight;
+@property (nonatomic ,assign) float kLineChartSafeAreaHeight;
+
+/**
+ 设置成本线
+ */
+@property (nonatomic ,assign) float kLineCostLinePrice;
+
 - (void)reDrawAllView;
 
 /**
