@@ -18,9 +18,9 @@ static float JT_KLineGap = 1;
 
 static float JT_KLineShadeLineWidth = 1;
 
-static NSInteger JT_kLineType = JT_SegmentItemTypeKlineDay;
+static NSInteger JT_kLineType = JT_KLineTypeUnKnow;
 
-static NSUInteger JT_KlineFQType = 0;
+static NSUInteger JT_KlineFQType = -1;
 
 static JT_KLineIndicatorType JT_IndicatorType = JT_Volume;
 
@@ -88,10 +88,17 @@ static BOOL JT_ShowHighAndLowPrice = YES;
  @return 返回复权类型 0 不复权，1前复权，2后复权
  */
 + (NSUInteger)kLineFQType {
-    return JT_KlineFQType;
+    if (JT_KlineFQType == -1) {
+        JT_KlineFQType = [[NSUserDefaults standardUserDefaults] integerForKey:@"JT_KLine_FQ_Type_Key"];
+        return JT_KlineFQType;
+    } else {
+        return JT_KlineFQType;
+    }
 }
 + (void)setkLineFQType:(NSUInteger)type {
     JT_KlineFQType = type;
+    //存储复权类型
+    [[NSUserDefaults standardUserDefaults] setInteger:type forKey:@"JT_KLine_FQ_Type_Key"];
 }
 
 /**
@@ -104,11 +111,11 @@ static BOOL JT_ShowHighAndLowPrice = YES;
     JT_IndicatorType = type;
 }
 
-+ (JT_TimelineAndKlineItemType)kLineType {
++ (JT_KLineType)kLineType {
     return JT_kLineType;
 }
 
-+ (void)setkLineType:(JT_TimelineAndKlineItemType)type {
++ (void)setkLineType:(JT_KLineType)type {
     JT_kLineType = type;
 }
 
@@ -166,34 +173,53 @@ static BOOL JT_ShowHighAndLowPrice = YES;
 
 //当前显示的指数的类别名称
 + (NSString *)currentIndicatorTitle {
-    if ([JT_KLineConfig kLineIndicatorType] == JT_Volume) {
-        return @"成交量";
-    } else if ([JT_KLineConfig kLineIndicatorType] == JT_KDJ) {
-        return @"KDJ";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_MACD) {
-        return @"MACD";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BOLL) {
-        return @"BOLL";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_RSI) {
-        return @"RSI";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMA) {
-        return @"DMA";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_DMI) {
-        return @"DMI";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_BIAS) {
-        return @"BIAS";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CCI) {
-        return @"CCI";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_WR) {
-        return @"WR";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_VR) {
-        return @"VR";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_CR) {
-        return @"CR";
-    }else if ([JT_KLineConfig kLineIndicatorType] == JT_OBV) {
-        return @"OBV";
+
+    
+    switch ([JT_KLineConfig kLineIndicatorType]) {
+            case JT_Volume:
+                return @"成交量";
+            break;
+            case JT_KDJ:
+                return @"KDJ";
+            break;
+            case JT_MACD:
+                return @"MACD";
+            break;
+            case JT_BOLL:
+                return @"BOLL";
+            break;
+            case JT_RSI:
+                return @"RSI";
+            break;
+            case JT_DMA:
+                return @"DMA";
+            break;
+            case JT_DMI:
+                return @"DMI";
+            break;
+            case JT_BIAS:
+                return @"BIAS";
+            break;
+            case JT_CCI:
+                return @"CCI";
+            break;
+            case JT_WR:
+                return @"WR";
+            break;
+            case JT_VR:
+                return @"VR";
+            break;
+            case JT_CR:
+                return @"CR";
+            break;
+            case JT_OBV:
+                return @"OBV";
+            break;
+            
+        default:
+            return @"";
+            break;
     }
-    return @"";
 }
 //格式化成交量
 NSString *formatVolume(NSUInteger volume) {
@@ -209,14 +235,14 @@ NSString *formatVolume(NSUInteger volume) {
 
 NSString *formateDateFromString(NSString *dateString) {
     //2017 0605 1440 00
-    JT_TimelineAndKlineItemType kLineType = [JT_KLineConfig kLineType];
+    JT_KLineType kLineType = [JT_KLineConfig kLineType];
     NSString *resultString = @"";
     
     //如果是分钟 k，需要在后面添加上时间
-    if ( kLineType == JT_SegmentItemTypeKline5Min ||
-        kLineType == JT_SegmentItemTypeKline15Min ||
-        kLineType == JT_SegmentItemTypeKline30Min ||
-        kLineType == JT_SegmentItemTypeKline60Min ) {
+    if ( kLineType == JT_KLineType5Min ||
+        kLineType == JT_KLineType15Min ||
+        kLineType == JT_KLineType30Min ||
+        kLineType == JT_KLineType60Min ) {
         if (dateString.length < 12) {
             return resultString;
         }
@@ -228,5 +254,34 @@ NSString *formateDateFromString(NSString *dateString) {
         resultString = [NSString stringWithFormat:@"%@-%@-%@",[dateString substringWithRange:NSMakeRange(0, 4)],[dateString substringWithRange:NSMakeRange(4, 2)],[dateString substringWithRange:NSMakeRange(6, 2)]];
     }
     return resultString;
+}
++ (JT_KLineType)convert2KLineTypeWithSegmentIndex:(JT_TimelineAndKlineItemType)type {
+    
+    switch (type) {
+        case JT_SegmentItemTypeKlineDay:
+            return JT_KLineTypeDay;
+            break;
+        case JT_SegmentItemTypeKlineWeek:
+            return JT_KLineTypeWeek;
+            break;
+        case JT_SegmentItemTypeKlineMonth:
+            return JT_KLineTypeMonth;
+            break;
+        case JT_SegmentItemTypeKline5Min:
+            return JT_KLineType5Min;
+            break;
+        case JT_SegmentItemTypeKline15Min:
+            return JT_KLineType15Min;
+            break;
+        case JT_SegmentItemTypeKline30Min:
+            return JT_KLineType30Min;
+            break;
+        case JT_SegmentItemTypeKline60Min:
+            return JT_KLineType60Min;
+            break;
+        default:
+            return JT_KLineTypeUnKnow;
+            break;
+    }
 }
 @end

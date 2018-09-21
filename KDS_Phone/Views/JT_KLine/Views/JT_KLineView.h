@@ -20,12 +20,12 @@
 - (void)JT_KLineFQSegmentClick:(JT_KLineFQType)type;
 
 /**
- 切换到竖屏状态
+ 切换到横屏状态
  */
 - (void)JT_KLineViewChange2Horizontal;
 
 /**
- 切换到横屏状态
+ 切换到竖屏状态
  */
 - (void)JT_KLineViewChange2Vertical;
 
@@ -37,6 +37,12 @@
  @param kLineModel 十字线选中的 K 线数据
  */
 - (void)JT_KLineViewCrossLineShow:(BOOL)show kLineModel:(JT_KLineModel *)kLineModel;
+
+
+/**
+ 加载 k 线历史数据
+ */
+- (void)JT_KLineLoadHistoryData;
 
 @end
 
@@ -62,6 +68,7 @@
  中间时间区域的高度
  */
 @property (nonatomic ,assign) float timeViewHeight;
+
 
 
 /**
@@ -105,19 +112,19 @@
  更新所有的 K 线数据,用于第一次加载 k 线页面、 k 线类型变化、及前后复权的切换。
  效果是： k 线页面刷新后，k 偏移到最右端，显示最新的数据
  */
-- (void)updateKLineWithModels:(NSArray <MOHLCItem *>*)models;
+- (void)reloadKLineWithModels:(NSArray <MOHLCItem *>*)models;
 
 /**
  加载 k 线历史数据，效果是：视图保持现在的状态，可以向右拖动，显示历史数据
 
  */
-- (void)loadWithHistoryModels:(NSArray <MOHLCItem *>*)models;
+- (void)loadKLineHistoryWithModels:(NSArray <MOHLCItem *>*)models;
 
 /**
- 加载最新的几条数据。
+ 加载最新几条数据。
 
  */
-- (void)reloadWithNewestModels:(NSArray <MOHLCItem *>*)models;
+- (void)refreshKLineNewestModels:(NSArray <MOHLCItem *>*)models;
 
 @end
 

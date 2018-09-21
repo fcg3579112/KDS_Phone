@@ -131,20 +131,21 @@
     }
     
     //竖线上部分
+    CGContextSetStrokeColorWithColor(context, JT_KLineCrossLineColor.CGColor);
     CGContextSetLineWidth(context,JT_KLineCrossLineWidth);
     CGPoint verticalLineUpPoints[] = {CGPointMake(_crossLineCenterPoint.x, 0), CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin)};
     CGContextStrokeLineSegments(context, verticalLineUpPoints, 2);
     //竖线下部分
     CGPoint verticalLineDownPoints[] = {CGPointMake(_crossLineCenterPoint.x, self.timeViewTopMargin + self.timeViewHeight), CGPointMake(_crossLineCenterPoint.x,rect.size.height )};
     CGContextStrokeLineSegments(context, verticalLineDownPoints, 2);
-    
+    CGContextStrokePath(context);
     
     CGSize textSize = [_dateTime sizeWithAttributes:@{NSFontAttributeName : font}];
     textSize = CGSizeMake(textSize.width, textSize.height);
     CGFloat originX = _crossLineCenterPoint.x - textSize.width / 2;
     
     originX = originX < 0 ? 0 : originX;
-    originX = originX >= rect.size.width - textSize.width ?  originX = rect.size.width - textSize.width : originX;
+    originX = originX >= rect.size.width - textSize.width - self.rightMargin ?  originX = rect.size.width - textSize.width - self.rightMargin : originX;
     
     CGRect textRect = CGRectMake(originX, self.timeViewTopMargin, textSize.width, textSize.height);
     //画时间

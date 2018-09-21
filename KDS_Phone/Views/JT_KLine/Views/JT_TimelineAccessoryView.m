@@ -128,6 +128,10 @@
     _tradeVolume.text = formatVolume(model.tradeVolume.integerValue);
     _averagePrice.text = [NSString stringWithFormat:@"%.2f",model.averagePrice.floatValue];
     _changeRate.text = [self changeRateString];
+    
+    _lastPrice.textColor = [self getColorWithPrice:model.closePrice];
+    _averagePrice.textColor = [self getColorWithPrice:model.averagePrice];
+    _changeRate.textColor = [self getColorWithPrice:@"0"];
 
 }
 - (NSString *)changeRateString{
@@ -147,9 +151,9 @@
     if (price.floatValue > _stockModel.referencePrice.floatValue) {
         return JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
     } else if (price.floatValue < _stockModel.referencePrice.floatValue) {
-        return JT_ColorDayOrNight(@"333333", @"666666");
+        return JT_ColorDayOrNight(@"0DB14B", @"0DB14B");
     } else {
-        return JT_ColorDayOrNight(@"858C9E", @"858C9E");
+        return JT_ColorDayOrNight(@"333333", @"666666");
     }
 }
 @end

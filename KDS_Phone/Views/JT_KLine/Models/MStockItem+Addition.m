@@ -26,7 +26,7 @@ BOOL isEmpty(NSString *string) {
 }
 
 - (NSString *)changeRate_JT{
-    if (isEmpty(self.changeRate)) {
+    if (!self.changeRate ||  [self.changeRate isKindOfClass:[NSNull class]] || isEmpty(self.change) ) {
         return @"--";
     }
     NSString *changeRate = @"0.00%";
@@ -60,7 +60,7 @@ BOOL isEmpty(NSString *string) {
     return changeRate;
 }
 - (NSString *)change_JT{
-    if (self.status == MStockStatusSuspend || self.status == MStockStatusUnmarket || isEmpty(self.change)) {
+    if (!self.change ||  [self.change isKindOfClass:[NSNull class]] || isEmpty(self.change) || self.status == MStockStatusSuspend || self.status == MStockStatusUnmarket) {
         return @"--";
     }
     NSString *change = @"0.00";
@@ -73,7 +73,7 @@ BOOL isEmpty(NSString *string) {
 }
 - (NSString *)processString:(NSString *)string {
     //停牌或退市
-    if (self.status == MStockStatusSuspend || self.status == MStockStatusUnmarket || isEmpty(string) || !string) {
+    if (!string || [string isKindOfClass:[NSNull class]] || isEmpty(string) || self.status == MStockStatusSuspend || self.status == MStockStatusUnmarket) {
         return @"--";
     } else {
         return string;

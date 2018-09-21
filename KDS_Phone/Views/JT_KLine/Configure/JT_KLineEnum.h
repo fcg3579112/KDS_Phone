@@ -26,6 +26,18 @@ typedef NS_ENUM(NSInteger,JT_TimelineAndKlineItemType) {
     JT_SegmentItemTypeKline60Min,
 };
 
+typedef NS_ENUM(NSInteger,JT_KLineType) {
+    JT_KLineTypeUnKnow = -1,
+    JT_KLineTypeDay = 0,
+    JT_KLineTypeWeek,
+    JT_KLineTypeMonth,
+    JT_KLineType5Min,
+    JT_KLineType15Min,
+    JT_KLineType30Min,
+    JT_KLineType60Min,
+    
+};
+
 typedef NS_ENUM(NSUInteger,JT_KLineIndicatorType) {
     JT_Volume = 0,
     JT_KDJ,

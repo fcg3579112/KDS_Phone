@@ -103,6 +103,7 @@
 - (instancetype)initWithDelegate:(id <JT_KLineViewDelegate>) delegate orientation:(JT_DeviceOrientation)orientation {
     self = [super init];
     if (self) {
+        self.backgroundColor = JT_KLineViewBackgroundColor;
         _delegate = delegate;
         _orientation = orientation;
         _needDrawKLineModels = @[].mutableCopy;
@@ -116,15 +117,17 @@
  更新所有的 K 线数据,用于第一次加载 k 线页面、 k 线类型变化、及前后复权的切换。
  效果是： k 线页面刷新后，k 偏移到最右端，显示最新的数据
  */
-- (void)updateKLineWithModels:(NSArray <MOHLCItem *>*)models {
+- (void)reloadKLineWithModels:(NSArray <MOHLCItem *>*)models {
     if (models.count == 0) {
         return;
     }
+    [self.kLineModels removeAllObjects];
     [models enumerateObjectsUsingBlock:^(MOHLCItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         JT_KLineModel *model = [[JT_KLineModel alloc] initWithModel:obj];
         [self.kLineModels addObject:model];
         model.allKLineModel = self.kLineModels;
         [model initData];
+        
     }];
     
     [self updateScrollViewWidth];
@@ -138,12 +141,13 @@
     } else {
         self.scrollView.contentOffset = CGPointMake(0, 0);
     }
+    [self reDrawAllView];
 }
 /**
  加载 k 线历史数据，效果是：视图保持现在的状态，可以向右拖动，显示历史数据
  
  */
-- (void)loadWithHistoryModels:(NSArray <MOHLCItem *>*)models {
+- (void)loadKLineHistoryWithModels:(NSArray <MOHLCItem *>*)models {
     if (models.count == 0) {
         return;
     }
@@ -156,15 +160,19 @@
     NSArray <JT_KLineModel *>*oldDataArray = self.kLineModels.copy;
     NSMutableArray <JT_KLineModel *>*oldDataArrayM = @[].mutableCopy;
     [oldDataArray enumerateObjectsUsingBlock:^(JT_KLineModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        JT_KLineModel *model = [JT_KLineModel new];
-        model.openPrice = obj.openPrice;
-        model.closePrice = obj.closePrice;
-        model.highPrice = obj.highPrice;
-        model.lowPrice = obj.lowPrice;
-        model.tradeVolume = obj.tradeVolume;
-        model.referencePrice = obj.referencePrice;
-        model.datetime = obj.datetime;
-        [oldDataArrayM addObject:model];
+        @autoreleasepool
+        {
+            JT_KLineModel *model = [JT_KLineModel new];
+            model.openPrice = obj.openPrice;
+            model.closePrice = obj.closePrice;
+            model.highPrice = obj.highPrice;
+            model.lowPrice = obj.lowPrice;
+            model.tradeVolume = obj.tradeVolume;
+            model.referencePrice = obj.referencePrice;
+            model.datetime = obj.datetime;
+            [oldDataArrayM addObject:model];
+        }
+        
     }];
     
     [self.kLineModels removeAllObjects];
@@ -186,7 +194,7 @@
  加载最新的几条数据。
  
  */
-- (void)reloadWithNewestModels:(NSArray <MOHLCItem *>*)models {
+- (void)refreshKLineNewestModels:(NSArray <MOHLCItem *>*)models {
     if (models.count == 0) {
         return;
     }
@@ -195,15 +203,25 @@
         MOHLCItem *firstModel = models.firstObject;
         //找出需要更新的Model对应的索引
         NSInteger beginUpdaeIndex = -1;
+        
+        //对于时间（20121130150000）的比较，如果是日、月、周k 需要比较时间的前8位，就是比较到日，其他分钟 k 需要比较到分钟，就是前12位
+        
+        NSInteger toIndex = 0;
+        JT_KLineType type = [JT_KLineConfig kLineType];
+        if (type == JT_KLineTypeDay || type == JT_KLineTypeWeek || type == JT_KLineTypeMonth) {
+            toIndex = 8;
+        } else {
+            toIndex = 12;
+        }
         for (NSInteger i = self.kLineModels.count - 1; i >= 0; i --) {
             JT_KLineModel *model = self.kLineModels[i];
-            if ([model.datetime isEqualToString:firstModel.datetime]) {
+            if ([[model.datetime substringToIndex:toIndex] isEqualToString:[firstModel.datetime substringToIndex:toIndex]]) {
                 beginUpdaeIndex = i;
             }
         }
         //未找到需要更新的Model对应的索引时，走刷新逻辑
         if (beginUpdaeIndex == -1) {
-            [self updateKLineWithModels:models];
+            [self reloadKLineWithModels:models];
         } else {
             
             // 移除索引处及其后面的数据,然后加入最新的数据
@@ -218,7 +236,7 @@
         }
         
     } else { //如果之前没有数据，就走刷新页面逻辑
-        [self updateKLineWithModels:models];
+        [self reloadKLineWithModels:models];
     }
 }
 
@@ -354,7 +372,11 @@
 }
 #pragma mark UIScrollViewDelegaet
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
+    if (scrollView.contentOffset.x == 0) {
+        if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineLoadHistoryData)]) {
+            [_delegate JT_KLineLoadHistoryData];
+        }
+    }
 }
 #pragma mark 计算十字线 Y 轴的值
 - (NSString *)calculateCrossLineValueY:(CGFloat)y {
@@ -457,6 +479,8 @@
             //显示十字线时，禁止页面滑动、显示十字线、显示右边涨跌幅标尺视图、关闭定时器
             self.scrollView.scrollEnabled = NO;
             self.crossLineView.hidden = NO;
+            self.FQSegment.hidden = YES;
+            self.volumeSegment.hidden = YES;
             self.rightChangeRateView.hidden = NO;
             [_delayHidenCrossLineTimer invalidate];
             [self.indicatorAccessory updateWith:kLineModel];
@@ -476,6 +500,9 @@
             break;
         default:
             break;
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineViewCrossLineShow:kLineModel:)]) {
+        [_delegate JT_KLineViewCrossLineShow:YES kLineModel:kLineModel];
     }
 }
 #pragma mark 双击手势，切换到竖屏
@@ -534,6 +561,11 @@
 }
 
 - (void)hidenCrossLine {
+    if (_delegate && [_delegate respondsToSelector:@selector(JT_KLineViewCrossLineShow:kLineModel:)]) {
+        [_delegate JT_KLineViewCrossLineShow:NO kLineModel:nil];
+    }
+    self.FQSegment.hidden = NO;
+    self.volumeSegment.hidden = NO;
     self.scrollView.scrollEnabled = YES;
     self.crossLineView.hidden = YES;
     self.rightChangeRateView.hidden = YES;
@@ -650,6 +682,7 @@
 - (JT_KLineCrossLineView *)crossLineView {
     if (!_crossLineView) {
         _crossLineView = [JT_KLineCrossLineView new];
+        _crossLineView.hidden = YES;
         _crossLineView.userInteractionEnabled = NO;
         _crossLineView.timeViewTopMargin = self.klineChartViewHeight;
         _crossLineView.timeViewHeight = self.timeViewHeight;

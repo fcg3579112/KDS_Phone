@@ -17,7 +17,7 @@
  @param code 股票代码
  @param completed 返回结果
  */
-+ (void)requestKLineDataWithCode:(NSString *)code completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
++ (void)requestKLineDataWithCode:(NSString *)code subtype:(NSString *)subtype completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
 
 /**
  请求某个时间之前的数据
@@ -26,7 +26,7 @@
  @param datetime 时间
  @param completed 返回结果
  */
-+ (void)requestKLineOlderDataWithCode:(NSString *)code datetime:(NSString *)datetime completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
++ (void)requestKLineOlderDataWithCode:(NSString *)code subtype:(NSString *)subtype datetime:(NSString *)datetime completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
 
 /**
  请求某个时间之后的数据
@@ -35,5 +35,5 @@
  @param datetime 时间
  @param completed 返回结果
  */
-+ (void)requestKLineNewerDataWithCode:(NSString *)code datetime:(NSString *)datetime completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
++ (void)requestKLineNewerDataWithCode:(NSString *)code subtype:(NSString *)subtype datetime:(NSString *)datetime completed:(void(^)(BOOL successed,NSArray <MOHLCItem *>*items))completed;
 @end

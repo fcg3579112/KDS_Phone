@@ -242,10 +242,10 @@
  设置 k 线的类型
 
  */
-+ (JT_TimelineAndKlineItemType)kLineType;
++ (JT_KLineType)kLineType;
 
 
-+ (void)setkLineType:(JT_TimelineAndKlineItemType)type;
++ (void)setkLineType:(JT_KLineType)type;
 
 
 /**
@@ -298,5 +298,12 @@ NSString *formatVolume(NSUInteger volume);
  @return 格式后的日期
  */
 NSString *formateDateFromString(NSString *dateString);
+
+
+/**
+ 点击 分时 K 线按钮 索引，转成 k 线类型
+
+ */
++ (JT_KLineType)convert2KLineTypeWithSegmentIndex:(JT_TimelineAndKlineItemType)type;
 
 @end

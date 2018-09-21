@@ -80,7 +80,7 @@
         if (response.status == MResponseStatusSuccess) {
             NSArray *items = response.OHLCItems;
             // 模型转换
-            [self.kLineView reloadWithNewestModels:items];
+
         }
     }];
     

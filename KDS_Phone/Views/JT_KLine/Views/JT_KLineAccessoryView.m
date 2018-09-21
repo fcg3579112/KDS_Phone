@@ -151,9 +151,9 @@
     if (price.floatValue > _kLineModel.referencePrice.floatValue) {
         return JT_ColorDayOrNight(@"FF3D00", @"FF3D00");
     } else if (price.floatValue < _kLineModel.referencePrice.floatValue) {
-        return JT_ColorDayOrNight(@"333333", @"666666");
+        return JT_ColorDayOrNight(@"0DB14B", @"0DB14B");
     } else {
-        return JT_ColorDayOrNight(@"858C9E", @"858C9E");
+        return JT_ColorDayOrNight(@"333333", @"666666");
     }
 }
 @end
